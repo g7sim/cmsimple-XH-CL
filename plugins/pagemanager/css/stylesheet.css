@@ -1,0 +1,66 @@
+/*
+ * Treeview
+ */
+
+#pagemanager {
+    border: 1px solid #999;
+    padding: 16px;
+    margin: 1px 0;
+    /* the following lines enable a scrollable treeview; adjust the height to your needs */
+    height: 400px;
+    overflow: scroll !important;
+}
+
+#pagemanager.pagemanager_vertical {
+    margin-left: 27px;
+}
+
+/*
+ * Toolbar
+ */
+
+#pagemanager_toolbar {
+    text-align: center;
+}
+#pagemanager_toolbar button {
+    margin: 0.7em 0.3em 0.7em 0.3em;
+    padding: 0.4em 0.6em 0.4em 0.6em;
+}
+#pagemanager_toolbar button span {
+    display: inline-block;
+}
+#pagemanager_toolbar button[disabled] span {opacity: 0.3}
+.pagemanager_tool_wrapper {
+    position: relative;
+    display: inline-block;
+}
+.pagemanager_tool_inner {
+    position: absolute;
+    display: none;
+    z-index: 1;
+}
+#pagemanager_toolbar .pagemanager_tool_inner button {
+    margin: 0;
+    width: 100%;
+}
+
+/*
+ * Context menu
+ */
+
+/* To have enough space for the whole context menu, if the template has a small footer */
+#pagemanager_footer {
+    height: 150px;
+}
+
+/*
+ * Plugin info
+ */
+
+.pagemanager_logo {
+    float: left;
+    margin: 0 1em 0.5em 0;
+}
+.pagemanager_license {
+    text-align: justify;
+}

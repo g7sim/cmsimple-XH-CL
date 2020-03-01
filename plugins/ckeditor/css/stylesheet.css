@@ -1,0 +1,30 @@
+.cke_combopanel {
+    height: 170px;
+    width: 250px !important;
+}
+
+.cke_combo__styles .cke_combo_text {
+    /*width: 75px !important;*/
+}
+
+.cke_combo__format .cke_combo_text {
+    width: 75px !important;
+}
+
+.cke_combo__font .cke_combo_text {
+    /*width: 75px !important;*/
+}
+
+.cke_combo__fontsize .cke_combo_text {
+    width: 40px !important;
+}
+
+/* remove left and right border of editarea */
+/*
+.cke_chrome {
+    border: 0 !important;
+}
+.cke_top {
+   border: 1px solid #d1d1d1 !important;
+}
+*/

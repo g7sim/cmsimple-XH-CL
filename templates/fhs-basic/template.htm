@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<?php
+// if jQuery4CMSimple is installed, include its jQuery library
+if (is_readable($pth['folder']['plugins'].'jquery/jquery.inc.php')) {
+    include_once $pth['folder']['plugins'].'jquery/jquery.inc.php';
+    include_jQuery();
+}
+// Plugin FA_XH
+if (function_exists('fa_require')) {
+    fa_require();
+} else {
+    die('Das Template "fhs-simple" benötigt das Fa_XH-Plugin.<br>Das Fa_XH-Plugin kann hier heruntergeladen werden: <a href="http://3-magi.net/de/?CMSimple_XH/Fa_XH" target="_blank">Download</a>');
+}
+?>
+<html lang="<?=$sl;?>">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<?=head();?>
+<!-- *** IMPORTANT !!! Replace this part with your own data !!! (start) *** -->
+<!-- *** for new icons, manifest ... use: https://realfavicongenerator.net/ *** -->
+<link rel="apple-touch-icon" sizes="180x180" href="<?=$pth['folder']['templateimages']?>favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="<?=$pth['folder']['templateimages']?>favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="<?=$pth['folder']['templateimages']?>favicon/favicon-16x16.png">
+<link rel="manifest" href="<?=$pth['folder']['templateimages']?>favicon/site.webmanifest">
+<link rel="mask-icon" href="<?=$pth['folder']['templateimages']?>favicon/safari-pinned-tab.svg" color="#ddbb33">
+<link rel="shortcut icon" href="<?=$pth['folder']['templateimages']?>favicon/favicon.ico">
+<meta name="apple-mobile-web-app-title" content="My App">
+<meta name="application-name" content="My App">
+<meta name="msapplication-TileColor" content="#2d89ef">
+<meta name="msapplication-TileImage" content="<?=$pth['folder']['templateimages']?>favicon/mstile-144x144.png">
+<meta name="msapplication-config" content="<?=$pth['folder']['templateimages']?>favicon/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">
+<!-- *** replace this part with your own data !!! (end) *** -->
+<script>
+document.write('<style>#noScript { display: none; }<\/style>')
+</script>
+</head>
+
+<body<?=onload();?>>
+<header class="row-full-width" id="header">
+<div class="langMenu"><?=languagemenu();?></div>
+<div class="header-cont">
+<div id="logo"><a href="./" class="logo">&nbsp;</a></div>
+<div id="logoTxt"><?=$tx['template']['text1']?></div>
+</div>
+</header>
+<?php
+if (XH_ADM && !$edit || !XH_ADM):?>
+<div class="row-full-width slideshow"><?=slideshow('headerimages');?></div>
+<?php endif?>
+<div class="row-full-width secHeader">
+<div class="locator"><?=$tx['locator']['text'] . ' ' . locator();?></div>
+<div class="floatRight">
+<div class="burger"> </div>
+<div class="searchBox">
+<form method="post" id="searchform" action="<?=$sn?>">
+<input accesskey="f" title="<?php echo $tx['search']['button'] ?>" id="searchfield" type="text" name="search" placeholder="&#xf002;">
+<input type="hidden" name="function" value="search">
+</form>
+</div>
+</div>
+</div>
+<div class="row-full-width" id="wrapper">
+<nav class="secmenu c6"><?=toc();?></nav>
+<main class="maincont c12"><?=content();?>
+<div class="submenDiv"><?=submenu('<span>%s</span>');?></div>
+<aside id="newsboxes2" class="row clear">
+<section class="news"><?=newsbox('News01');?></section>
+<section class="news"><?=newsbox('News02');?></section>
+</aside>
+</main>
+<aside id="newsboxes" class="c6">
+<section class="news"><?=newsbox('News01');?></section>
+<section class="news"><?=newsbox('News02');?></section>
+</aside>
+</div>
+<div class="row-full-width" id="footer">
+<div class="row">
+<p><?=printlink();?> | <?=sitemaplink();?> | <a href="?Kontakt">Kontakt</a> | <a href="?Datenschutz">Datenschutz</a> | <a href="?Impressum">Impressum</a> | <?=loginlink();?></p>
+</div>
+<div class="row">
+<p>© <?=date("Y");?> FIRMA XYZ | Powered by <a href="http://www.cmsimple-xh.org/" target="_blank">CMSimple_XH</a> | Template by <a href="http://fhseidel.de/cmsxh/fhs-basic/?Download" target="_blank">fhs</a></p>
+</div>
+</div>
+<div><a id="topLink" href="#"><i class="fa fa-angle-up fa-3x"></i></a></div>
+<div id="noScript">Please activate JavaScript in your browser.</p>
+<p><a href="?&amp;sitemap">&raquo; Sitemap</a></p>
+</div>
+<script>
+// scroll to top
+jQuery(document).ready(function() {
+    var offset = 200; // start position
+    var duration = 600; // scroll speed
+    jQuery(window).scroll(function() {
+        if (jQuery(this).scrollTop() > offset) {
+            jQuery('#topLink').fadeIn(duration);
+        } else {
+            jQuery('#topLink').fadeOut(duration);
+        }
+    });
+    jQuery('#topLink').click(function(event) {
+        event.preventDefault();
+        jQuery('html, body').animate({scrollTop: 0}, duration);
+        return false;
+    })
+// mobile menu
+	mobNavHeight = function () {
+		if ($(window).innerWidth() > 768) {
+			$('nav.secmenu').css({'display': 'block'});
+			$('.burger').addClass('active');
+		}
+	}
+	mobNavHeight();
+	$(window).resize(function () {
+		mobNavHeight();
+	});
+	$('.burger').click(function () {
+		$('nav.secmenu').fadeToggle();
+		$('.burger').toggleClass('active');
+	});
+});
+</script>
+</body>
+</html>

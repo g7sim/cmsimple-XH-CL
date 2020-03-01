@@ -1,0 +1,3 @@
+ Now find a nice place in your template where the counter should be shown, and insert the following call there:
+
+<?php echo visitors()?>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<?php
+/*Template by svasti@svasti.de (c) 2016,
+bitte nicht den Copyright-Link entfernen.
+Wenn Sie ausgehend von diesem Template ein modifiziertes Template
+erstellen, können Sie ihren Copyright-Link hinzufügen.
+
+Eine Lizenz zum Entfernen des Links kostet 25 € pro Domain.
+Wenn Sie Ihre modifizierte Version verkaufen, sollten Sie
+die Hälfte des Verkaufspreises oder wenigstens 25 €
+an svasti@svasti.de pro Domain zahlen.
+
+Bei Nutzung der Variablen $news01 und $news02, z.B. indem man
+#CMSimple $news01 = "Gewünschte Seite";# in den Content einfügt
+oder über das Plugin Morepagedata_XH als "select_hiddenpage", können
+die Inhalte der Newsboxen pro Seite bestimmt werden.*/
+?>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<?php echo head();?>
+
+</head>
+
+<body id="body" <?php echo onload();?>>
+
+<!--Hauptrahmen-->
+<div class="container">
+
+<!-- Seitenkopf -->
+<div class="head">
+    <div class="logo"></div>
+    <div></div>
+    <h1><?php echo sitename();?></h1>
+</div>
+
+
+<!-- Navigation -->
+<div class="nav">
+    <?php echo li($hc,1);?>
+    <div style="clear:both"></div>
+</div>
+
+
+<!--linke Spalte für Werbung etc. -->
+    <div class="leftsidebar up">
+        <div class="linielinks">
+           <?php if (isset($news01)) echo newsbox($news01); else echo newsbox('News01'); ?>
+        </div>
+    </div>
+
+
+<!-- mittlere Spalte für Hauptinhalt-->
+    <div id="content">
+    <!--Locator-->
+        <div id="locator">
+            <p><?php echo $tx['locator']['text']; echo locator();?></p>
+        </div>
+        <?php echo content()?>
+    </div>
+
+
+<!--rechte Spalte für Zusatznavigation etc. -->
+    <div id="rightsidebar">
+        <div id="linierechts">
+            <div class="funktionsfeld">
+		
+                <div id="search" class="sestyle">
+                    <?php echo searchbox();?>
+                </div>
+		
+                 <?php if(languagemenu()) echo '<p id="languagemenu">'.languagemenu().'</p>';?>
+		
+                <p><a href="?<?php echo uenc($tx['template']['text2']);?>"><?php echo $tx['template']['text2'];?></a></p>
+		
+                <p><?php echo mailformlink();?></p>
+                <p><?php echo sitemaplink();?></p>
+                <p><?php echo printlink();?></p>
+                <p><?php echo lastupdate();?></p>
+           </div>
+	    
+<div class="headnav">
+        <p>
+              <?php echo languagemenu();?>			
+        </p>
+</div>
+	    
+	    
+
+           <?php if (isset($news02)) echo newsbox($news02); else echo newsbox('News02'); ?>
+        </div>
+    </div>
+
+
+<!--Kopie der linken Spalte, damit diese in kleinen Bildschirmen unten erscheint -->
+    <div class="leftsidebar down">
+        <div class="linielinks">
+           <?php if (isset($news01)) echo newsbox($news01); else echo newsbox('News01'); ?>
+        </div>
+    </div>
+
+
+</div>
+
+
+<div id="pagenav">
+    <table>
+        <tr>
+            <td class="previous"><?php echo previouspage();?></td>
+            <td class="top"><?php echo top();?></td>
+            <td class="next"><?php echo nextpage();?></td>
+        </tr>
+    </table>
+</div>
+
+
+<p id="copyright">
+    <a href="http://www.cmsimple-xh.org/" target="_blank">Powered by CMSimple_XH</a>
+    &nbsp; · &nbsp; <?php echo loginlink();?>
+    &nbsp; · &nbsp; <a href="http://www.frankziesing.de/cmsimple/" target="_blank">Template by svasti</a>
+</p>
+
+<script type="text/javascript">
+    var lis = document.querySelectorAll(".menulevel1 > li");
+    for (var i = 0; i < lis.length; i++) {
+        lis[i].onmouseover = function () {
+            var data = this.getBoundingClientRect();
+            var left = data.left;
+            var right = document.documentElement.clientWidth - data.right;
+            var cl = "a";
+            if (left > right) cl = "b";
+            if(this.className.indexOf("sdocs") != -1) this.className = "sdocs " + cl;
+            else this.className = cl;
+        }
+    }
+</script>
+
+</body>
+</html>

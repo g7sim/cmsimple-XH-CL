@@ -1,0 +1,610 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300);
+/**
+ * Template+Stylesheet (c) 2014 svasti@svasti.de
+ *
+ * Please don't remove this copyright notice.
+ *
+ * When you build on this template, you may add
+ * your own copyright notice.
+ * If you sell your modified version, you have to
+ * pay 50% of your revenue or at least 25� to svasti
+ * per domain.
+ *
+ * Notice: Content Styles should be shown automatically
+ * by TinyMCE Editor. However there is a bug in CKEditor
+ * so that it does not show them as long as the stylesheet
+ * has "@import url..." in it.
+ *
+ */
+.headnav {
+    margin: 0 auto 1em;
+    max-width: 70em;
+    color: #ccc;
+}
+.headnav a{ text-decoration:none;}
+/**************************/
+/*     Content Styles     */
+/**************************/
+p.absatzb, .absatzb  {
+    font: normal normal normal 13px/1.3 Arial, serif;
+    margin-bottom:4px;
+}
+p.absatzfettgruen, .absatzfettgruen   {
+    font: normal normal bold 13px/1.3 Arial, Helvetica;
+	color:#077;
+    margin-bottom:4px;
+}
+
+h5.h5gruen, .h5gruen  {
+    font-variant: normal;
+    letter-spacing: 0;
+    font-family: Verdana, Geneva, Arial, Helvetica;
+	font-size: 16pt;
+	font-weight: normal;
+	margin: .4em 0 .4em ;
+	color:#077;
+}
+h6.h6grauunterlegt, .h6grauunterlegt  {
+    font-size: 13px;
+    font-weight:bold;
+    background-color:#e7e3de;
+    letter-spacing: .05em;
+    padding: 0;
+    border-top: 6px solid white;
+    border-bottom: 1px solid #0aa;
+    margin:1em 0 .5em;
+    clear:both;
+}
+
+/* ============= Bilder etc ========= */
+img.left, .left  {
+    float:left;
+    margin-right:5px;
+}
+img.right, .right {
+    float:right;
+    margin-left:5px;
+}
+
+
+/* Marker for tinymce 3 */
+._-_-_-_-_-_-_-_ {}
+
+
+
+/*******************/
+/*      Start      */
+/*******************/
+
+body {
+	font: 12px/1.5 Verdana, Geneva, Arial, Helvetica;
+    margin:0;
+    padding:0;
+}
+#body {
+    background:#fffcf4 url(images/hintergrund.jpg) 50% ;
+}
+body.print  {  
+    margin:10px;
+    background:white;
+}
+
+img {
+	border: 0;
+}
+
+
+/* ===================== */
+/*      Hauptrahmen      */
+/* ===================== */
+
+.container  {
+    max-width:1000px;
+    width:100%;
+    height:100%;
+    background: url(images/verlauf_weissgrau_150px.jpg) right repeat-y white;
+    margin:20px auto 0;
+    padding:0;
+    border-top: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    text-align:center;
+    box-shadow: 1px 1px 10px #edd ;
+    border-radius:4px;
+    border-right:1px solid #bbb;
+    border-top:1px solid #ddd;
+}
+
+
+/* ===================== */
+/*       Seitenkopf      */
+/* ===================== */
+
+.head  {
+    width:100%;
+    display:inline-block;
+}
+.head div {
+    width:100px;
+    height:100px;
+    margin:10px 40px 0 0;
+    float:right;
+}
+div .logo {
+    background: url(images/blume.jpg)  no-repeat;
+    float:left;
+    margin:10px 0 0 40px;
+}
+
+.head h1  {
+    padding-top:20px;
+    font: normal normal 45px/1 'Open Sans Condensed', Tahoma, sans-serif;
+    letter-spacing:2px;
+	text-align:center;
+    color:#aaa;
+}
+
+
+/* ===================== */
+/*      Navigation       */
+/* ===================== */
+
+.nav {
+    width:100%;
+    /* background:#eee url(images/verlauf_vertikal_klein.jpg);*/
+ background: #F1F1F1;
+background: -moz-linear-gradient(top, #F1F1F1 0%, #f5f6f6 100%);
+background: -webkit-linear-gradient(top, #F1F1F1 0%, #f5f6f6 100%);
+background: linear-gradient(to bottom, #F1F1F1 0%, #f5f6f6 100%);
+    
+    padding:3px 0 0 ;
+    text-align:left;
+}
+.nav ul {
+    list-style-type: none;
+    margin:0;
+    padding:0;
+    float:right;
+    position:relative;
+    right:50%;
+}
+.nav ul li {
+    line-height:1.6;
+    margin: 0;
+    padding: 0 2px;
+}
+.nav ul li span {
+    background:white;
+    padding:1px 4px;
+    margin:-1px -4px;
+}
+.nav ul li a {
+    display:block;
+    color:black;
+    text-decoration: none;
+    border:none;
+    margin: 0 -.3em;
+    padding: 0 .3em;
+}
+.nav ul.menulevel1 > li {
+    font: italic bold 1em georgia, serif;
+	letter-spacing: .1em;
+	color: #055;
+    border-left:1px solid black;
+    border-right:1px solid black;
+    float:left;
+    margin:4px 0 4px -1px;
+    padding: 0 15px;
+    white-space: nowrap;
+    float:left;
+    position:relative;
+    left:50%;
+}
+.nav ul.menulevel1 li > a {
+	color: #055;
+}
+.nav ul.menulevel1 li.sdocs a {
+    text-decoration: underline;
+}
+.nav ul.menulevel1 li ul.menulevel2 li a {
+    text-decoration: none;
+}
+.nav ul.menulevel1 li.sdocs ul.menulevel2 li.sdocs a {
+    text-decoration: underline;
+}
+.nav ul.menulevel1 li.sdocs ul.menulevel2 li.sdocs ul.menulevel3 li a {
+    text-decoration: none;
+}
+.nav ul li a:hover,
+.nav ul.menulevel1 li.sdocs a:hover,
+.nav ul.menulevel1 li ul.menulevel2 li a:hover {
+    background:white;
+}
+.nav ul ul {
+    position:absolute;
+    visibility: hidden;
+    width:134px;
+    background:#f1f1f1; /*#e7e7e7 */
+    padding: 2px 5px 4px 10px;
+    border-radius: 0 0 .4em .4em;
+    box-shadow: 1px 1px 1px gray;
+}
+.nav ul.menulevel2 {
+    right:calc(50% - 73px);
+    z-index:15;
+    border-left:1px solid gray;
+}
+.nav .a ul.menulevel2 {
+    left:0;
+}
+.nav .b ul.menulevel2 {
+    left:auto;
+    right:0;
+}
+.nav ul.menulevel1 li ul li{
+	font: normal normal 12px Verdana, Geneva, Arial, Helvetica !important;
+    letter-spacing:0;
+    border:none;
+    width:130px;
+    white-space: normal;
+    padding: 5px 0;
+    position:relative;
+    left:0;
+}
+.nav ul.menulevel1 li ul li a{
+    color:black;
+    margin: -5px -8px;
+    padding: 5px 8px;
+}
+.nav ul.menulevel1 li ul li span{
+    color:black;
+    background:white;
+    margin: -5px -8px;
+    padding: 5px 8px;
+    display:block;
+}
+.nav ul ul ul,
+.nav ul .a ul ul {
+    top:-2px;
+    border-radius: .5em;
+    left:134px;
+    z-index:20;
+    border-top:1px solid #888;
+}
+.nav ul .b ul ul {
+    left:auto;
+    right:138px;
+    z-index:-1;
+    border-left:1px solid #888;
+    box-shadow: 0px 5px 5px #888;
+}
+.nav li:hover > ul {
+    visibility: visible;
+}
+
+@media screen and (max-width: 500px) {
+.nav ul ul {
+    border-left:1px solid #888;
+}
+.nav ul .a ul ul,
+.nav ul.menulevel1 li.b ul ul,
+.nav ul ul ul {
+    top:0;
+    right:auto;
+    left:8px;
+    padding:0;
+    position:relative;
+    z-index:25;
+    margin:3px 0 8px;
+    width:146px;
+    border:none;
+    border-radius:0;
+    box-shadow:none;
+}
+.nav ul.menulevel1 li ul.menulevel2 li ul.menulevel3 li {
+    position:relative;
+    border:none;
+    width:120px;
+    white-space: normal;
+    margin: 0;
+    padding: 2px 0 2px 15px;
+}
+.nav ul.menulevel1 li ul.menulevel2 li ul.menulevel3 li a{
+    margin: -2px -10px -2px -10px;
+    padding: 2px 10px 2px 10px;
+}
+.nav ul.menulevel2 li ul.menulevel3 li span {
+    margin: -2px -10px -2px -10px;
+    padding: 2px 10px 2px 10px;
+}
+.nav li:hover  ul {
+    visibility: visible;
+}
+
+}
+/* ===================== */
+/*     Linke Spalte      */
+/* ===================== */
+.leftsidebar  {
+    max-width:201px;
+    margin:0;
+    padding:28px 0 15px 0;
+    display:inline-block;
+    vertical-align:top;
+    text-align:left
+}
+
+.linielinks  {
+    border-right: 1px solid silver;
+    padding:0 15px;
+    margin:0;
+    width:170px;
+}
+.linielinks:first-child h4,
+.linielinks:first-child h5,
+.linielinks:first-child h6 {
+    margin-top:0;
+}
+.linielinks p {
+    font-size:11px;
+    margin:0 0 .5em;
+}
+.linielinks h5 {
+    font-size:18px;
+}
+
+
+/**************************/
+/*     Search field       */
+/**************************/
+
+#search {
+    display: inline-block;
+    position:relative;
+    margin:8px 5px 8px;
+}
+#searchfield {
+    width:87%;
+}
+#search input {
+    position:relative;
+    top:-3px;
+    background: white;
+    /*URL(images/search.jpg) no-repeat left 1px white; */ 
+    border: 1px solid #aaa;
+    cursor: text;
+    padding:1px 0 1px 5px;
+    color:#888;
+    border-radius: .5em;
+}
+#search input:hover {
+    border: 1px solid #fa0;
+}
+#search input:focus {
+    border: 1px solid #fa0;
+    color:black;
+}
+#search input.submit {background-color:lightgray;}
+
+#search .button {
+    position: absolute;
+    top:3px;
+    width:13px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    z-index:10;
+}
+#search .button:hover {
+    border:none;
+}
+
+
+/* ===================== */
+/*     Rechte Spalte     */
+/* ===================== */
+
+#rightsidebar  {
+    padding:28px 0 5px;
+    display:inline-block;
+    vertical-align:top;
+    width:200px;
+    text-align:left}
+
+#linierechts  {
+    border-left: 1px solid silver;
+    padding:0 15px;
+    width:170px;
+    margin:0;
+}
+
+.funktionsfeld  {
+    margin: 0 0 1em;
+    padding: 4px 0 1px;
+    background-color: #eee;
+}
+.funktionsfeld p  {
+    padding: 0 7px;
+    margin: 0 0 .5em;
+}
+.funktionsfeld p a {
+    text-decoration: none;
+    color:black;
+    font-weight: bold;
+    display:block;
+}
+.funktionsfeld p a:hover {
+    background-color:white;
+}
+#aktualisierung {
+    margin:7px;
+    font-size:97%;
+}
+#languagemenu img{
+    padding-right: 1em;
+}
+#languagemenu a {
+    display: inline;
+}
+
+
+/* ===================== */
+/*       Locator         */
+/* ===================== */
+
+#locator {
+	font-size: 7pt;
+	border-bottom: 1px solid silver;
+    margin:0 8px 18px 0;
+    width:100%;
+    text-align:left}
+#locator p  {
+	margin:0;
+	padding:2px 3px 4px;
+	color:#444;
+}
+#locator a {
+	font-weight: normal;
+	text-decoration: underline;
+	color: #444;
+	letter-spacing:1px;
+}
+#locator a:hover {
+	color: blue;
+}
+
+
+/* ===================== */
+/*    Content-Bereich    */
+/* ===================== */
+#content  {
+    width:559px;
+    width:calc(100% - 437px);
+    padding:0 14px;
+    display:inline-block;
+    text-align:left
+}
+p  {
+    margin:0 0 1em;
+}
+hr  {
+    background-color:white;
+    height:5px;
+    border:none;
+    border-bottom:1px solid silver;
+}
+
+h1, h2, h3, h4 {
+	font-size: 35px;
+	font-weight: normal;
+	margin: .4em 0 .4em ;
+	color:#077;
+    font-family: 'Open Sans Condensed',Tahoma, sans-serif;
+}
+h5  {
+    margin:1.5em 0 .5em;
+    color:#555;
+    font: normal 20px Tahoma, sans-serif;
+}
+h6  {
+    font-size: 13px;
+    font-weight:bold;
+    letter-spacing: .05em;
+    margin:1em 0 .5em;
+	color:#077;
+}
+
+
+/* ======================= */
+/* Vorherige/n�chste Seite */
+/* ======================= */
+
+#pagenav  {
+    max-width:1000px;
+    width:100%;
+    background: url(images/verlauf_weissgrau_150px.jpg) right repeat-y white;
+    padding:0;
+    border-top: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    text-align:center;
+    box-shadow:inset 0 0 3px #bbb, 1px 1px 10px #edd;
+    border-radius:4px;
+    background: white;
+    margin:10px auto ;
+    border-right:1px solid #bbb;
+    border-top:1px solid #ddd;
+}
+#pagenav table {
+    width:100%;
+    padding:0;
+}
+#pagenav td  {
+    padding:0;
+    margin:0;
+    width:33%;
+}
+#pagenav td a  {
+    display:block;
+    text-decoration:none;
+    color:#888;
+    padding:0 20px;
+}
+#pagenav td a:hover  {
+    color:blue;
+    background:#eee;
+}
+#pagenav .previous {
+    text-align:left;
+}
+#pagenav .next {
+    text-align:right;
+}
+#pagenav .top {
+    text-align:center;
+}
+
+
+/* ===================== */
+/*    Letzte Zeile       */
+/* ===================== */
+
+#copyright  {
+    text-align:center;
+    font-size:7pt;
+    letter-spacing: 1px;
+    margin:0 0 4em;
+}
+#copyright a  {
+    text-decoration:none;
+    color:#888;
+}
+#copyright a:hover  {
+    color:blue;
+    background-color:white;
+}
+
+
+/* ===================== */
+/*    Responsiveness     */
+/* ===================== */
+.down {
+    display:none;
+}
+@media screen and (max-width: 1010px) {
+#pagenav, .container {
+    max-width:800px;
+}
+.up {
+    display:none;
+}
+.down {
+    display:inline-block;
+}
+#content {
+    width:calc(100% - 237px);
+}
+}
+@media screen and (max-width: 580px) {
+#content {
+    width:calc(100% - 37px);
+}
+}

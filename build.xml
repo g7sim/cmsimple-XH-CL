@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="CMSimple_XH" default="help">
+
+    <property name="build" value="01"/>
+
+    <fileset id="php-sources" dir=".">
+        <include name="cmsimple/*.php"/>
+        <exclude name="cmsimple/*config.php"/>
+        <include name="cmsimple/classes/*.php"/>
+        <include name="plugins/filebrowser/*.php"/>
+        <include name="plugins/filebrowser/classes/*.php"/>
+        <include name="plugins/meta_tags/*.php"/>
+        <include name="plugins/page_params/*.php"/>
+    </fileset>
+
+    <fileset id="unit-tests" dir="tests/unit">
+        <include name="*.php"/>
+    </fileset>
+
+    <fileset id="tutorials" dir="tutorials">
+        <include name="XH/*.pkg"/>
+        <include name="XH/*.cls"/>
+    </fileset>
+
+    <target name="help" description="lists available targets">
+        <exec command="phing -l" outputProperty="help"/>
+        <echo>${help}</echo>
+    </target>
+
+    <target name="sniff" description="checks adherence to PSR-2">
+        <phpcodesniffer standard="PSR2" format="full" haltonerror="true">
+            <fileset refid="php-sources"/>
+            <fileset refid="unit-tests"/>
+        </phpcodesniffer>
+    </target>
+
+    <target name="mess" description="detects code flaws">
+        <phpmd rulesets="unusedcode">
+            <fileset refid="php-sources"/>
+            <fileset refid="unit-tests"/>
+         </phpmd>
+    </target>
+
+    <target name="compat"
+            description="checks compatibility with PHP_CompatInfo">
+        <exec command="phpcompatinfo analyser:run --alias current"
+              passthru="true" logoutput="true"/>
+    </target>
+
+    <target name="phan" description="run Phan static analysis">
+        <exec command="phan -f .phan/files" passthru="true" logoutput="true" checkreturn="true"/>
+    </target>
+
+    <target name="unit-tests" description="runs all unit tests">
+        <phpunit bootstrap="tests/bootstrap.php" haltonerror="true" haltonfailure="true">
+            <formatter type="plain" usefile="false"/>
+            <batchtest>
+                <fileset dir="tests/unit">
+                    <include name="*Test.php"/>
+                </fileset>
+            </batchtest>
+        </phpunit>
+    </target>
+
+    <target name="validation-tests" description="runs all validation tests">
+        <fail unless="env.CMSIMPLEDIR" message="CMSIMPLEDIR undefined!"/>
+        <phpunit bootstrap="tests/bootstrap.php" haltonerror="true" haltonfailure="true">
+            <formatter type="plain" usefile="false"/>
+            <batchtest>
+                <fileset dir="tests/validation">
+                    <include name="*Test.php"/>
+                </fileset>
+            </batchtest>
+        </phpunit>
+    </target>
+
+    <target name="attack-tests" description="runs all attack tests">
+        <fail unless="env.CMSIMPLEDIR" message="CMSIMPLEDIR undefined!"/>
+        <phpunit haltonerror="true" haltonfailure="true">
+            <formatter type="plain" usefile="false"/>
+            <batchtest>
+                <fileset dir="tests/attack">
+                    <include name="*Test.php"/>
+                </fileset>
+            </batchtest>
+        </phpunit>
+    </target>
+
+    <target name="all-tests" depends="unit-tests,validation-tests,attack-tests"
+            description="runs all tests"/>
+
+    <target name="coverage" description="generates coverage report">
+        <exec command="phpunit --configuration coverage.xml"
+              passthru="true" logoutput="true"/>
+    </target>
+
+    <target name="php-doc">
+        <exec command="doxygen Doxyfile"/>
+    </target>
+
+    <target name="js-doc">
+        <exec command="jsdoc --destination doc/js assets/js/admin.min.js"
+              passthru="true" checkreturn="true"/>
+    </target>
+
+    <target name="doc" depends="php-doc,js-doc" description="generates the developer documentation"/>
+
+    <target name="build" description="builds a distributable ZIP archive">
+        <fail unless="version" message="version is not defined!"/>
+        <exec command="git archive -o export.tar HEAD" checkreturn="true"/>
+        <untar file="export.tar" todir="export"/>
+        <delete file="export.tar"/>
+        <tstamp>
+            <format property="TODAY" pattern="%Y-%m-%d"/>
+        </tstamp>
+        <move todir="dist">
+            <fileset dir="export">
+                <include name="README*.txt"/>
+            </fileset>
+            <filterchain>
+                <replacetokens>
+                    <token key="CMSIMPLE_XH_VERSION" value="CMSimple_XH ${version}"/>
+                    <token key="CMSIMPLE_XH_BUILD" value="${DSTAMP}${build}"/>
+                    <token key="CMSIMPLE_XH_DATE" value="${TODAY}"/>
+                </replacetokens>
+            </filterchain>
+        </move>
+        <jsMin targetDir="dist/cmsimplexh" suffix="" failOnError="false">
+            <fileset dir="export">
+                <include name="assets/js/admin.min.js"/>
+                <include name="plugins/filebrowser/js/filebrowser.min.js"/>
+                <include name="plugins/meta_tags/metatags.min.js"/>
+                <include name="plugins/page_params/pageparams.min.js"/>
+            </fileset>
+        </jsMin>
+        <move todir="dist/cmsimplexh">
+            <fileset dir="export">
+                <include name="cmsimple/cms.php"/>
+                <include name="cmsimple/functions.php"/>
+                <include name="cmsimple/classes/Search.php"/>
+                <include name="plugins/filebrowser/admin.php"/>
+                <include name="plugins/tinymce/admin.php"/>
+            </fileset>
+            <filterchain>
+                <replacetokens>
+                    <token key="CMSIMPLE_XH_VERSION" value="CMSimple_XH ${version}"/>
+                    <token key="CMSIMPLE_XH_BUILD" value="${DSTAMP}${build}"/>
+                    <token key="CMSIMPLE_XH_DATE" value="${TODAY}"/>
+                </replacetokens>
+            </filterchain>
+        </move>
+        <move todir="dist/cmsimplexh">
+            <fileset dir="export">
+                <exclude name=".phan/**"/>
+                <exclude name=".travis.yml"/>
+                <exclude name="build.xml"/>
+                <exclude name="composer.json"/>
+                <exclude name="composer.lock"/>
+                <exclude name="coverage.xml"/>
+                <exclude name="Doxyfile"/>
+                <exclude name="doxygen_input_filter.php"/>
+                <exclude name="pax_global_header"/>
+                <exclude name="phpcompatinfo.*"/>
+                <exclude name="README.md"/>
+                <exclude name="ruleset.xml"/>
+                <exclude name="2lang/.2lang"/>
+                <exclude name="tests/**"/>
+                <exclude name="tutorials/**"/>
+                <exclude name="userfiles/images/test*.jpg"/>
+                <exclude name="version.nfo"/>
+            </fileset>
+        </move>
+        <touch file="dist/cmsimplexh/2lang/.2lang"/>
+        <delete dir="export"/>
+
+        <copy file="dist/cmsimplexh/cmsimple/config.php" tofile="dist/cmsimplexh/cmsimple/defaultconfig.php" preservelastmodified="true"/>
+        <copy file="dist/cmsimplexh/cmsimple/languages/en.php" tofile="dist/cmsimplexh/cmsimple/languages/default.php" preservelastmodified="true"/>
+        <copy file="dist/cmsimplexh/plugins/filebrowser/config/config.php" tofile="dist/cmsimplexh/plugins/filebrowser/config/defaultconfig.php" preservelastmodified="true"/>
+        <copy file="dist/cmsimplexh/plugins/filebrowser/languages/en.php" tofile="dist/cmsimplexh/plugins/filebrowser/languages/default.php" preservelastmodified="true"/>
+        <copy file="dist/cmsimplexh/plugins/meta_tags/languages/en.php" tofile="dist/cmsimplexh/plugins/meta_tags/languages/default.php" preservelastmodified="true"/>
+        <copy file="dist/cmsimplexh/plugins/page_params/languages/en.php" tofile="dist/cmsimplexh/plugins/page_params/languages/default.php" preservelastmodified="true"/>
+
+        <move file="dist/cmsimplexh/userfiles/downloads/_XHdebug.txt" tofile="dist/cmsimplexh/userfiles/downloads/XHdebug.txt"/>
+
+        <zip destfile="CMSimple_XH-${version}.zip" basedir="dist"/>
+        <delete dir="dist" quiet="true"/>
+    </target>
+
+    <target name="build-patch" description="builds a distributable update package">
+        <fail unless="patchee" message="patchee is not defined!"/>
+        <fail unless="version" message="version is not defined!"/>
+        <unzip file="CMSimple_XH-${version}.zip" todir="current"/>
+        <unzip file="${patchee}" todir="patchee"/>
+        <copy todir="dist">
+            <fileset dir="current">
+                <different targetdir="patchee" ignoreFileTimes="true"/>
+            </fileset>
+        </copy>
+        <delete>
+            <fileset dir="patchee">
+                <present present="both" targetdir="current"/>
+            </fileset>
+        </delete>
+        <foreach param="filename" target="list-deleted-file">
+            <fileset dir="patchee/cmsimplexh">
+                <type type="file"/>
+            </fileset>
+        </foreach>
+        <move file="deleted_files.txt" todir="dist">
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="\\" replace="/"/>
+                </replaceregexp>
+            </filterchain>
+        </move>
+        <delete>
+            <fileset dir="dist/cmsimplexh">
+                <include name="cmsimple/log.txt"/>
+                <include name="content/content.htm"/>
+                <include name="2lang/content/content.htm"/>
+                <include name="cmsimple/config.php"/>
+                <include name="plugins/*/config/config.php"/>
+                <include name="cmsimple/languages/??.php"/>
+                <include name="plugins/*/languages/??.php"/>
+                <include name="plugins/*/css/stylesheet.css"/>
+            </fileset>
+        </delete>
+        <delete includeemptydirs="true">
+            <fileset dir="dist/cmsimplexh/templates" includes="**"/>
+        </delete>
+        <zip destfile="CMSimple_XH-${version}-patch.zip" basedir="dist" includeemptydirs="false"/>
+        <delete dir="patchee" quiet="true"/>
+        <delete dir="current" quiet="true"/>
+        <delete dir="dist" quiet="true"/>
+    </target>
+
+    <target name="list-deleted-file">
+        <echo msg="${filename}${line.separator}" file="deleted_files.txt" append="true"/>
+    </target>
+</project>

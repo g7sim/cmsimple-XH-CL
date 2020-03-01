@@ -1,0 +1,54 @@
+<!-- Slideshow: info -->
+<h1>Slideshow &ndash; <?php echo $tx['info']?></h1>
+<h4><?php echo $tx['synopsis']?></h4>
+<pre>&lt;php echo slideshow('<?php echo $tx['synopsis_folder']?>', '<?php echo
+$tx['synopsis_options']?>');&gt;
+{{{slideshow('<?php echo $tx['synopsis_folder']?>', '<?php echo
+$tx['synopsis_options']?>');}}}</pre>
+<dl>
+    <dt><?php echo $tx['synopsis_folder']?>:</dt>
+    <dd><?php echo $tx['synopsis_folder_desc']?></dd>
+    <dt><?php echo $tx['synopsis_options']?>:</dt>
+    <dd><?php echo $tx['synopsis_options_desc']?>
+    <dl>
+        <dt>order</dt>
+        <dd><?php echo $tx['cf_default_order']?></dd>
+        <dt>effect</dt>
+        <dd><?php echo $tx['cf_default_effect']?></dd>
+        <dt>easing</dt>
+        <dd><?php echo $tx['cf_default_easing']?></dd>
+        <dt>delay</dt>
+        <dd><?php echo $tx['cf_default_delay']?></dd>
+        <dt>pause</dt>
+        <dd><?php echo $tx['cf_default_pause']?></dd>
+        <dt>duration</dt>
+        <dd><?php echo $tx['cf_default_duration']?></dd>
+    </dl></dd>
+</dl>
+<h4><?php echo $tx['syscheck']?></h4>
+<ul style="list-style: none">
+<?php foreach ($checks as $check => $state):?>
+    <li>
+        <img src="<?php echo $images[$state]?>" alt="<?php echo
+        $images[$state]?>" style="margin: 0; height: 1em; padding-right: 1em"/>
+        <span><?php echo $check?></span>
+    </li>
+<?php endforeach?>
+</ul>
+<h4><?php echo $tx['about']?></h4>
+<img src="<?php echo $icon?>" style="float: left; width: 128px; height: 128px; margin-right: 1em"
+alt="Plugin Icon" />
+<p>Version: <?php echo $version?></p>
+<p>Copyright &copy; 2012-2014 <a href="http://3-magi.net/">Christoph M.
+Becker</a></p>
+<p style="text-align: justify">This program is free software: you can
+redistribute it and/or modify it under the terms of the GNU General Public
+License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.</p>
+<p style="text-align: justify">This program is distributed in the hope that it
+will be useful, but <em>without any warranty</em>; without even the implied warranty of
+<em>merchantability</em> or <em>fitness for a particular purpose</em>. See the GNU General
+Public License for more details.</p>
+<p style="text-align: justify">You should have received a copy of the GNU
+General Public License along with this program. If not, see
+<a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>

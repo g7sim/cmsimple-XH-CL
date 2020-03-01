@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>Slideshow_XH – Manual</title>
+<link rel="stylesheet" type="text/css" href="./stylesheet.css">
+</head>
+
+<body>
+
+<h1>Slideshow_XH – a CMSimple_XH Plugin</h1>
+<img src="../slideshow.png" style="float: left;margin-right: 1em" alt="Plugin
+Icon">
+<p style="text-align:justify">Slideshow_XH facilitates displaying all images in
+a given folder as a slideshow. The slideshows don't allow any interaction of the
+visitor. Multiple slideshows with different effects and timings are
+possible.</p>
+
+<ul id="nav">
+<li><a href="#notice">Important Notice</a></li>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#settings">Settings</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#limitations">Limitations</a></li>
+<li><a href="#license">License</a></li>
+<li><a href="#credits">Credits</a></li>
+</ul>
+
+<div id="body">
+
+<p><strong>Please do read this documentation <em>before</em> you encounter any
+problems!</strong></p>
+
+<h2 id="notice">Important Notice</h2>
+<p><strong>Slideshow_XH couldn't be tested so far in various environments. It is
+a so called BETA version. Use with caution!</strong></p>
+<div class="toplink"><a href="#">back to top</a></div>
+
+<h2 id="requirements">Requirements</h2>
+<p>Slideshow_XH is a plugin for CMSimple_XH &ge; 1.6. It requires PHP &ge; 5.2.0.</p>
+<div class="toplink"><a href="#">back to top</a></div>
+
+<h2 id="installation">Installation</h2>
+<p>The installation is done as with many other CMSimple_XH plugins. See the <a
+href="http://www.cmsimple-xh.org/wiki/doku.php/installation"> CMSimple_XH
+wiki</a> for further details.</p>
+<ol>
+<li>Backup the data on your server.</li>
+<li>Unzip the distribution on your computer.</li>
+<li>Upload the whole directory slideshow/ to your server into CMSimple_XH's
+plugins directory.</li>
+<li>Set write permissions to the subdirectories config/ and languages/.</li>
+<li>Switch to "Slideshow" in the back-end to check if all requirements
+are fulfilled.</li>
+</ol>
+<div class="toplink"><a href="#">back to top</a></div>
+
+<h2 id="settings">Settings</h2>
+<p>The plugin's configuration is done as with many other CMSimple_XH plugins in
+the website's back-end. Select "Slideshow" from "Plugins".</p>
+<p>You can change the default settings of Slideshow_XH in "Config". Hints for
+the options will be displayed when hovering over the help icons with your
+mouse.</p>
+<p>Localization is done in "Language". You can translate the character strings
+to your own language if there is no appropriate language file available,
+or customize them according to your needs.</p>
+<!--<p>The look of the Slideshow_XH can be customized in "Plugin
+Stylesheet".</p>
+--><div class="toplink"><a href="#">back to top</a></div>
+
+<h2 id="usage">Usage</h2>
+<p>To show a slideshow on all pages insert into the template:</p>
+<pre>&lt;?php echo slideshow('%FOLDER%', '%OPTIONS%');?&gt;</pre>
+<p>To show a slideshow on a single page or in a newsbox insert into the page:</p>
+<pre>{{{PLUGIN:slideshow('%FOLDER%', '%OPTIONS%');}}}</pre>
+<p>The parameters have the following meaning:</p>
+<dl>
+<dt>%FOLDER%</dt>
+<dd>The path of a folder relative to CMSimple_XH's image folder. All JPEG, PNG
+and GIF images inside this folder will be used for the slideshow;
+there must be at least two images inside this folder.
+All images should have the same aspect ratio.</dd>
+<dt>%OPTIONS%</dt>
+<dd>Any given option will override the respective value in the "default" section
+of the plugin configuration. The format of this parameter is the same as a
+"query string" (see the examples below). The options can be given in any order.
+If you want to stick with the defaults, you can omit this parameter. The
+following options are available:
+<dl>
+<dt>order</dt>
+<dd>The order of the images: "fixed" (alphabetically ordered; start with first
+image), "sorted" (alphabetically sorted; start with randomly chosen image) oder
+"random" (randomly ordered).</dd>
+<dt>effect</dt>
+<dd>The kind of the transition: "fade", "slide", "curtain" or "random".</dd>
+<dt>easing</dt>
+<dd>The acceleration effect: "linear", "easeIn", "easeOut" or "easeInOut".</dd>
+<dt>delay</dt>
+<dd>The initial delay in ms until the slideshow starts.</dd>
+<dt>pause</dt>
+<dd>The duration of the pause between the transitions in ms.</dd>
+<dt>duration</dt>
+<dd>The duration of the transition effect in ms.</dd>
+</dl>
+</dd>
+</dl>
+<h4>Examples</h4>
+<p>To show the images inside of userfiles/images/banners/ with the default settings on
+every page:</p>
+<pre>&lt;?php echo slideshow('banners');?&gt;</pre>
+<p>To show images in a treatmill fashion:</p>
+<pre>{{{slideshow('slides/run/', 'effect=slide&amp;pause=0&amp;duration=2000');}}}</pre>
+<p>To show images as calm, slowly cross-fading slideshow:</p>
+<pre>{{{slideshow('slides/slow/', 'effect=fade&amp;pause=5000&amp;duration=100');}}}</pre>
+<p>To show appropriate images in a flip-book style:</p>
+<pre>{{{slideshow('slides/flip/', 'order=fixed&amp;effect=fade&amp;pause=100&amp;duration=100');}}}</pre>
+<div class="toplink"><a href="#">back to top</a></div>
+
+<h2 id="limitations">Limitations</h2>
+<p>The slideshows can only be played, when JS is enabled in the visitor's
+browser. Otherwise only the first image will be shown. The transition effects
+are CPU-intensive, particularly for large images. So you should restrain
+yourself to only a few slideshows with small or medium-sized images on the same
+page, to avoid stuttering slideshows for visitors with little processing
+power.</p>
+<div class="toplink"><a href="#">back to top</a></div>
+
+<h2 id="license">License</h2>
+<p>Slideshow_XH is licensed under <a
+href="http://www.gnu.org/licenses/gpl.html">GPLv3</a>.</p>
+<p>&copy; 2012-2014 Christoph M. Becker</p>
+<p>Danish translation &copy; 2012 Jens Maegard<br>
+Czech translation &copy; 2012-2013 Josef Němec<br>
+Slovak translation &copy; 2013 Dr. Martin Sereday<br>
+French translation &copy; 2014 Patrick Varlet</p>
+<div class="toplink"><a href="#">back to top</a></div>
+
+<h2 id="credits">Credits</h2>
+<p>Slideshow_XH was inspired by Joe.</p>
+<p>The plugin icon is designed by <a href="https://twitter.com/Zyote">Mischa
+McLachlan</a>. Many thanks for publishing this icon under a liberal license.</p>
+<p>This plugin uses free applications icons from <a
+href="http://www.aha-soft.com/">Aha-Soft</a>. Many thanks for making these icons
+freely available.</p>
+<p>Many thanks to the community at the <a
+href="http://www.cmsimpleforum.com/">CMSimple_XH-Forum</a> for tips, suggestions
+and testing.</p>
+<p>And last but not least many thanks to <a href="http://www.harteg.dk/">Peter
+Harteg</a>, the "father" of CMSimple, and all developers of <a
+href="http://www.cmsimple-xh.org/">CMSimple_XH</a> without whom this amazing CMS
+wouldn't exist.</p>
+<div class="toplink"><a href="#">back to top</a></div>
+
+</div>
+
+</body>
+
+</html>

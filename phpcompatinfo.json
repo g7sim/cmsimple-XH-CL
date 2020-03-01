@@ -1,0 +1,22 @@
+{
+    "source-providers": [
+        {
+            "in": ". as current",
+            "exclude": [
+                "tests",
+                "vendor",
+                "plugins/fa",
+                "plugins/hi_updatecheck",
+                "plugins/jquery",
+                "plugins/pagemanager"
+            ],
+            "name": "/\\.(php|htm)$/"
+        }
+    ],
+    "plugins": [
+    ],
+    "analysers": [
+    ],
+    "services": [
+    ]
+}

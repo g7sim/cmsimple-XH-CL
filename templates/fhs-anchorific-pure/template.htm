@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<?php
+// if jQuery4CMSimple is installed, include its jQuery library
+if (is_readable($pth['folder']['plugins'].'jquery/jquery.inc.php')) {
+	include_once $pth['folder']['plugins'].'jquery/jquery.inc.php';
+	include_jQuery();
+} else {
+	die('Das Template "fhs-anchorific-pure" benötigt das Plugin jQuery-for-CMSimple.<br>Das jQuery-Plugin kann hier heruntergeladen werden: <a href="http://cmsimple.holgerirmler.de/?&download=jquery_for_CMSimple_latest.zip">Download</a>');
+}
+// Plugin FA_XH
+if (function_exists('fa_require')) {
+	fa_require();
+} else {
+	die('Das Template "fhs-anchorific-pure" benötigt das Fa_XH-Plugin.<br>Das Fa_XH-Plugin kann hier heruntergeladen werden: <a href="http://3-magi.net/de/?CMSimple_XH/Fa_XH" target="_blank">Download</a>');
+}
+?>
+<html lang="<?=$sl;?>">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="<?=$pth['folder']['template']?>anchorific.min.css" rel="stylesheet">
+<?=head();?>
+<link rel="shortcut icon" type="image/x-icon" href="<?=$pth['folder']['template']?>favicon.ico">
+<link rel="icon" type="image/x-icon" href="<?=$pth['folder']['template']?>favicon.ico">
+<link rel="icon" type="image/gif" href="<?=$pth['folder']['template']?>favicon.gif">
+<link rel="icon" type="image/png" href="<?=$pth['folder']['template']?>favicon.png">
+<link rel="apple-touch-icon" href="<?=$pth['folder']['template']?>apple-touch-icon.png">
+<link rel="apple-touch-icon" href="<?=$pth['folder']['template']?>apple-touch-icon-57x57.png" sizes="57x57">
+<link rel="apple-touch-icon" href="<?=$pth['folder']['template']?>apple-touch-icon-60x60.png" sizes="60x60">
+<link rel="apple-touch-icon" href="<?=$pth['folder']['template']?>apple-touch-icon-72x72.png" sizes="72x72">
+<link rel="apple-touch-icon" href="<?=$pth['folder']['template']?>apple-touch-icon-76x76.png" sizes="76x76">
+<link rel="apple-touch-icon" href="<?=$pth['folder']['template']?>apple-touch-icon-114x114.png" sizes="114x114">
+<link rel="apple-touch-icon" href="<?=$pth['folder']['template']?>apple-touch-icon-120x120.png" sizes="120x120">
+<link rel="apple-touch-icon" href="<?=$pth['folder']['template']?>apple-touch-icon-128x128.png" sizes="128x128">
+<link rel="apple-touch-icon" href="<?=$pth['folder']['template']?>apple-touch-icon-144x144.png" sizes="144x144">
+<link rel="apple-touch-icon" href="<?=$pth['folder']['template']?>apple-touch-icon-152x152.png" sizes="152x152">
+<link rel="apple-touch-icon" href="<?=$pth['folder']['template']?>apple-touch-icon-180x180.png" sizes="180x180">
+<link rel="apple-touch-icon" href="<?=$pth['folder']['template']?>apple-touch-icon-precomposed.png">
+<link rel="icon" type="image/png" href="<?=$pth['folder']['template']?>favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="<?=$pth['folder']['template']?>favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="<?=$pth['folder']['template']?>favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/png" href="<?=$pth['folder']['template']?>favicon-160x160.png" sizes="160x160">
+<link rel="icon" type="image/png" href="<?=$pth['folder']['template']?>favicon-192x192.png" sizes="192x192">
+<link rel="icon" type="image/png" href="<?=$pth['folder']['template']?>favicon-196x196.png" sizes="196x196">
+</head>
+
+<body<?=onload();?>>
+<a id="top"></a>
+<div class="row-full-width" id="header">
+<div class="row" id="banner">
+<div id="logo"><a href="./"><img src="<?=$pth['folder']['templateimages'];?>fhs-logo-02.png" alt="fhs-Logo" width="50" height="57"></a></div>
+<h1><a href="./"><?=sitename()?></a></h1>
+<div class="subTitle"><?=$tx['template']['text1']?></div> <!-- Sprache: Text1 --> 
+</div>
+<div class="burger"><a href="#top"><i class="fa fa-bars fa-fw fa-2x"></i></a></div>
+</div>
+<nav class="row-full-width nav_horizontal">
+<div class="nav_row"><?=toc(1,1);?></div>
+</nav>
+<div class="row-full-width" id="wrapper">
+<aside class="adds row"><?=searchbox();?><div class="langMnu"><?=languagemenu();?></div></aside>
+<div class="row content fullWidht">
+<article class="maincont c17 mw240"><?=content();?>
+<noscript>
+<style type="text/css">
+.accordion .acctxt {
+	display: block;
+}
+</style>
+<p>&nbsp;</p>
+<hr>
+<p class="noScript">Sie haben JavaScript in Ihrem Browser deaktiviert. Schade.</p>
+</noscript>
+</article>
+<div class="sticky secmenu c7 mw240 blue anchorific">
+<?php
+if(XH_ADM && $edit) {
+	echo li($hc,1);
+} else {
+	echo '
+<ul>
+<li><a href="#top" class="greytop fa fa-chevron-up" title="top"> </a></li>
+</ul>
+<nav id="SecNav"></nav>
+';
+}?>
+</div>
+</div>
+</div>
+<div class="row-full-width" id="footer">
+<div class="row">
+<p class="clearfix copyright">&copy; <?=date("Y");?> FIRMA XYZ</p>
+<div class="half copyright">Template by <a href="http://fhseidel.de/cmsxh/fhs-anchorific-pure/" title="fhs-Homepage" target="_blank">fhs<br>
+<img src="<?=$pth['folder']['templateimages'];?>fhs-logo-02.png" alt="fhs-Logo" width="50" height="57"></a>&nbsp;&nbsp;&nbsp;&nbsp;</div>
+<div class="half copyright">
+<ul>
+<li><?=sitemaplink();?></li>
+<li><?=printlink();?></li>
+<li><a href="?Kontakt">Kontakt</a></li>
+<li><a href="?Impressum">Impressum</a></li>
+<li><?=loginlink();?></li>
+</ul>
+</div>
+<p class="clearfix copyright">&nbsp;&nbsp;&nbsp;Powered by <a href="http://www.cmsimple-xh.org" title="CMSimple_XH Homepage" target="_blank">CMSimple_XH</a></p>
+</div>
+</div>
+<div class="top"><a href="#top" class="fa fa-chevron-up fa-3x" title="top"></a></div>
+<script src="<?=$pth['folder']['template']?>scripts/script.min.js"></script> 
+<script src="<?=$pth['folder']['template']?>scripts/stickyfill.min.js"></script> 
+<script src="<?=$pth['folder']['template']?>scripts/anchorific.min.js"></script> 
+<script>
+// individuelle Konfiguration 'anchorific.js'
+$('.content').anchorific({
+	navigation: '.anchorific', // position of navigation
+	headers: 'h1, h2, h3, h4', // custom headers selector
+	//headers: 'h2, h3, h4, h5, h6', // custom headers selector
+	speed: 300, // speed of sliding back to top
+	anchorClass: 'anchor', // class of anchor links
+	top: '.top', // back to top button link class '.top' or 'false'
+	spy: true, // highlight active links as you scroll
+	anchorText: '<i class="fa fa-hashtag fa-fw"></i>', // prepended or appended to anchor headings
+	position: 'append', // position of anchor text 'prepend' or 'append'
+	spyOffset: 100 // specify heading offset for spy scrolling (!0 = none)
+});
+// sticky
+var elements = $('.anchorific');
+Stickyfill.add(elements);
+//Smooth scroll to ID on pageload / reload
+var hash = window.location.hash;
+if (hash.length) {
+	$('html, body').animate({
+		scrollTop: $(hash).offset().top - 0}, 300);
+}
+// smooth scroll to anchor
+$('a[href^="#"]').on('click', function(e){
+	var href = $(this).attr('href');
+	$('html, body').animate({
+		scrollTop: $(href).offset().top - 20}, 300);
+		e.preventDefault();
+});
+</script>
+</body>
+</html>

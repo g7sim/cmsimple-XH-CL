@@ -1,0 +1,13 @@
+- Settings dazu:
+Autogrow ja/nein -- erledigt
+Autogrow on Startup ja/nein -- erledigt
+Autogrow max/min height
+
+Height bei AutogrowMinHeight, wenn nicht "xh_editor", auf false anstatt leer setzen (init.php)
+
+Ideen:
+Placeholder für {{{ }}} -- erledigt (testweise)
+
+Editorbrowser.php entfällt mit 1.7 -- erledigt
+http://cmsimpleforum.com/viewtopic.php?f=2&t=8896&start=10#p48592
+http://cmsimpleforum.com/viewtopic.php?f=12&t=8636#p48602

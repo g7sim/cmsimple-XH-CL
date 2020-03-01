@@ -1,0 +1,22 @@
+/*
+ * Front-end.
+ */
+.toxic_category {}
+
+/*
+ * Page data tab.
+ */
+.toxic_tab_buttons {
+    text-align: right;
+}
+
+/*
+ * Back-end.
+ */
+.toxic_license {
+    text-align: justify;
+}
+.toxic_logo {
+    float: left;
+    margin-right: 8px;
+}
