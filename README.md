@@ -1,8 +1,8 @@
-# cmsimple-XHCL-1.7.1
+# cmsimple-XHCL-1.7.2
 
-* This is a clean modified  Fork of Cmsimple XH 1.7.1 with clean urls and a http - security filter.
+* This is a clean modified  Fork of Cmsimple XH 1.7.2 with clean urls and a http - security filter.
 
-* This is first the beta 1 
+* This is first the beta 1  - Bug : the lost password recovery has no function
 
 * It needs php 5.4+ (not php 5.3 !)  and is tested with php 7.4
 
