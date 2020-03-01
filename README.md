@@ -12,5 +12,7 @@
 
 You can  in this case take the top 2 lines of the config.php of the download-version and exchange them with the top of the config.php. Then You have again the password 'test'.
 
+* This version has an integrated full-backup from the Cmsimple_XH - forum ( start with : ...de/?backup ) which appears after a while under userfiles (filebrowser).
+
 * The final version will have a different admin-ui and other templates
 
