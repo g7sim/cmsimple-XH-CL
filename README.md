@@ -4,7 +4,7 @@
 
 * This is a clean modified  Fork of Cmsimple XH 1.7.2 with clean urls and a http - security filter.
 
-* It needs php 5.4+ (not php 5.3 !)  and is tested with php 7.4
+* It needs php 5.4+ (not php 5.3 !)  and is tested with php 7.4 - It should not be used in windows (Xampp etc.)
 
 * You may not use ( , ) , [ or ] in links !
 
