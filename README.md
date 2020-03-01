@@ -1,8 +1,6 @@
-# cmsimple-XHCL-1.7.2
+# cmsimple-XHCL-1.7.2 - beta 1
 
 (I will also publish a clean 1.7.1 beta)
-
-* This is first the beta 1  
 
 * This is a clean modified  Fork of Cmsimple XH 1.7.2 with clean urls and a http - security filter.
 
