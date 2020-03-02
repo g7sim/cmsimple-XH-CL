@@ -408,6 +408,7 @@ background: linear-gradient(to bottom, #F1F1F1 0%, #f5f6f6 100%);
     display:inline-block;
     vertical-align:top;
     width:200px;
+    float:right;	
     text-align:left}
 
 #linierechts  {
