@@ -74,7 +74,7 @@ class PasswordForgotten
                 break;
             default:
                 $o .= '<p>' . $tx['password_forgotten']['request'] . '</p>'
-                . '<form name="xh_forgotten" action="' . $sn . '?&function=forgotten"'
+                . '<form name="xh_forgotten" action="' . $sn . '&function=forgotten"'
                 . ' method="post">'
                 . '<input type="text" name="xh_email">'
                 . '<input type="submit" class="submit" value="Send Reminder">'
@@ -135,7 +135,7 @@ class PasswordForgotten
         if ($_POST['xh_email'] == $cf['security']['email']) {
             $to = $cf['security']['email'];
             $message = $tx['password_forgotten']['email1_text'] . "\r\n"
-                . '<' . CMSIMPLE_URL . '?&function=forgotten&xh_code='
+                . '<' . CMSIMPLE_URL . '&function=forgotten&xh_code='
                 . $this->mac() . '>';
             $mail = new Mail();
             $mail->setTo($to);
