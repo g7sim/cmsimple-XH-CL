@@ -1598,7 +1598,7 @@ function loginforms()
             . $tx['menu']['login'] . '">'
             . '</form>';
         if (!empty($cf['security']['email'])) {
-            $o .= '<p><a href="' . $sn . '?&function=forgotten">'
+            $o .= '<p><a href="' . $sn . '&function=forgotten">'
                 . $tx['title']['password_forgotten'] . '</a></p>';
         }
         $query = $su === 'login' ? $u[$xh_publisher->getFirstPublishedPage()] : $su;
