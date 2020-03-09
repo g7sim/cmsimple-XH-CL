@@ -2,9 +2,9 @@
 
 * This is a  modified  Fork of Cmsimple XH 1.7.2 with clean urls and a http - security filter.
 
-* It has the same GPL3  license
+* It has the same GPL3  license (Licenses of plugins are to be observed)
 
-* It needs php 5.4+ (not php 5.3 !)  and is tested with php 7.4 - 
+* It needs at least php 5.4+ (not php 5.3 !)  and is tested with php 7.4
 
 * Is offers both tinymce4 and ckeditor 4.73 
 
