@@ -14,7 +14,7 @@
 
 * This version has an integrated full-backup from the Cmsimple_XH - forum ( start with : ...de/?backup ). The zip  appears after a while under userfiles (filebrowser).
 
-* The final version will have a different admin-ui and other templates
+* The final version will have a different admin-ui and other templates inklusive Bootstrap( https://github.com/g7sim/Bootstrap3-XH )
 
 * If You find bugs, please make an issue (or post in the forum). You may also make a fork and a push with Your solution.
 
