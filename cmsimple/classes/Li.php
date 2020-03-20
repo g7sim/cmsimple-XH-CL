@@ -273,7 +273,7 @@ class Li
         if ($this->tf) {
             $html = $this->renderAnchorStartTag($i);
         } else {
-            $html ='<span>';
+            $html ='<span class="xhspan">';
         }
         $html .= $h[$this->ta[$i]];
         if ($this->tf) {
