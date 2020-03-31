@@ -56,7 +56,7 @@ function redir301($goto)
   die();
 }
  
- if ( strpos ( $_SERVER['REQUEST_URI'], '?' ) ||  strpos($_SERVER['REQUEST_URI'], '<') )
+ if ( strpos ( $_SERVER['REQUEST_URI'], '?' ) ||  strpos($_SERVER['REQUEST_URI'], '==') )
 { 
   $goto  = $_SERVER['HTTP_HOST']; 
   $repl = array('?q=', '?', '==', '%', '<', 'cgi' , '404' );
