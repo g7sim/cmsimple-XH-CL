@@ -46,7 +46,7 @@ function fullBackup()
 /* -------------------- uriclean and security filter -----------------------*/
 
 function redir301($goto)
-{ ob_start();
+{ if(!ob_start("ob_gzhandler")) ob_start();
   $proto = "Location: http://"; /*in a https-domain use https:// */
   header("HTTP/1.1 301 Moved Permanently");
   header( $proto.$goto ); 
