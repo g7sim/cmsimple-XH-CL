@@ -183,6 +183,7 @@
 .xh_debug {
     height: 18px;
     background: #900;
+    float:left;
     font-family: arial, sans-serif;
     font-size: 14px;
     line-height: 14px;
