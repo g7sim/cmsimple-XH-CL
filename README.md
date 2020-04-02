@@ -8,7 +8,7 @@
 
 * Is offers both tinymce4 and ckeditor 4.73 
 
-* It should not be used in windows (Xampp etc.) -  and is not compatible with FHS_Adminmenu - maybe a future version 
+* It should not be used in windows (Xampp etc.) -  and is not compatible with FHS_Adminmenu - maybe in a future version , but most of the 1.7x - pluguns function.
 
 * You may not use ( ] ) [ or ? in links !
 
