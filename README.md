@@ -6,9 +6,9 @@
 
 * It needs at least php 5.4+ (not php 5.3 !)  and is tested with php 7.4
 
-* Is offers both tinymce4 and ckeditor 4.73 
+* It should not be used in windows (Xampp etc.) -  and is not compatible with FHS_Adminmenu - maybe in a future version , but most of the 1.7x - plugins function.
 
-* It should not be used in windows (Xampp etc.) -  and is not compatible with FHS_Adminmenu - maybe in a future version , but most of the 1.7x - pluguns function.
+* Is offers both tinymce4 and ckeditor 4.73 
 
 * You may not use ( ] ) [ or ? in links !
 
