@@ -8,7 +8,7 @@
 
 * It should not be used in windows (Xampp etc.) -  and is not compatible with FHS_Adminmenu - maybe in a future version , but most of the 1.7x - plugins function.
 
-* Is offers both tinymce4 and ckeditor 4.73, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies).
+* Is offers both tinymce4 and a version of ckeditor 4.73, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!).
 
 * You may not use ( ] ) [ or ? in links !
 
