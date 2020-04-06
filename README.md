@@ -10,7 +10,7 @@
 
 * Is offers both tinymce4 and a version of ckeditor 4.73, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!).
 
-* You may not use ( ] ) [ or ? in links !
+* You may not use ( ] ) [ < = or ? in links !
 
 * This version has an integrated full-backup from the Cmsimple_XH - forum ( start with : ...de/?backup ). The zip  appears after a while under userfiles (filebrowser) and is ready for download.
 
