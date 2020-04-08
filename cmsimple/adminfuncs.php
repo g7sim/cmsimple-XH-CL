@@ -240,7 +240,7 @@ function XH_sysinfo()
         . '</ul>' . "\n\n";
     $o .= '<p><b>' . $tx['sysinfo']['php_version'] . '</b></p>' . "\n"
         . '<ul>' . "\n" . '<li>' . phpversion() . '</li>' . "\n"
-        . '<li><a href="' . $sn . '?&phpinfo" target="_blank"><b>'
+        . '<li><a href="' . $sn . '&phpinfo" target="_blank"><b>'
         . $tx['sysinfo']['phpinfo_link'] . '</b></a> &nbsp; '
         . $tx['sysinfo']['phpinfo_hint'] . '</li>' . "\n" . '</ul>' . "\n" . "\n";
 
@@ -349,18 +349,18 @@ function XH_settingsView()
         . '<h4>' . $tx['settings']['systemfiles'] . '</h4>' . "\n" . '<ul>' . "\n";
 
     foreach (array('config', 'language') as $i) {
-        $o .= '<li><a href="' . $sn . '?file=' . $i . '&amp;action=array">'
+        $o .= '<li><a href="' . $sn . 'file=' . $i . '&amp;action=array">'
             . utf8_ucfirst($tx['action']['edit']) . ' '
             . $tx['filetype'][$i] . '</a></li>' . "\n";
     }
 
     foreach (array('stylesheet', 'template') as $i) {
-        $o .= '<li><a href="' . $sn . '?file=' . $i . '&amp;action=edit">'
+        $o .= '<li><a href="' . $sn . 'file=' . $i . '&amp;action=edit">'
             . utf8_ucfirst($tx['action']['edit']) . ' '
             . $tx['filetype'][$i] . '</a></li>' . "\n";
     }
     foreach (array('log') as $i) {
-        $o .= '<li><a href="' . $sn . '?file=' . $i . '&amp;action=view">'
+        $o .= '<li><a href="' . $sn . 'file=' . $i . '&amp;action=view">'
             . utf8_ucfirst($tx['action']['view']) . ' '
             . $tx['filetype'][$i] . '</a></li>' . "\n";
     }
@@ -370,10 +370,10 @@ function XH_settingsView()
     $o .= XH_backupsView();
     $o .= '<h4>' . $tx['settings']['more'] . '</h4>' . "\n"
         . '<ul>' . "\n"
-        . '<li><a href="' . $sn . '?&validate">' . $tx['editmenu']['validate'] . '</a></li>'
-        . '<li><a href="' . $sn . '?&xh_pagedata">' .$tx['editmenu']['pagedata'] . '</a></li>'
-        . '<li><a href="' . $sn . '?&xh_change_password">' . $tx['editmenu']['change_password'] . '</a></li>'
-        . '<li><a href="' . $sn . '?&sysinfo">' . $tx['editmenu']['sysinfo'] . '</a></li>'
+        . '<li><a href="' . $sn . '&validate">' . $tx['editmenu']['validate'] . '</a></li>'
+        . '<li><a href="' . $sn . '&xh_pagedata">' .$tx['editmenu']['pagedata'] . '</a></li>'
+        . '<li><a href="' . $sn . '&xh_change_password">' . $tx['editmenu']['change_password'] . '</a></li>'
+        . '<li><a href="' . $sn . '&sysinfo">' . $tx['editmenu']['sysinfo'] . '</a></li>'
         . '</ul>' . "\n";
     return $o;
 }
@@ -433,12 +433,12 @@ function XH_backupsView()
         $o .= XH_message('success', $tx['message'][stsl($_GET['xh_success'])]);
     }
     $o .= '<li>' . utf8_ucfirst($tx['filetype']['content']) . ' <a href="'
-        . $sn . '?file=content&amp;action=view" target="_blank">'
-        . $tx['action']['view'] . '</a>' . ' <a href="' . $sn . '?file=content">'
+        . $sn . 'file=content&amp;action=view" target="_blank">'
+        . $tx['action']['view'] . '</a>' . ' <a href="' . $sn . 'file=content">'
         . $tx['action']['edit'] . '</a>' . ' <a href="'
-        . $sn . '?file=content&amp;action=download">' . $tx['action']['download']
+        . $sn . 'file=content&amp;action=download">' . $tx['action']['download']
         . '</a>'
-        . ' <form action="' . $sn . '?&xh_backups" method="post"'
+        . ' <form action="' . $sn . '&xh_backups" method="post"'
         . ' class="xh_inline_form" id="xh_backup_form">'
         . '<input type="hidden" name="file" value="content">'
         . '<input type="hidden" name="action" value="backup">'
@@ -447,7 +447,7 @@ function XH_backupsView()
         . $tx['action']['backup'] . '">'
         . $_XH_csrfProtection->tokenInput()
         . '</form>'
-        . ' <form action="' . $sn . '?&xh_backups" method="post"'
+        . ' <form action="' . $sn . '&xh_backups" method="post"'
         . ' class="xh_inline_form">'
         . '<input type="hidden" name="file" value="content">'
         . '<input type="hidden" name="action" value="empty">'
@@ -464,10 +464,10 @@ function XH_backupsView()
         if (XH_isContentBackup($p, false)) {
             $size = filesize($pth['folder']['content'] . '/' . $p);
             $size = round(($size) / 102.4) / 10;
-            $o .= '<li><a href="' . $sn . '?file=' . $p
+            $o .= '<li><a href="' . $sn . 'file=' . $p
                 . '&amp;action=view" target="_blank">'
                 . $p . '</a> (' . $size . ' KB)'
-                . ' <form action="' . $sn . '?&xh_backups" method="post"'
+                . ' <form action="' . $sn . '&xh_backups" method="post"'
                 . ' class="xh_inline_form">'
                 . '<input type="hidden" name="file" value="' . $p . '">'
                 . '<input type="hidden" name="action" value="restore">'
@@ -633,49 +633,49 @@ function XH_adminMenu(array $plugins = array())
     foreach (array('images', 'downloads', 'media') as $item) {
         $filesMenu[] =  array(
             'label' => utf8_ucfirst($tx['editmenu'][$item]),
-            'url' => $sn . '?&edit&' . $item
+            'url' => $sn . '&edit&' . $item
         );
     }
     $settingsMenu = array(
         array(
             'label' => utf8_ucfirst($tx['editmenu']['configuration']),
-            'url' => $sn . '?file=config&action=array'
+            'url' => $sn . 'file=config&action=array'
         ),
         array(
             'label' => utf8_ucfirst($tx['editmenu']['language']),
-            'url' => $sn . '?file=language&action=array'
+            'url' => $sn . 'file=language&action=array'
         ),
         array(
             'label' => utf8_ucfirst($tx['editmenu']['template']),
-            'url' => $sn . '?file=template&action=edit'
+            'url' => $sn . 'file=template&action=edit'
         ),
         array(
             'label' => utf8_ucfirst($tx['editmenu']['stylesheet']),
-            'url' => $sn . '?file=stylesheet&action=edit'
+            'url' => $sn . 'file=stylesheet&action=edit'
         ),
         array(
             'label' => utf8_ucfirst($tx['editmenu']['log']),
-            'url' => $sn . '?file=log&action=view'
+            'url' => $sn . 'file=log&action=view'
         ),
         array(
             'label' => utf8_ucfirst($tx['editmenu']['validate']),
-            'url' => $sn . '?&validate'
+            'url' => $sn . '&validate'
         ),
         array(
             'label' => utf8_ucfirst($tx['editmenu']['backups']),
-            'url' => $sn . '?&xh_backups'
+            'url' => $sn . '&xh_backups'
         ),
         array(
             'label' => utf8_ucfirst($tx['editmenu']['pagedata']),
-            'url' => $sn . '?&xh_pagedata'
+            'url' => $sn . '&xh_pagedata'
         ),
         array(
             'label' => utf8_ucfirst($tx['editmenu']['change_password']),
-            'url' => $sn . '?&xh_change_password'
+            'url' => $sn . '&xh_change_password'
         ),
         array(
             'label' => utf8_ucfirst($tx['editmenu']['sysinfo']),
-            'url' => $sn . '?&sysinfo'
+            'url' => $sn . '&sysinfo'
         )
     );
     $hiddenPlugins = explode(',', $cf['plugins']['hidden']);
@@ -703,7 +703,7 @@ function XH_adminMenu(array $plugins = array())
             : ucfirst($plugin);
         $pluginMenuItem = array('label' => $label);
         if ($plugin != '') {
-            $pluginMenuItem['url'] = $sn . '?' . $plugin . '&normal';
+            $pluginMenuItem['url'] = $sn . $plugin . '&normal';
             foreach (XH_registerPluginMenuItem($plugin) as $item) {
                 $pluginMenuItem['children'][] = $item;
             }
@@ -717,28 +717,28 @@ function XH_adminMenu(array $plugins = array())
         ),
         array(
             'label' => utf8_ucfirst($tx['editmenu']['pagemanager']),
-            'url' => $sn . '?&normal&xhpages'
+            'url' => $sn . '&normal&xhpages'
         ),
         array(
             'label' => utf8_ucfirst($tx['editmenu']['files']),
-            'url' => $sn . '?&edit&userfiles',
+            'url' => $sn . '&edit&userfiles',
             'children' => $filesMenu
             ),
         array(
             'label' => utf8_ucfirst($tx['editmenu']['settings']),
-            'url' => $sn . '?&settings',
+            'url' => $sn . '&settings',
             'children' => $settingsMenu
         ),
         array(
             'label' => utf8_ucfirst($tx['editmenu']['plugins']),
-            'url' => $sn . '?&xh_plugins',
+            'url' => $sn . '&xh_plugins',
             'children' => $pluginMenu,
             'id' => 'xh_adminmenu_plugins',
             'style' => 'width:' . $width . 'px; margin-left: ' . $marginLeft . 'px'
         ),
         array(
             'label' => utf8_ucfirst($tx['editmenu']['logout']),
-            'url' => $sn . '?&logout'
+            'url' => $sn . '&logout'
         )
     );
 
@@ -1028,7 +1028,7 @@ function XH_saveEditorContents($text)
             // page was deleted; go to previous page
             $su = $u[max($s - 1, 0)];
         }
-        header("Location: " . CMSIMPLE_URL . "?" . $su, true, 303);
+        header("Location: " . CMSIMPLE_URL . $su, true, 303);
         exit;
     } else {
         e('notwritable', 'content', $pth['file']['content']);
@@ -1060,7 +1060,7 @@ function XH_emptyContents()
     }
     if (XH_saveContents()) {
         // the following relocation is necessary to cater for the changed content
-        $url = CMSIMPLE_URL . '?&xh_backups&xh_success=emptied';
+        $url = CMSIMPLE_URL . '&xh_backups&xh_success=emptied';
         header('Location: ' . $url, true, 303);
         exit;
     } else {
@@ -1101,7 +1101,7 @@ function XH_restore($filename)
         return;
     }
     // the following relocation is necessary to cater for the changed content
-    $url = CMSIMPLE_URL . '?&xh_backups&xh_success=restored';
+    $url = CMSIMPLE_URL . '&xh_backups&xh_success=restored';
     header('Location: ' . $url, true, 303);
     exit;
 }
@@ -1124,7 +1124,7 @@ function XH_extraBackup($suffix)
     if (!copy($pth['file']['content'], $dest)) {
         e('cntsave', 'backup', $dest);
     } else {
-        $url = CMSIMPLE_URL . '?&xh_backups&xh_success=backedup';
+        $url = CMSIMPLE_URL . '&xh_backups&xh_success=backedup';
         header('Location: ' . $url, true, 303);
         exit;
     }
@@ -1173,3 +1173,4 @@ function XH_wantsPluginAdministration($pluginName)
 {
     return (bool) preg_match('/(?:^|&)' . preg_quote($pluginName, '/') . '(?=&|$)/', sv('QUERY_STRING'));
 }
+
