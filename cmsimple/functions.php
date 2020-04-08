@@ -1588,7 +1588,7 @@ function loginforms()
             . '<h1>' . $tx['menu']['login'] . '</h1>'
             . $message
             . '<p><b>' . $tx['login']['warning'] . '</b></p>'
-            . '<form id="login" name="login" action="' . $sn . '?' . $su
+            . '<form id="login" name="login" action="' . $sn . $su
             . '" method="post">'
             . '<input type="hidden" name="login" value="true">'
             . '<input type="hidden" name="selected" value="' . $su . '">'
