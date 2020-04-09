@@ -2884,7 +2884,7 @@ function XH_getPageURL($index)
 {
     global $sn, $u;
 
-    return $sn . '?' . $u[$index];
+    return $sn . $u[$index];
 }
 
 /**
