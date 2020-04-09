@@ -717,7 +717,7 @@ function rfc()
     foreach ($tooLong as $i => $tl) {
         if (XH_ADM && $tl) {
             $e .= '<li><b>' . $tx['uri']['toolong'] . '</b>' . '<br>'
-                . '<a href="?' . $u[$i] . '">' . $h[$i] . '</a>' . '</li>';
+                . '<a href="' . $u[$i] . '">' . $h[$i] . '</a>' . '</li>';
         }
     }
 
