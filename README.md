@@ -20,8 +20,12 @@
 * If You find bugs, please make an issue (or post in the forum). You may also make a fork and a push with Your solution.
 
 P.S. At the moment it is not possible to configure show_hidden in the CMS. It is manaually configured in cmsimple /config.php 
+
 $cf['show_hidden']['pages_toc']="true"; ( or false)
+
 $cf['show_hidden']['pages_search']="true";
+
 $cf['show_hidden']['pages_sitemap']="true";
+
 $cf['show_hidden']['path_locator']="true";
 
