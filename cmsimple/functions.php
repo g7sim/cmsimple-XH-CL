@@ -67,7 +67,7 @@ function geturlwp($u)
 
     $t = '';
     $qs = preg_replace("/^" . preg_quote($su, '/') . "(\&)?/s", "", sv('QUERY_STRING'));
-    if ($fh = fopen($u . '?' . $qs, "r")) {
+    if ($fh = fopen($u . $qs, "r")) {
         while (!feof($fh)) {
             $t .= fread($fh, 1024);
         }
