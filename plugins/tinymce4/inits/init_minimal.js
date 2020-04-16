@@ -1,6 +1,5 @@
 {
   selector: "%SELECTOR%",
-  document_base_url: "%CMSIMPLE_ROOT%",  
   theme: "modern",
   skin: "lightgray",
   toolbar_items_size: "small",
