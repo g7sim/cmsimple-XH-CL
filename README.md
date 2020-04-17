@@ -12,7 +12,7 @@
 
 * You may not use ( ] ) [ < = or ? in links !
 
-* It has also limitations in windows (like Xampp etc.) : a) URI-pathes like /plugins or /plugins/plugins or /cmsimple or /templates  - which have their equvalent in the CMS-structure - are momentary not allowed in Windows - but in the Web!) ; b) The configuration of ckeditor destroys the config.php in Windows - to do manually for skin-choice - but not in the Web)
+* It has also limitations in windows (like Xampp etc.) : a) URI-pathes like /plugins or /plugins/plugins or /cmsimple or /templates  - which have their equivalent in the CMS-structure - are momentary not allowed in Windows - but in the Web!) ; b) The configuration of ckeditor destroys the config.php in Windows - to do manually for skin-choice - but not in the Web)
 
 * It is not quite compatible with FHS_Adminmenu - maybe in a future version , but with hi_admin - and most of the 1.7x - plugins function.
 
