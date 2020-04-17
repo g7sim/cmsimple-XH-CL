@@ -12,7 +12,7 @@
 
 * It is not quite compatible with FHS_Adminmenu - maybe in a future version , but with hi_admin - and most of the 1.7x - plugins function.
 
-* Is offers both tinymce4 (with bootstrap plugins under configuration : flexible) and a version of ckeditor 4.14, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!).
+* Is offers both tinymce4.83 (with bootstrap plugins under configuration : flexible) and a version of ckeditor 4.14, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!).
 
 * This version has an integrated full-backup from the Cmsimple_XH - forum ( start with : ...de/backup ). The zip  appears after a while under userfiles (filebrowser) and is ready for download.
 
