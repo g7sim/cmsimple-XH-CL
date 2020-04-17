@@ -1,5 +1,6 @@
 {
   selector: "%SELECTOR%",
+  document_base_url: "%CMSIMPLE_ROOT%",  
   theme: "modern",
   plugins: [
     "advlist anchor autolink autosave charmap code colorpicker contextmenu emoticons fullscreen hr",
