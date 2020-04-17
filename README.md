@@ -1,4 +1,4 @@
-# cmsimple-XH-CL-1.7.2 - beta 2
+# Cmsimple-XH-CL-1.7.2 - beta 2
 
 * This is a  modified  Fork of Cmsimple XH 1.7.2 with clean urls and a http - security filter.
 
