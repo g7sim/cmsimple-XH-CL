@@ -8,7 +8,7 @@
 
 * It offers both tinymce4.83 (with bootstrap - plugins under configuration : flexible) and a version of ckeditor 4.14, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!).
 
-* This version has an integrated full-backup from the Cmsimple_XH - forum ( start with : ...de/backup ). The zip  appears after a while under userfiles (filebrowser) and is ready for download.
+* This version has an integrated full-backup from the Cmsimple_XH - forum ( start with : ...com/backup ). The zip  appears after a while under userfiles (filebrowser) and is ready for download.
 
 * You may not use ( ] ) [ < = or ? in links !
 
