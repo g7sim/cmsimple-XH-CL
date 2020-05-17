@@ -6,7 +6,7 @@
 
 * It needs at least php 5.4+ (not php 5.3 !)  and is tested with php 7.4
 
-* It offers both tinymce4.83 (with bootstrap - plugins under configuration : flexible) and a version of ckeditor 4.14, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!).
+* It offers both tinymce4.83 (with bootstrap - plugins under configuration : flexible) and a version of ckeditor 4.14, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!). Besides https://ckeditor.com/cke4/addons/plugins/all are at github are more than 20 bootstrap-plugins from sestolab(based on smethods), akilli etc.
 
 * This version has an integrated full-backup from the Cmsimple_XH - forum ( start with : ...com/backup ). The zip  appears after a while under userfiles (filebrowser) and is ready for download.
 
