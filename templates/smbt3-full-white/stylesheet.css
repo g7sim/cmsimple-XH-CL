@@ -15,13 +15,15 @@
 
 body {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.42857143;
     color:     #333;
     background-color:#fcfcfc;
     width:100.01%;
 }
 .wrap {width:101%;}
+
+ul.nav.navbar-nav a {font-size:15px;}
 
 li.sdoc{color:blue;background-color:white;text-align:left;max-width:300px;}
 
