@@ -1,4 +1,7 @@
-
+github.com/g7sim : 
+1. replaced $hjs in jquery.inc by $hqs and patch of tplfuncs.php. So shifted jquery under stylesheet.css 
+2. Update : jquery 3.51 and jquery migrate 3.30
+-------------------------------------------------------------------
 Version 1.6.4 2017-07-02
 
 Fix indirect modification of overloaded element notice in XH 1.7, introduced with
