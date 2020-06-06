@@ -72,7 +72,7 @@ function ckeditor_getExternalPlugins() {
 function ckeditor_isFontawesomeAvailable() {
     global $pth, $plugin_cf;
     $pluginpath = $pth['folder']['plugins'] . 'fa/editors/ckeditor/plugin.js';
-    if ($plugin_cf['fa']['require_auto'] && is_readable($pluginpath)) {
+   if (isset($plugin_cf['fa']) && $plugin_cf['fa']['require_auto'] && is_readable($pluginpath)) {
         return true;
     } else {
         return false;
