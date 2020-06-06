@@ -24,10 +24,10 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 }
 
 //be sure that all globals are accessible when called from another function
-global $hjs, $plugin_cf, $pth;
+global $hqs, $plugin_cf, $pth;
 
 function include_jQuery($path = '') {
-    global $pth, $plugin_cf, $hjs;
+    global $pth, $plugin_cf, $hqs;
 
     if (!defined('JQUERY')) {
         if ($path == '') {
@@ -48,13 +48,13 @@ function include_jQuery($path = '') {
                 return;
             }
         }
-        $hjs = $js . $hjs;
+        $hqs = $js . $hqs;
         define('JQUERY', TRUE);
     }
 }
 
 function include_jQueryUI($path = '') {
-    global $pth, $plugin_cf, $hjs;
+    global $pth, $plugin_cf, $hqs;
 
     if (!defined('JQUERY_UI')) {
         if ($path == '') {
@@ -64,21 +64,21 @@ function include_jQueryUI($path = '') {
                 return;
             }
         }
-        $hjs .= "\n" . '<script type="text/javascript" src="' . $path . '"></script>';
+        $hqs .= "\n" . '<script type="text/javascript" src="' . $path . '"></script>';
         define('JQUERY_UI', TRUE);
 
         if (file_exists($pth['folder']['template'] . 'jquery_ui/jquery_ui.css')) {
             //load a complete custom ui-theme
-            $hjs .= "\n" . tag('link rel="stylesheet" type="text/css" media="screen" href="'
+            $hqs .= "\n" . tag('link rel="stylesheet" type="text/css" media="screen" href="'
                             . $pth['folder']['template'] . 'jquery_ui/jquery_ui.css"');
         } else {
             //load the default theme
-            $hjs .= "\n" . tag('link rel="stylesheet" type="text/css" media="screen" href="' . $pth['folder']['plugins']
+            $hqs .= "\n" . tag('link rel="stylesheet" type="text/css" media="screen" href="' . $pth['folder']['plugins']
                             . 'jquery/lib/jquery_ui/' . $plugin_cf['jquery']['version_ui'] . '/css/jquery-ui.min.css"');
-            $hjs .= "\n";
+            $hqs .= "\n";
             //include a custom css-file to overwrite single selectors
             if (file_exists($pth['folder']['template'] . 'jquery_ui/stylesheet.css')) {
-                $hjs .= "\n" . tag('link rel="stylesheet" type="text/css" media="screen" href="'
+                $hqs .= "\n" . tag('link rel="stylesheet" type="text/css" media="screen" href="'
                                 . $pth['folder']['template'] . 'jquery_ui/stylesheet.css"')
                         . "\n";
             }
@@ -87,7 +87,7 @@ function include_jQueryUI($path = '') {
 }
 
 function include_jQueryPlugin($name = '', $path = '') {
-    global $hjs, $jQueryPlugins;
+    global $hqs, $jQueryPlugins;
 
     if (!isset($jQueryPlugins)) {
         $jQueryPlugins = array();
@@ -101,7 +101,7 @@ function include_jQueryPlugin($name = '', $path = '') {
             }
             $name = strtolower($name);
             if (!in_array($name, $jQueryPlugins)) {
-                $hjs .= "\n" . '<script type="text/javascript" src="' . $path . '"></script>';
+                $hqs .= "\n" . '<script type="text/javascript" src="' . $path . '"></script>';
                 $jQueryPlugins[] .= $name;
             }
         }

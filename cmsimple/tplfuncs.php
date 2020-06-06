@@ -72,7 +72,7 @@ function XH_renderNextLink()
  */
 function head()
 {
-    global $title, $cf, $pth, $tx, $hjs;
+    global $title, $cf, $pth, $tx, $hjs, $hqs;
 
     $t = XH_title($cf['site']['title'], $title);
     $t = '<title>' . strip_tags($t) . '</title>' . "\n";
@@ -95,6 +95,7 @@ function head()
         . $hjs
         . '<link rel="stylesheet" href="' . $pth['file']['stylesheet']
         . '" type="text/css">' . "\n";
+	$o .=  $hqs;		
     return $o;
 }
 
