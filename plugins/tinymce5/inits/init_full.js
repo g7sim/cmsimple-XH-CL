@@ -4,7 +4,7 @@
   plugins: [
     "advlist anchor autolink autosave charmap code codesample emoticons fontawesome fullscreen help hr",
     "image imagetools importcss insertdatetime link lists media nonbreaking paste preview",
-    "save searchreplace table template visualblocks visualchars wordcount noneditable xhplugincall fontawesomepicker"
+    "save searchreplace table template visualblocks visualchars wordcount noneditable xhplugincall fontawesomepicker bootstrap3grid bootstrap4grid"
   ],
   external_plugins: {
     "fontawesome": "%CMSIMPLE_ROOT%plugins/fa/editors/tinymce5/fontawesome/plugin.min.js",
@@ -15,7 +15,7 @@
   toolbar1: "save | fullscreen code formatselect fontselect fontsizeselect styleselect",
   toolbar2: "bold italic underline strikethrough | alignleft aligncenter alignright alignjustify cut copy paste pastetext | bullist numlist outdent indent blockquote",
   toolbar3: "undo redo | link unlink anchor image media | hr nonbreaking removeformat visualblocks visualchars | forecolor backcolor | searchreplace | charmap",
-  toolbar4: "emoticons subscript superscript | table insertdatetime help | xhplugincall | fontawesomepicker",
+  toolbar4: "emoticons subscript superscript | table insertdatetime help | xhplugincall | fontawesomepicker | bootstrap3grid | bootstrap4grid",
   table_advtab: true,
   table_cell_advtab: true,
   table_style_by_css: true,
