@@ -1,4 +1,4 @@
-# Cmsimple-XH-CL-1.7.2 - beta 3
+# Cmsimple-XH-CL-1.7.3 - beta 3
 
 * This git contains a  modified  Fork of Cmsimple XH 1.7.2 with clean urls and a http - security filter.
 
@@ -8,7 +8,7 @@
 
 * It offers both tinymce4.83 (with bootstrap - plugins under configuration : flexible) and a version of CKEDITOR 4.14, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!). Besides https://ckeditor.com/cke4/addons/plugins/all are at github are more than 20 bootstrap-plugins from sestolab(based on smethods), akilli etc. ( and my https://github.com/g7sim/ckeditor-fa4-fa5-XH FA4.7 - FA5.13 - XH - plugin )
 
-* This version has an integrated full-backup from the Cmsimple_XH - forum ( start with : ...com/backup ). The zip  appears after a while under userfiles (filebrowser) and is ready for download.
+* This version has an integrated full-backup from the Cmsimple_XH - forum ( start with : ...com/backup ). The zip  appears after a long while under userfiles (filebrowser) and is ready for download.
 
 * You may not use ( ] ) [ < = or ? in links !
 
