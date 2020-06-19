@@ -16,7 +16,7 @@
 
 * It is not yet full compatible with the FHS_Adminmenu-plugin - maybe in a future version, but with hi_admin https://github.com/TN03/hi_admin_xh , and most of the 1.7x - plugins function.
 
-* The final version will have a different admin-ui and other templates inklusive Bootstrap ( https://github.com/g7sim/Bootstrap3-XH  and https://github.com/g7sim/Bootstrap4-XH ) as You can find them in this git.
+* The final version will have a different admin-ui and other templates inklusive Bootstrap ( https://github.com/g7sim/Bootstrap3-XH  and https://github.com/g7sim/Bootstrap4-XH ) and https://github.com/g7sim/Smartmenus-XH as You can find them in this git.
 
 * If You find bugs, please make an issue (or post in the forum). You may also make a fork and a push with Your solution.
 
