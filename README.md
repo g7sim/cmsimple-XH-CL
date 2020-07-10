@@ -12,7 +12,7 @@
 
 * You may not use ( ) ] [ < = or ? in links ) - also for security reasons
 
-* It has a limitation in WINDOWS (like Xampp etc.) :  URI-pathes which begin with /plugins or /cmsimple or /templates or   /content or /assets - which have their equivalent in first level of the CMS-structure - are  not allowed in Windows - but function in the Web!) 
+* It has at the moment still a limitation in WINDOWS (like Xampp etc.) :  URI-pathes which begin with /plugins or /cmsimple or /templates or   /content or /assets - which have their equivalent in first level of the CMS-structure - are  not allowed in Windows - but function in the Web!) 
 
 * It is not yet full compatible with the FHS_Adminmenu-plugin - maybe in a future version, but with hi_admin https://github.com/TN03/hi_admin_xh , and most of the 1.7x - plugins function.
 
