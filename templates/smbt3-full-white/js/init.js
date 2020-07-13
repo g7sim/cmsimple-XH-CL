@@ -9,10 +9,10 @@ $("ul.menulevel7").addClass("dropdown-menu");
 $("ul.menulevel8").addClass("dropdown-menu"); 
 $("ul.menulevel9").addClass("dropdown-menu"); 
 
-$('.nav li > span').each(function() {
+/* $('.nav li > span').each(function() {
 var $this = $(this);
 $this.replaceWith('<a class="has-submenu xhspan" href="#">' + $this.text() + '</a>');
-});
+}); -- removed */
  	  
  (function() {
    			$('<i id="to-top"></i>').appendTo($('body'));
