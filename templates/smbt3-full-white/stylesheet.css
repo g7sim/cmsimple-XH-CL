@@ -82,7 +82,7 @@ ul.menulevel1 {padding:10px;border:1px #799bb8 solid; border-radius:3px;margin:5
 ul.menulevel2 li a.has-submenu::after { 
     font-family: FontAwesome;
 	content: "\f105";
-	font-size:16px;
+	font-size:16px; font-weight
 	display: inline-block;
    padding-left: 5px;
     padding-bottom: 3px;
@@ -108,11 +108,13 @@ ul.menulevel4 li a.has-submenu::after {
     padding-bottom: 3px;
    vertical-align: middle;
   }    
-  
+
+/* menulevel 1 */    
 a.has-submenu::after { 
     font-family: FontAwesome;
 	content: "\f107";
 	font-size:18px;
+	font-weight:bolder;
 	display: inline-block;
    padding-left: 2px;
    vertical-align: middle;
