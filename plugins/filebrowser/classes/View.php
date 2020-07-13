@@ -506,7 +506,7 @@ class View
         } else {
             $html = $this->lang[$string];
         }
-        return vsprintf($html, $args);
+        return vsprintf($html, isset($args) ? $args : array());
     }
 
     /**

@@ -408,26 +408,26 @@ function lastupdate($br = null, $hour = null)
  *
  * @return string HTML
  */
-function locator()
+function locator($separator = '&gt;')
 {
     $breadcrumbs = XH_getLocatorModel();
     $last = count($breadcrumbs) - 1;
-    $html = '<span vocab="http://schema.org/" typeof="BreadcrumbList">';
+    $html = '<span itemscope itemtype="https://schema.org/BreadcrumbList">';
     foreach ($breadcrumbs as $i => $breadcrumb) {
         list($title, $url) = $breadcrumb;
         if ($i > 0) {
-            $html .= ' &gt; ';
+            $html .= ' ' . $separator . ' ';
         }
-        $html .= '<span property="itemListElement" typeof="ListItem">';
-        $inner = '<span property="name">' . $title
-            . '</span><meta property="position" content="'. ($i + 1) . '">';
+        $html .= '<span itemprop="itemListElement" '
+                . 'itemscope itemtype="https://schema.org/ListItem">';
+        $inner = '<span itemprop="name">' . $title . '</span>';
         if (isset($url) && $i < $last) {
-            $html .= '<a property="item" typeof="WebPage" href="' . $url . '">'
-                . $inner . '</a>';
+            $html .= '<a itemprop="item" href="' . $url . '">'
+                    . $inner . '</a>';
         } else {
             $html .= $inner;
         }
-        $html .= '</span>';
+        $html .= '<meta itemprop="position" content="'. ($i + 1) . '"></span>';
     }
     $html .= '</span>';
     return $html;
