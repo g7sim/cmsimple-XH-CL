@@ -6,13 +6,13 @@
 
 * It needs at least php 5.4+ (not php 5.3 !)  and is tested with php 7.4
 
-* It offers both tinymce4.83 (with bootstrap - plugins under configuration : flexible), tinymce 5.3.1 and a version of CKEDITOR 4.14, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!). Besides https://ckeditor.com/cke4/addons/plugins/all are at github are more than 20 bootstrap-plugins from sestolab(based on smethods), akilli etc. ( and my https://github.com/g7sim/ckeditor-fa4-fa5-XH FA4.7 - FA5.13 - XH - plugin )
+* It offers both tinymce4.83 (with bootstrap - plugins under configuration : flexible) and tinymce 5.3.1 and a version of CKEDITOR 4.14, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!). Besides https://ckeditor.com/cke4/addons/plugins/all are at github more than 20 bootstrap-plugins from sestolab(based on smethods), akilli etc. ( and my https://github.com/g7sim/ckeditor-fa4-fa5-XH FA4.7 - FA5.13 - XH - plugin )
 
-* This version has an integrated full-backup from the Cmsimple_XH - forum ( start with : ...com/backup ). The zip  appears after a long while under userfiles (filebrowser) and is ready for download.
+* This version has an integrated full-backup from the Cmsimple_XH - forum ( start with : ...com/backup ). The zip  appears after a long while under userfiles (filebrowser) and is there ready for download.
 
-* You may not use ( ] ) [ < = or ? in links !
+* You may not use ( ) ] [ < = or ? in links ) - also for security reasons
 
-* It has a limitation in WINDOWS (like Xampp etc.) :  URI-pathes which begin with /plugins or /cmsimple or /templates or   /content or /assets - which have their equivalent in first level of the CMS-structure - are  not allowed in Windows - but function in the Web!) 
+* It has at the moment still a limitation in WINDOWS (like Xampp etc.) :  URI-pathes which begin with /plugins or /cmsimple or /templates or   /content or /assets - which have their equivalent in first level of the CMS-structure - are  not allowed in Windows - but function in the Web!) 
 
 * It is not yet full compatible with the FHS_Adminmenu-plugin - maybe in a future version, but with hi_admin https://github.com/TN03/hi_admin_xh , and most of the 1.7x - plugins function.
 
