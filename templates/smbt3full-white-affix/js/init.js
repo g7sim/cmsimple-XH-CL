@@ -26,7 +26,7 @@ $(document).ready(function(){
    			$('<i id="to-top"></i>').appendTo($('body'));
 
 			$(window).scroll(function() {
-				if($(this).scrollTop() > 150) {
+				if($(this).scrollTop() > 200) {
 					$('#to-top').fadeIn();	
 				} else {
 					$('#to-top').fadeOut();
