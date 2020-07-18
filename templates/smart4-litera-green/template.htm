@@ -1,0 +1,100 @@
+<?php
+// if jQuery4CMSimple is installed, include it
+if (is_readable($pth['folder']['plugins'].'jquery/jquery.inc.php')) {
+    include_once $pth['folder']['plugins'].'jquery/jquery.inc.php';
+    include_jQuery();
+}
+// Plugin FA_XH needed
+if (function_exists('fa_require')) {
+    fa_require();
+} else {
+    die('Das Template benötigt das Fa_XH-Plugin.');
+}
+?>
+
+<!DOCTYPE html>
+<html lang="<?php echo $sl;?>">
+<head>
+  <?php echo head();?>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="<?php echo $pth['folder']['template']?>img/favicon.png">
+	<!-- https://unsplash.com/t/textures-patterns -->
+
+</head>
+<body id="body" <?php echo onload();?>>
+    
+<div class="wrap">
+ 
+   <header class="main-header">
+      <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark bg-nav flex-start">   <!--  primary #4582EC bei litera -->
+	  
+	  <div class="container-fluid"> <!-- container-fluid -->
+	   
+        <a class="navbar-brand" href="."> <span><?php echo utf8_substr(sitename(),0);?></span></a>
+		
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>   
+       <div class="collapse navbar-collapse navbar-right" id="navbarResponsive">
+                     <?php echo li($hc,1);?>
+          </div><!--/.nav-collapse -->  
+		 	  
+        </div><!-- container -->
+      </nav>
+	  	  
+  </header>  
+
+<div class="jumbotron bg-cover text-white" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.6) 100%), url(https://placeimg.com/1000/480/nature)">
+ <div class="container-fluid">
+  <h1 class="display">Hello, world!</h1>
+  <p>This is a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+  <hr class="myhr">
+  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+ </div>
+</div>
+  
+  
+<br>
+
+<!--container start-->
+ ´<div class="main-content row clearfix">
+          <div class="container-fluid content col-md-12">
+	     <!-- https://getbootstrap.com/docs/3.3/examples/grid/ -->	   
+		<?php echo content();?>
+	  </div>  
+  </div> <!--container end-->	
+  
+  
+  <div id="footer" class="container-fluid footer"><p>
+      <div class="row flex-start"> 
+	    <div class="col-sm-3"> <span style="font-size:20px;color:white;">&#9993;</span> <?php echo mailformlink();?>  </div>
+        <div class="col-sm-3"> <span class="fa fa-sitemap" style="color:gray;"></span> <?php echo sitemaplink();?>  </div>
+          
+		   <div id="search" class="sestyle col-sm-3">
+                    <?php echo searchbox();?> 
+          </div>		  
+		  
+	    <div class="col-sm-3"><p> <?php echo loginlink();?>  	</p>  </div> 		
+	 </div> 
+ </div> <!-- footer end-->
+	   
+	  
+</div>
+<!-- Bootstrap core JavaScript -->
+<!-- Placed at the end of the document so the pages load faster -->
+  
+<script src="<?php echo $pth['folder']['template']?>js/bootstrap.min.js">    </script>
+
+<!--<script src='https://vadikom.github.io/smartmenus/src/jquery.smartmenus.js'></script>-->
+<script src="<?php echo $pth['folder']['template']?>js/jquery.smartmenus.js"></script> 
+
+<!--<script src='https://vadikom.github.io/smartmenus/src/addons/bootstrap/jquery.smartmenus.bootstrap.js'></script>-->
+<script src="<?php echo $pth['folder']['template']?>js/jquery.smartmenus.bootstrap-4.js">    </script>
+
+<script src="<?php echo $pth['folder']['template']?>js/popper.min1.16.1.js"> </script>
+
+  <!-- js placed at the end of the document so the pages load faster -->
+    <script src="<?php echo $pth['folder']['template']?>js/init.js">    </script>
+</body>
+</html>

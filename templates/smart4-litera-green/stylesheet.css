@@ -1,0 +1,197 @@
+@charset "utf-8";
+
+/*General comments and license statement: Free */
+/* Bootstrap core CSS */
+@import url("css/dist/litera/bootstrap.min.css");
+@import url("css/jquery.smartmenus.bootstrap-4.css"); 
+
+/* external css */
+@import url("assets/font-awesome/css/font-awesome.min.css");
+
+@import url(http://fonts.googleapis.com/css?family=Lato);
+
+#xh_adminmenu_fixed { z-index: 999999 !important;}
+
+/*  --- userstyles --- */
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+    color:  black;
+    background-color:#fcfcfc;
+    width:100.01%;  
+}
+
+html, body {
+    height: 100%;}
+    
+h1,h2,h3{font-size:1.2rem;}
+
+.wrap {width:101%;}
+
+/*  --------------------------------------------  navbar -------------------------------------------------- */
+
+.bg-nav { box-shadow: 0 1px 2px rgba(0,0,0,.3); /* für weiss box-shadow: 1px 1px 2px #c5c5c5; */
+            background-color: #12bb99 !important;}
+ 
+/* https://www.w3schools.com/colors/colors_picker.asp */
+.navbar-light .navbar-nav .nav-link {color:#333;padding-bottom:3px;}  /* Font color top navbar */
+
+nav.navbar{max-height:60px;margin-top:-12px;}  /* height and shift of navbar */
+
+/* #navbarResponsive.collapse.navbar-collapse > li {max-height:40px !important;} */
+
+div.collapse.navbar-collapse a {font-size:1rem;}  /* navbar fontsize */	
+
+.menulevel1  li.sdocs{ background-color: inherit; } 
+
+a.nav-link:hover{margin:3px;background:#bbfee5;}
+a.nav-link{margin:3px;background:#63debe;}
+
+
+.navbar .navbar-nav .nav-link {color:#333 !important;background:inherit}
+
+.menulevel2 > li.doc > a{line-height:18px;max-height:32px;color:#333;} /* height of li-drop */
+.menulevel2 > li.doc {vertical-align: middle;}
+
+li.sdoc > span, li.sdocs > span {display: block;position: relative;
+padding: 3px 10px; color:#000906; font-size:16px;height:30px; Background:#d8ffd8;
+}   /* active links */
+
+li.sdocs{line-height:20px;background:inherit;color:white !important;} 
+/* aktive Seite mit vorhandenen Unterseiten  */
+
+/* ------------------ contentstyles ---------------------------------------- */
+
+.main-content {width:98.5%; margin-left:2px; margin-right:5px; margin-top: 10px; padding:5px;  
+               box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); flex: 1 0 auto;}
+			   
+.jumbotron{margin-bottom:-50px; background-size: cover; background-attachment: static;}
+
+.content {min-height:600px !important; border:1px lightgray solid; 
+                  margin-left:2px; margin-right:2px; height:100%;}
+
+.container-fluid {
+  width: 100%;
+  padding-right: 5px;
+  padding-left: 5px;
+  padding-top:10px;  
+ }
+
+.container, .container-sm, .container-md, .container-lg{
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: 5px;
+  margin-left: auto;
+  margin-top: 15px;   
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  }
+
+.footer{padding:20px; 
+min-height:100px; 
+width:100%;	
+border:1px gray dotted;
+position: static;
+   margin:auto; flex-shrink: 0;
+  padding: 1rem;
+  background-color: #000906;
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(0,0,0,.3); }
+  
+.footer  a{color:white;}
+
+button.navbar-toggler{max-height:40px;}
+.navbar-toggler > span.navbar-toggler-icon{margin-top:-15px;vertical-align:top;}
+.navbar-toggler { border: none;  outline: 1px auto -webkit-focusring-color;}
+.navbar-toggler:focus { border: none; outline: none;}
+
+
+#search input {
+    position: relative;
+    top: -3px;
+    background: #fcfcfc;
+    border: 1px solid #aaa;
+    cursor: text;
+    padding: 1px 5px 1px 5px;
+    color: #888;
+    border-radius: .3em;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+#searchbox input.text {
+    width: 120%;
+    line-height: 24px;
+}
+.sestyle {
+    min-width: 100px;
+    max-width: 200px;
+   }
+
+ /* ------------media width 768----------------- */
+ 
+@media only screen and (max-width: 768px) {
+	ul.menulevel1 a{color:#333 !important;}
+	ul.menulevel1 li {background:#e8f4f8;padding:4px;margin:-3px;border-radius:2px;}
+	.menulevel1  li.sdocs{ background-color: #d8ffd8; } 
+          a.navbar-brand	{margin-bottom:15px;border: 2px transparent dotted;}			  
+   div#navbarResponsive.navbar-collapse {margin-left:-2px !important;background:inherit;}	
+ .main-content {margin-top:12px !important; border:1px transparent dotted; }
+    .container-fluid {margin-top:1px !important;  }
+}
+  
+
+/* smartphone - mode */
+@media only screen and (max-width: 576px) {
+ ul.menulevel1 {padding:10px;border:1px #799bb8 solid; border-radius:3px;margin:5px;}
+   ul.menulevel2 li a.nav-link, ul.menulevel2 li a.nav-link:hover {padding-left:5px;margin-left:7px;} 
+    .main-content {margin-top:20px;}
+      li.doc a.navlink{margin-left:10px !important;}
+  }
+
+@media (max-width: 350px) {	
+li.doc, li.docs {padding-left:1px !important; margin-right:0;}
+}
+
+/*  Back-to-top */
+#to-top {
+    display:none;
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    height:40px;
+    width:40px;
+    cursor:pointer;
+    background:rgba(63,90,164,0.8);
+    line-height:1em;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px;
+    background-image:url( assets/img/triangle.png);
+    background-position: 12px 16px;
+    background-repeat:no-repeat;
+    opacity:0.7;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+}
+
+
+#to-top:hover {
+    background-color:#48cfad;
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+    filter: alpha(opacity=80);
+    opacity:0.8;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+}
+
+/* https://jigsaw.w3.org/css-validator/validator */
