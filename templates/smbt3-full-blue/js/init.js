@@ -12,21 +12,13 @@ $("ul.menulevel9").addClass("dropdown-menu");
 $('.nav li > span').each(function() {
 var $this = $(this);
 $this.replaceWith('<a class="has-submenu xhspan" href="#" onclick="return false;">' + $this.text() + '</a>');
-}); 
-
-$(document).ready(function(){
-    $("#myaff").affix({
-        offset: { 
-            top: $(".header").outerHeight(true)  /* Set top offset equal to header outer height including margin */
-        }
-    });
 });
  	  
-  (function() {
+ (function() {
    			$('<i id="to-top"></i>').appendTo($('body'));
 
 			$(window).scroll(function() {
-				if($(this).scrollTop() > 200) {
+				if($(this).scrollTop() != 0) {
 					$('#to-top').fadeIn();	
 				} else {
 					$('#to-top').fadeOut();
@@ -39,7 +31,7 @@ $(document).ready(function(){
 
 	})();					  
    
-$("span[data-toggle=popover]").popover()  
+$("span[data-toggle=popover]").popover()
    
 
 
