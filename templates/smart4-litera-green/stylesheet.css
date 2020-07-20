@@ -55,12 +55,13 @@ a.nav-link{margin:3px;background:#63debe;}
 .menulevel2 > li.doc {vertical-align: middle;}
 
 li.sdoc > span, li.sdocs > span {display: block;position: relative;
-padding: 3px 10px; color:#000906; font-size:16px;height:30px; Background:#d8ffd8;
+padding: 5px 20px; color:#000906; font-size:16px;height:30px; Background:#d8ffd8;
 }   /* active links */
 
 li.sdocs{line-height:20px;background:inherit;color:white !important;} 
 /* aktive Seite mit vorhandenen Unterseiten  */
 
+a.xhspan{color:gray; margin-bottom:-1px;padding-left:12px;line-height:42px;display: inline-block;}
 /* ------------------ contentstyles ---------------------------------------- */
 
 .main-content {width:98.5%; margin-left:2px; margin-right:5px; margin-top: 10px; padding:5px;  
