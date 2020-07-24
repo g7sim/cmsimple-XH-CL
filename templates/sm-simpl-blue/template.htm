@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<?php
+// Plugin FA_XH
+if (function_exists('fa_require')) {
+	fa_require();
+} else {
+	die('Das Template "fhs-anchorific-pure" benötigt das Fa_XH-Plugin.<br>Das Fa_XH-Plugin kann hier heruntergeladen werden: <a href="http://3-magi.net/de/?CMSimple_XH/Fa_XH" target="_blank">Download</a>');
+}
+?>
+
+<html lang="<?php echo $sl;?>">
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href='https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en' rel='stylesheet' type='text/css'>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<?php echo head();?>
+</head>
+
+
+<body <?php echo onload();?>> <a name="top"></a>
+<div class="wrap">
+
+<!-- Kopf -->
+<header class=headerwrap row>
+ <div class="head col-2-12">    
+ <h1><?php echo sitename();?></h1>
+  </div>
+</header>
+ 
+<!-- Navigation -->
+<nav class="main-nav" role="navigation">	 
+ <!-- Mobile menu toggle button (hamburger/x icon) -->
+ <input id="main-menu-state" type="checkbox" />
+ <label class="main-menu-btn" for="main-menu-state">
+ <span class="main-menu-btn-icon"></span> Toggle main menu visibility
+ </label>
+ 
+ <div class="nav"> 	
+	<?php echo li($hc, 1);?>  
+	</div>  
+   
+ <div style="clear:both"></div>
+</nav>
+
+<!--Hauptinhalt main-- this templaten is based at https://github.com/ThisIsDallas/Simple-Grid -->
+<div id="main-content" class="row">
+
+<div id="side1" class="col-2-12">
+sideleft
+<?php echo newsbox('News-s1'); ?>
+</div>
+       <!--  https://thisisdallas.github.io/Simple-Grid/ -->
+   <div id="content" class="col-8-12">
+        <p id="languagemenu"><?php echo languagemenu();?></p>
+        <?php echo content()?>
+<!-- Fussnavigation -->	
+
+        <!--Submenu -->
+        <div id="submenu">
+            <!php echo submenu();?>
+        </div>
+    </div>
+	
+<div id="side2" class="col-2-12">
+ <div id="search">
+                    <?php echo searchbox();?>
+                </div>
+ <?php echo newsbox('News-s2'); ?>
+</div>	
+
+</div><!-- main-content-->
+
+ <!--Next/Previous Page Navigation-->
+   <center> <table class="subnav">
+        <tr>
+            <td class="previous pre-btn"><?php echo previouspage();?></td>
+            <td class="top"></td>
+            <td class="next nxt-btn"><?php echo nextpage();?></td>
+        </tr>
+    </table></center>
+
+
+<div id="footer" class="footer">
+	  <div class="grid grid-pad">  <!-- https://github.com/ThisIsDallas/Simple-Grid -->
+	  <div class="col-1-12"> </div>
+	     <div class="col-4-12"> 
+	     <p>  <span style="font-size:20px;">&#9993;</span>   <?php echo mailformlink();?>   </p>
+	     </div>
+		 <div class="col-4-12"> 
+	     <p> <span class="fa fa-sitemap " style="color:white;ont-size:1.5em;"></span>   <?php echo sitemaplink();?> </p>
+	     </div>
+		<div class="col-3-12"> 
+	     <p>  <?php echo loginlink();?>  </p>
+	    </div>
+	 </div>
+</div> <!-- footer -->
+
+</div> <!-- wrap -->
+
+
+<script type="text/javascript"> 
+      $('div.nav ul:first').addClass('sm sm-simple').attr('id', 'main-menu');
+</script>
+ 
+        
+ <script type="text/javascript" src="<?php echo $pth['folder']['template']?>js/jquery.smartmenus.js"></script>
+ <script type="text/javascript" src="<?php echo $pth['folder']['template']?>js/index.js"></script>
+ <script type="text/javascript" src="<?php echo $pth['folder']['template']?>js/scrolltop.js"></script>
+	 
+
+</body>
+</html>
