@@ -7,6 +7,10 @@ var $this = $(this);
 $this.replaceWith('<a href="#" class="xhspan" onclick="return false" >' + $this.text() + '</a>');
 });
 
+/* var elem = document.getElementById("side2");
+    elem.style.display = "table-cell"; */
+
+
 $(function() {
 	$('#main-menu').smartmenus({
 		mainMenuSubOffsetX: -1,
