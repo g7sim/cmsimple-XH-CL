@@ -29,7 +29,7 @@ if (function_exists('fa_require')) {
 </header>
  
 <!-- Navigation -->
-<nav class="main-nav" role="navigation">	 
+<nav class="main-nav sticky" role="navigation">	 
  <!-- Mobile menu toggle button (hamburger/x icon) -->
  <input id="main-menu-state" type="checkbox" />
  <label class="main-menu-btn" for="main-menu-state">
@@ -40,7 +40,7 @@ if (function_exists('fa_require')) {
 	<?php echo li($hc, 1);?>  
 	</div>  
    
- <div style="clear:both"></div>
+ <div class=clearing"></div>
 </nav>
 
 <!--Hauptinhalt main-- this templaten is based at https://github.com/ThisIsDallas/Simple-Grid -->
@@ -70,7 +70,8 @@ sideleft
 </div>	
 
 </div><!-- main-content-->
-
+ 
+ <div class="clearing">
  <!--Next/Previous Page Navigation-->
    <center> <table class="subnav">
         <tr>
@@ -79,7 +80,7 @@ sideleft
             <td class="next nxt-btn"><?php echo nextpage();?></td>
         </tr>
     </table></center>
-
+</div>
 
 <div id="footer" class="footer">
 	  <div class="grid grid-pad">  <!-- https://github.com/ThisIsDallas/Simple-Grid -->
@@ -95,8 +96,8 @@ sideleft
 	    </div>
 	 </div>
 </div> <!-- footer -->
-
-</div> <!-- wrap -->
+</div>
+<!-- wrap -->
 
 
 <script type="text/javascript"> 

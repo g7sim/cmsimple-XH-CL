@@ -99,17 +99,19 @@ background: gray !important;}  /* Nachstyle hamburger color */
 .main-nav ul ul li a {color:#333;}
 
 /* #main-menu{width:100%;background: linear-gradient(to bottom, #f0f0d0 0%, #d8ecf3 100%);} */
-#main-menu{width:100%;background-image: linear-gradient(to bottom, #336699, #336699);
+#main-menu{width:100.1%;background-image: linear-gradient(to bottom, #336699, #336699);
 background-repeat: repeat-x;}
 
-
-#main-content {margin-top:4px;}
-	
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+    top: 0;
+}
 	
 #side1{background:#fcfcfc; margin-left:-2px;margin-right:-1px;
-height: calc(100vh - 50px); border-right: 1px solid silver;}
+height: calc(100vh - 150px); border-right: 1px solid silver;}
 #side2{background:#fcfcfc; margin-left:0;margin-right:-1px;
-height: calc(100vh - 50px);border-left: 1px solid silver;}
+height: calc(100vh - 150px);border-left: 1px solid silver;}
 
 #side1, #side2, #content{ padding:10px;
 webkit-box-shadow: 0px 2px 7px -1px rgba(219,215,219,1);
