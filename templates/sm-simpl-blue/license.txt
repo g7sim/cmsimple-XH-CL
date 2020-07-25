@@ -1,0 +1,6 @@
+
+This template is  under MIT license of github.com/g7sim (M. Buchholz)
+
+The Navigation is  https://github.com/vadikom/smartmenus  MIT
+
+The grid is https://github.com/ThisIsDallas/Simple-Grid  MIT
