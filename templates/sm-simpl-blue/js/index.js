@@ -50,3 +50,25 @@ $(function() {
 
 /* $( "input[name*='man']" ).val( "has man in it!" ); */
 $('[href^="#"]').addClass('cross').attr("onclick","return false");
+
+
+/* ----------------- to top button ------------------*/
+
+ (function() {
+   			$('<i id="to-top"></i>').appendTo($('body'));
+
+			$(window).scroll(function() {
+				if($(this).scrollTop() > 200) {
+					$('#to-top').fadeIn();	
+				} else {
+					$('#to-top').fadeOut();
+				}
+			});
+			
+			$('#to-top').click(function() {
+				$('body,html').animate({scrollTop:0},100);
+			});	
+
+	})();					  
+   
+$("span[data-toggle=popover]").popover()  
