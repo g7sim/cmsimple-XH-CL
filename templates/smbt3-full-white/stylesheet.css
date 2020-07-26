@@ -50,6 +50,7 @@ padding: 3px 20px; color:#1164b4; font-size:15px;
          margin-right:1px;
 		 margin-bottom:1px;
          width:99%; 
+		 height:100vh;
 }
 
 .container-fluid {
@@ -78,17 +79,21 @@ background-color: #006994;
 box-shadow: 0 1px 2px rgba(0,0,0,.3); 
 text-align: center;
 }
+.footer a {color:white; text-decoration:none;}
+
+.ftr {padding:15px;}
 
 h1,h2,h3{font-size:18px;}
 
-/* ---media ------------*/
+/* ---------------------- media -----------------------------*/
 
 @media only screen and (max-width: 768px) {
 	
 ul.menulevel1{padding:3px; border:1px red dotted;}
 	
 ul.menulevel1 {padding:10px;border:1px #799bb8 solid; 
-                border-radius:3px;margin:5px;} }
+                border-radius:3px;margin:5px;} 
+}
 
 ul.menulevel2 li a.has-submenu::after { 
     font-family: FontAwesome;
@@ -139,7 +144,8 @@ a.xhspan::after {
    vertical-align: middle;
   } 
 
-/*  Back-to-top */
+
+/* ---------------- Back-to-top -------------------  */
 #to-top {
     display:none;
     position:fixed;
