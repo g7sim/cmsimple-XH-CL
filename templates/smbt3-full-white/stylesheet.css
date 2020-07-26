@@ -50,7 +50,7 @@ padding: 3px 20px; color:#1164b4; font-size:15px;
          margin-right:1px;
 		 margin-bottom:1px;
          width:99%; 
-		 height:100vh;
+	min-height:100vh;
 }
 
 .container-fluid {

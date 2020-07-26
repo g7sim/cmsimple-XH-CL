@@ -38,7 +38,7 @@ li.sdoc{color:blue;background-color:white;text-align:left;max-width:300px;}
          margin-left:10px;
          margin-right:1px;
          width:99%;
-		 height:100vh;
+		min-height:100vh;
 }
 
 .container-fluid {
