@@ -13,6 +13,7 @@
 #xh_adminmenu_fixed { z-index: 9999 !important;}
 .navbar-static-top { z-index: 998; }
 
+html, body{height:100%;}
 body {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 15px;
@@ -21,15 +22,19 @@ body {
     background-color:#fcfcfc;
     width:100.01%;
 }
-.wrap {width:101%;}
+.wrap {width:101%;height: auto; min-height: 100%;}
 
-ul.nav.navbar-nav a {font-size:15px;}
+ul.nav.navbar-nav a {font-size:15px; color:#006994;}
 
 li.sdoc{color:blue;background-color:white;text-align:left;max-width:300px;}
 
 li.sdoc > span, li.sdocs > span {display: block;position: relative;
 padding: 3px 20px; color:#1164b4; font-size:15px;
 }
+
+.navbar-static-top {position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;}
 
 .container {
   width:100%;
@@ -39,7 +44,7 @@ padding: 3px 20px; color:#1164b4; font-size:15px;
   margin-left: 5px;
   margin-top: -5px;
 }
-.content {min-height:600px !important; 
+.content {min-height:650px;
          box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); 
          margin-left:10px;
          margin-right:1px;
@@ -63,26 +68,32 @@ padding: 3px 20px; color:#1164b4; font-size:15px;
   margin-left: 1px;
 }
 
-.footer{padding:20px; 
+.footer{padding:20px; width:102%;
 min-height:100px; 
 border:1px lightgray solid;
 position: static;
 margin:auto;
 padding: 1rem;
-background-color: #dfdfdf;
+background-color: #006994;
 box-shadow: 0 1px 2px rgba(0,0,0,.3); 
 text-align: center;
 }
 
 h1,h2,h3{font-size:18px;}
 
-@media only screen and (max-width: 576px) {
-ul.menulevel1 {padding:10px;border:1px #799bb8 solid; border-radius:3px;margin:5px;} }
+/* ---media ------------*/
+
+@media only screen and (max-width: 768px) {
+	
+ul.menulevel1{padding:3px; border:1px red dotted;}
+	
+ul.menulevel1 {padding:10px;border:1px #799bb8 solid; 
+                border-radius:3px;margin:5px;} }
 
 ul.menulevel2 li a.has-submenu::after { 
     font-family: FontAwesome;
 	content: "\f105";
-	font-size:16px; font-weight
+	font-size:16px; font-weight:bolder;
 	display: inline-block;
    padding-left: 5px;
     padding-bottom: 3px;
@@ -108,13 +119,12 @@ ul.menulevel4 li a.has-submenu::after {
     padding-bottom: 3px;
    vertical-align: middle;
   }    
-
-/* menulevel 1 */    
+  
+/* menulevel 1 */  
 a.has-submenu::after { 
     font-family: FontAwesome;
 	content: "\f107";
-	font-size:18px;
-	font-weight:bolder;
+	font-size:18px; font-weight:bolder;
 	display: inline-block;
    padding-left: 2px;
    vertical-align: middle;
