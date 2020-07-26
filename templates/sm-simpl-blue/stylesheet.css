@@ -188,8 +188,8 @@ box-shadow: 0 0 2px 0 rgba(0,0,0,.4);
 font-size:0.9em;}
 /* ---------------small mode ---------------*/
 @media only screen and (max-width: 768px) {
-#side1{background:#fcfcfc; margin-left:-1px; margin-right:-1px; height:auto;}
-#side2{background:#fcfcfc; margin-left:-1px; margin-right:-5px; height:auto;}
+#side1{background:#fcfcfc; margin-left:-1px; margin-right:-1px; height:auto !important;}
+#side2{background:#fcfcfc; margin-left:-1px; margin-right:-5px; height:auto !important;}
 #content {min-height:300px;}
 .main-nav ul ul li a, .main-nav ul ul li a:hover {color:white;}
 }
