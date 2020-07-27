@@ -15,13 +15,13 @@
 
 body {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.42857143;
     color:     #333;
     background-color:#fcfcfc;
     width:100.01%;
 }
-.wrap {width:101%;}
+.wrap {width:101%;height: auto; min-height: 100%;}
 
 li.sdoc{color:blue;background-color:white;text-align:left;max-width:300px;}
 
@@ -33,7 +33,7 @@ li.sdoc{color:blue;background-color:white;text-align:left;max-width:300px;}
   margin-left: 5px;
   margin-top: -5px;
 }
-.content {min-height:600px !important; 
+.content {
          box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); 
          margin-left:10px;
          margin-right:1px;
@@ -55,6 +55,12 @@ li.sdoc{color:blue;background-color:white;text-align:left;max-width:300px;}
   flex-wrap: wrap;
   margin-right: 1px;
   margin-left: 1px;
+}
+
+.stickyf {
+  position: -webkit-sticky;
+  position: sticky;
+   bottom: 0;
 }
 
 .footer{padding:20px; 
