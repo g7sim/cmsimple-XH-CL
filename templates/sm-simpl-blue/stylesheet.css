@@ -30,11 +30,11 @@ body {
     display:none;
     position:fixed;
     bottom:30px;
-    right:30px;
+    right:80px;
     height:40px;
     width:40px;
     cursor:pointer;
-    background:rgba(224,224,224,0.8);
+    background:rgba(193,193,255,0.8);
     line-height:1em;
     -webkit-border-radius:3px;
     -moz-border-radius:3px;
@@ -79,7 +79,7 @@ body {
 .nav li a:hover {background:transparent;}
 
 .wrap {background-color: #f5f5f5;
-max-width:1200px;
+max-width:1160px;
 margin-right: auto; /* 1 */
 margin-left:  auto; /* 1 */  
 padding-top:  3px; /* 1 */
@@ -93,7 +93,7 @@ box-shadow: 0px 2px 7px -1px rgba(196,192,196,1);
 
 .headerwrap{background-color: white;
  padding:15px;min-height:60px;
- max-width:1200px;
+ max-width:1160px;
  -webkit-box-shadow: 0px 2px 7px -1px rgba(219,215,219,1);
 -moz-box-shadow: 0px 2px 7px -1px rgba(219,215,219,1);
 box-shadow: 0px 2px 7px -1px rgba(219,215,219,1);
@@ -110,6 +110,11 @@ box-shadow: 0px 2px 7px -1px rgba(219,215,219,1);
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
+
+.main-menu-btn{background:lightblue;border-radius:3px;padding:1px;} /* background of hamburger */
+label.main-menu-btn{padding-right:0;}
+span.main-menu-btn-icon{margin-left:1px;margin-right:4px;margin-top:-1px;}
+
 .main-menu-btn-icon, .main-menu-btn-icon::before, .main-menu-btn-icon::after {
 background: gray !important;}  /* Nachstyle hamburger color */
 	
@@ -117,23 +122,28 @@ background: gray !important;}  /* Nachstyle hamburger color */
 	
 .main-nav ul ul li a {color:#333;}
 
-/* #main-menu{width:100%;background: linear-gradient(to bottom, #f0f0d0 0%, #d8ecf3 100%);} */
-#main-menu{width:100.222%;margin-left:-1px;
-background-image: linear-gradient(to bottom, #336699, #336699);
-background-repeat: repeat-x;}
-
 .sticky {
   position: -webkit-sticky;
   position: sticky;
     top: 0;
 }
-	
+
+/* #main-menu{width:100%;background: linear-gradient(to bottom, #f0f0d0 0%, #d8ecf3 100%);} */
+#main-menu{width:100.222%;margin-left:-1px;
+background-image: linear-gradient(to bottom, #336699, #336699);
+background-repeat: repeat-x;}
+
+#main-menu{margin-bottom:5px !important;}	
+
+#main-content{} /* limited by the class 'grid' : 1140px;*/
+
 #side1{background:#fcfcfc; margin-left:-2px;margin-right:-1px;
 order-right: 1px solid silver;}
 #side2{background:#fcfcfc; margin-left:0;margin-right:-1px;
 border-left: 1px solid silver;}
 
-#side1, #side2{overflow-y:hidden;}  
+#side1, #side2{min-height:100vh; overflow-y:hidden;}  
+/* tuning of equal height of content and sidebar also in init.js*/
 
 #side1, #side2, #content{ padding:10px;
 webkit-box-shadow: 0px 2px 7px -1px rgba(219,215,219,1);
@@ -141,7 +151,7 @@ webkit-box-shadow: 0px 2px 7px -1px rgba(219,215,219,1);
 box-shadow: 0px 2px 7px -1px rgba(219,215,219,1); }
 
 #content {
-  max-width: 1200px;
+  max-width: 1160px;
    min-height:calc(100vh - 50px);
    margin-left: 2px;
    margin-right: 1px;
@@ -204,8 +214,10 @@ box-shadow: 0 0 2px 0 rgba(0,0,0,.4);
 
 /* ---------------small mode ---------------*/
 @media only screen and (max-width: 768px) {
-#side1{background:#fcfcfc; margin-left:-1px; margin-right:-1px; height:auto !important;}
-#side2{background:#fcfcfc; margin-left:-1px; margin-right:-5px; height:auto !important;}
-#content {min-height:300px;}
+#side1{background:#fcfcfc; margin-left:-1px; margin-right:-1px; 
+height:auto !important; min-height:20vh;}
+#side2{background:#fcfcfc; margin-left:-1px; margin-right:-5px; 
+height:auto !important; min-height:20vh;}
+#content {height:auto !important;}
 .main-nav ul ul li a, .main-nav ul ul li a:hover {color:white;}
 }

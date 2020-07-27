@@ -9,6 +9,10 @@ $this.replaceWith('<a href="#" class="xhspan" onclick="return false" >' + $this.
 
 /* height of sidebar */
 $(document).ready(function() {
+  $('#content').height($('#main-content').height());
+});
+
+$(document).ready(function() {
   $('#side1').height($('#content').height());
 });
 $(document).ready(function() {
