@@ -17,7 +17,7 @@
 
 /*
   ======================================
-  CMSimple_XH 1.7.2, 2017122101
+  CMSimple_XH 1.7.2, 2020072101
   2017-12-21
   based on CMSimple version 3.3 - December 31. 2009
   For changelog, downloads and information please see http://www.cmsimple-xh.org/
@@ -210,11 +210,11 @@ define('CMSIMPLE_XH_VERSION', 'CMSimple_XH 1.7.2');
 /**
  * The build number as integer: YYYYMMDDBB
  */
-define('CMSIMPLE_XH_BUILD', '2017122101');
+define('CMSIMPLE_XH_BUILD', '2020072101');
 /**
  * The release date in ISO 8601 format: YYYY-MM-DD
  */
-define('CMSIMPLE_XH_DATE', '2017-12-21');
+define('CMSIMPLE_XH_DATE', '2020-07-21');
 
 /**
  * A two dimensional array that holds the paths of important files and folders.
