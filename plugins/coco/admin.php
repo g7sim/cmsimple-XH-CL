@@ -91,7 +91,7 @@ function Coco_systemCheck()
     $o .= tag('br')
         . (strtoupper($tx['meta']['codepage']) == 'UTF-8' ? $ok : $warn)
         . '&nbsp;&nbsp;' . $ptx['syscheck_encoding'] . tag('br') . PHP_EOL;
-    $o .= (!get_magic_quotes_runtime() ? $ok : $fail)
+    $o .= (true ? $ok : $fail)
         . '&nbsp;&nbsp;' . $ptx['syscheck_magic_quotes']
         . tag('br') . tag('br') . PHP_EOL;
     foreach (array('config/', 'css/', 'languages/') as $folder) {
