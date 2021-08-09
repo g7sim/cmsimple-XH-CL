@@ -1766,10 +1766,6 @@ function XH_pluginStylesheet()
 
     // create combined plugin stylesheet
     if ($expired) {
-        $o = array(
-            PHP_EOL . '/' . str_pad(' ' . $pth['file']['corestyle'], 76, '*', STR_PAD_LEFT) . ' */'
-            . PHP_EOL . PHP_EOL . file_get_contents($pth['file']['corestyle'])
-        );
         foreach ($plugins as $plugin) {
             $fn = $pth['folder']['plugins'] . $plugin . '/css/stylesheet.css';
             if (file_exists($fn)) {
