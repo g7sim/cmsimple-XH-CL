@@ -2,6 +2,10 @@
  * Automatically created by CMSimple_XH. DO NOT MODIFY!
  * ckeditor,coco,codeeditor,fa,fhs_adminmenu,filebrowser,Fix #311  non cryptographically secure CSRF tokens · cmsimple-xh_cmsimple-xh@619543c · GitHub-Dateien,hi_admin_xh,jquery,meta_tags,pagemanager,page_params,slideshow,tinymce4,toxic,visitors_online
  */
+body.xh_login div.xh_login {
+    width: 30em;
+    margin: 2em auto 0 auto;
+}
 
 /************************************** ./plugins/ckeditor/css/stylesheet.css */
 
