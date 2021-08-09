@@ -1,6 +1,6 @@
 # Cmsimple-XC-1.7.3 - beta 5
 
-* This git contains a  modified  Fork of Cmsimple XH 1.7.2 with clean urls and a http - security filter.
+* This git contains a  modified  Fork of Cmsimple XH 1.7.2 with clean urls and a http - security filter. It contains also several issues until XH - version 1.74
 
 * It has the same GPL3  license (Licenses of plugins are to be observed)
 
