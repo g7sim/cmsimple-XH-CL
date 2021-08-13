@@ -345,6 +345,7 @@ $pth['file']['pagedata'] = $pth['folder']['content'] . 'pagedata.php';
 $pth['file']['language'] = $pth['folder']['language'] . basename($sl) . '.php';
 $pth['folder']['corestyle'] = $pth['folder']['base'] . 'assets/css/';
 $pth['file']['corestyle'] = $pth['folder']['corestyle'] . 'core.css';
+$pth['file']['loginstyle'] = $pth['folder']['corestyle'] . 'login.css';
 $pth['file']['adminjs'] = $pth['folder']['base'] . 'assets/js/script_loader.js';
 
 XH_createLanguageFile($pth['file']['language']);
