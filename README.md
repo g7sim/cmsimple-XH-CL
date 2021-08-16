@@ -4,7 +4,7 @@
 
 * It has the same GPL3  license (Licenses of plugins are to be observed) - there ist also a Wikipedia article https://en.wikipedia.org/wiki/CMSimple about Cmsimple
 
-* It needs at least php 5.4+ (not php 5.3 !)  and is tested with php 7.4
+* It needs at least php 5.6+ (not php 5.3 !)  and is tested with php 7.4
 
 * It offers both tinymce4.83 (with bootstrap - plugins under configuration : flexible) and tinymce 5.3.1 and a version of CKEDITOR 4.16, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!). Besides https://ckeditor.com/cke4/addons/plugins/all are at github more than 20 bootstrap-plugins from sestolab(based on smethods), akilli etc. ( and my https://github.com/g7sim/ckeditor-fa4-fa5-XH FA4.7 - FA5.13 - XH - plugin )
 
