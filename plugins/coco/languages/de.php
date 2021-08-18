@@ -1,11 +1,13 @@
 <?php
 
+$plugin_tx['coco']['syscheck_fail']="Fehler";
+$plugin_tx['coco']['syscheck_message']="Prüfe, dass %1\$s … %2\$s";
+$plugin_tx['coco']['syscheck_phpversion']="die PHP-Version ≥ %s";
+$plugin_tx['coco']['syscheck_success']="OK";
 $plugin_tx['coco']['syscheck_title']="System-Prüfung";
-$plugin_tx['coco']['syscheck_phpversion']="PHP-Version ≥ %s";
-$plugin_tx['coco']['syscheck_extension']="Erweiterung '%s' geladen";
-$plugin_tx['coco']['syscheck_encoding']="UTF-8-Kodierung eingestellt";
-$plugin_tx['coco']['syscheck_magic_quotes']="magic_quotes_runtime off";
-$plugin_tx['coco']['syscheck_writable']="Ordner '%s' beschreibbar";
+$plugin_tx['coco']['syscheck_warning']="Warnung";
+$plugin_tx['coco']['syscheck_writable']="'%s' schreibbar ist";
+$plugin_tx['coco']['syscheck_xhversion']="die CMSimple_XH-Version ≥ %s";
 
 $plugin_tx['coco']['label_info']="Info";
 
@@ -22,7 +24,5 @@ $plugin_tx['coco']['search_notfound']="wurde nicht gefunden";
 $plugin_tx['coco']['search_pgplural']="Seiten";
 $plugin_tx['coco']['search_pgsingular']="Seite";
 $plugin_tx['coco']['search_result']="Suchergebnis";
-
-$plugin_tx['coco']['cf_folder_data']="Pfad zu einem Ordner relativ zum CMSimple Wurzelverzeichnis, in dem die Plugin-Daten gespeichert werden. Z.B. \"userfiles/coco/\". Leer lassen, um in den data/ Ordner des Plugins zu speichern.";
 
 ?>

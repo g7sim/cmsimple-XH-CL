@@ -1,11 +1,13 @@
 <?php
 
-$plugin_tx['coco']['syscheck_title']="System check";
+$plugin_tx['coco']['syscheck_fail']="failure";
+$plugin_tx['coco']['syscheck_message']="Checking that %1\$s … %2\$s";
 $plugin_tx['coco']['syscheck_phpversion']="PHP version ≥ %s";
-$plugin_tx['coco']['syscheck_extension']="Extension '%s' loaded";
-$plugin_tx['coco']['syscheck_encoding']="Encoding 'UTF-8' configured";
-$plugin_tx['coco']['syscheck_magic_quotes']="Magic quotes runtime off";
-$plugin_tx['coco']['syscheck_writable']="Folder '%s' writable";
+$plugin_tx['coco']['syscheck_success']="okay";
+$plugin_tx['coco']['syscheck_title']="System check";
+$plugin_tx['coco']['syscheck_warning']="warning";
+$plugin_tx['coco']['syscheck_writable']="'%s' is writable";
+$plugin_tx['coco']['syscheck_xhversion']="CMSimple_XH version ≥ %s";
 
 $plugin_tx['coco']['label_info']="Info";
 
@@ -22,7 +24,5 @@ $plugin_tx['coco']['search_notfound']="was not found";
 $plugin_tx['coco']['search_pgplural']="pages";
 $plugin_tx['coco']['search_pgsingular']="page";
 $plugin_tx['coco']['search_result']="Result of your search";
-
-$plugin_tx['coco']['cf_folder_data']="Path to a folder relative to the CMSimple root directory, where to store the plugin's data. E.g. \"userfiles/coco/\". Leave blank to store into the plugin's data/ folder.";
 
 ?>

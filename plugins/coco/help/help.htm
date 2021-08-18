@@ -15,8 +15,8 @@ margin-right:20px" alt="Box with stuff">
 <p style="text-align:justify">Coco_XH facilitates to have an arbitrary amount of
 so called co-contents on your website. These are similar to newsboxes, but
 instead have different content for every page. Coco_XH is inspired by the <a
-href="http://cmsimplewiki.com/doku.php/plugins/also">Also</a> plugin, but (for
-CMSimple_XH &ge; 1.5 only) allows editing with the chosen editor instead of a
+href="http://cmsimplewiki.com/doku.php/plugins/also">Also</a> plugin, but
+allows editing with the chosen editor instead of a
 textarea and scripting to be used.</p>
 
 <ul id="nav">
@@ -39,9 +39,8 @@ problems!</strong></p>
 
 <section id="requirements">
 <h2>Requirements</h2>
-<p>Coco_XH is a plugin for CMSimple_XH. It requires a UTF-8 encoded version and
-the <a href="http://3-magi.net/?CMSimple_XH/Utf8_XH">Utf8_XH plugin</a>, which
-is shipped with CMSimple_XH since version 1.5.4.</p>
+<p>
+    This plugin requires CMSimple_XH ≥ 1.6.3 and PHP ≥ 5.4.0.</p>
 <div class="toplink"><a href="#">back to top</a></div>
 </section>
 
@@ -55,11 +54,7 @@ wiki</a> for further details.</p>
 <li>Unzip the distribution on your computer.</li>
 <li>Upload the whole directory coco/ to your server into CMSimple_XH's plugins
 directory.</li>
-<li>Set write permissions to the subdirectories config/, css/, languages/ and
-the plugin's data folder.</li>
-<li>Protect Coco_XH's data folder against direct access by any means your
-webserver provides. An .htaccess file for Apache servers is already distributed
-in the default data folder.</li>
+<li>Set write permissions to the subfolders css/ and languages/.</li>
 <li>Switch to "Coco" in the back-end to check if all requirements are
 fulfilled.</li>
 </ol>
@@ -70,8 +65,10 @@ fulfilled.</li>
 <h2>Settings</h2>
 <p>The plugin's configuration is done as with many other CMSimple_XH plugins in
 the website's back-end. Select Plugins &rarr; Coco.</p>
+<!--
 <p>You can change the default settings of Coco_XH under "Config". Hints for the
 options will be displayed when hovering over the help icon with your mouse.</p>
+-->
 <p>Localization is done under "Language". You can translate the character
 strings to your own language (if there is no appropriate language file
 available), or customize them according to your needs.</p>
@@ -91,10 +88,9 @@ letters (a-z), digits and underscores only. You can have as many co-contents as
 you like, as long as you give them different names.</p>
 <p>The screenshot shows two co-contents:</p>
 <div><img src="view-mode.png" style="width:100%" alt="view-mode"></div>
-<p>If you are in edit mode, you can edit the co-content, either with a textarea
-or from CMSimple_XH 1.5 on with the configured editor. Note that tinyMCE for
-CMSimple_XH 1.0 (shipped with CMSimple_XH 1.5 and 1.5.1) doesn't work with
-Coco_XH, so you have to update to a newer version. If you want to use another
+<p>If you are in edit mode, you can edit the co-content
+with the configured editor.
+If you want to use another
 toolbar than the one you have configured for the main content editor, just give
 the name of the toolbar as second parameter, e.g.</p>
 <div class="code">&lt;?php echo coco('small_content', 'sidebar');?&gt;</div>
@@ -113,7 +109,7 @@ e.g.</p>
 If you want to stick with the default toolbar, you can write:</p>
 <div class="code">&lt;?php echo coco('my_content', false, '500px');?&gt;</div>
 <p>If you want to change the width, you can do so in the stylesheet.</p>
-<p>The co-contents are stored in Coco_XH's data folder in an (X)HTML file with
+<p>The co-contents are stored in the subfolder coco/ of the content/ folder of CMSimple_XH in an HTML file with
 the name given as first parameter, e.g. my_content.htm. The structure is similar
 to that of CMSimple's content.htm file. The pages are separated by &lt;h1&gt;,
 &lt;h2&gt; or &lt;h3&gt; according to their menu level. (Therefore it's not
@@ -124,7 +120,7 @@ made with the id given for the heading. You must not alter these ids in any way!
 Creating new pages by inserting new headings is not possible; these will simply
 be ignored.</p>
 <p>Note that a backup of all co-contents is automatically made on logout. This
-is done the same way as CMSimple_XH 1.5.x makes backups of the content. If you
+is done the same way as CMSimple_XH makes backups of the content. If you
 want to restore a backup, you have to do it via FTP.</p>
 <div class="toplink"><a href="#">back to top</a></div>
 </section>
@@ -156,7 +152,7 @@ might give wrong search results.</p>
 <h2>License</h2>
 <p>Coco_XH is licensed under <a
 href="http://www.gnu.org/licenses/gpl.html">GPLv3</a>.</p>
-<p>&copy; 2012-2014 Christoph M. Becker</p>
+<p>&copy; 2012-2017 Christoph M. Becker</p>
 <p>Slovak translation &copy; 2012 Dr. Martin Sereday<br>
 Czech translation &copy; 2012 Josef Němec</p>
 <div class="toplink"><a href="#">back to top</a></div>
