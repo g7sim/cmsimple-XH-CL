@@ -229,7 +229,7 @@ class Slideshow_Controller
                 = extension_loaded($ext) ? 'ok' : 'fail';
         }
         $checks[$ptx['syscheck_magic_quotes']]
-            = !get_magic_quotes_runtime() ? 'ok' : 'fail';
+            = !ini_set('magic_quotes_runtime', 0) ? 'ok' : 'fail';
         $checks[$ptx['syscheck_encoding']]
             = strtoupper($tx['meta']['codepage']) == 'UTF-8' ? 'ok' : 'warn';
         foreach (array('config/', 'languages/') as $folder) {
