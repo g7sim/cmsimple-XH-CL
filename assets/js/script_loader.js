@@ -177,6 +177,11 @@ var loadercss = new Script_loader();
 
 loadercss.load( './assets/css/core.css' );
 
+var loadsfont = new Script_loader();
+
+loadsfont.load( './assets/css/system-font.css' );
+
+
 var loaderjs = new Script_loader();
 
 loaderjs.load( './assets/js/admin.min.js' );
