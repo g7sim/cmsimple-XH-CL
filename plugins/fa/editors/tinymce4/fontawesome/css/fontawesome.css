@@ -41,7 +41,7 @@
 
 .mce-fontawesome-panel-accordion-indicator {
 	margin-left: auto;
-	font-family: "Font Awesome 5 Pro"
+	font-family: "Font Awesome 5 Free"
 }
 
 .mce-fontawesome-panel-content {
@@ -50,7 +50,7 @@
 }
 
 .mce-fontawesome-panel .mce-icon-cell {
-	font-family: "Font Awesome 5 Pro";
+	font-family: "Font Awesome 5 Free";
 	position: relative;
 	float: left;
 	width: 29px;
@@ -60,7 +60,7 @@
 .mce-fontawesome-panel .fas {
 	display: block;
 	line-height: 29px;
-	font-family: "Font Awesome 5 Pro";
+	font-family: "Font Awesome 5 Free";
 	cursor: pointer;
 	text-align: center;
 	border-radius: 3px
@@ -77,7 +77,7 @@
 }
 
 .mce-fontawesome-search-container::before {
-	font-family: "Font Awesome 5 Pro";
+	font-family: "Font Awesome 5 Free";
 	content: "\f002";
 	position: absolute;
 	top: 0;
@@ -144,7 +144,7 @@
 
 .mce-i-flag {
 	display: inline-block;
-	font-family: "Font Awesome 5 Pro";
+	font-family: "Font Awesome 5 Free";
 	font-style: normal;
 	font-weight: 400;
 	line-height: 1;
