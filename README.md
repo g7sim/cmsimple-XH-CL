@@ -6,7 +6,11 @@
 
 * It needs at least php 5.6+ (not php 5.3 !)  and is tested with php 7.4
 
-* It offers both tinymce4.83 (with bootstrap - plugins under configuration : flexible) and tinymce 5.3.1 and a version of CKEDITOR 4.16, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!). Besides https://ckeditor.com/cke4/addons/plugins/all are at github more than 20 bootstrap-plugins from sestolab(based on smethods), akilli etc. 
+* It offers both tinymce 4.91 (with bootstrap - plugins under configuration : flexible) and 
+
+* tinymce 5.3.1 (for professional use You may need a license )
+
+* a version of CKEDITOR 4.16, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!). Besides https://ckeditor.com/cke4/addons/plugins/all are at github more than 20 bootstrap-plugins from sestolab(based on smethods), akilli etc. 
 
 * The inbuilt FA 4.7 - font of the FA-Plugin has been replaced by free Font Awesome 5.15.
 
