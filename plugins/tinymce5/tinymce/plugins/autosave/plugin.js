@@ -4,12 +4,19 @@
  * For LGPL see License.txt in the project root for license information.
  * For commercial licenses see https://www.tiny.cloud/
  *
- * Version: 5.3.1 (2020-05-27)
+ * Version: 5.8.2 (2021-06-23)
  */
-(function (domGlobals) {
+(function () {
     'use strict';
 
     var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
+
+    var eq = function (t) {
+      return function (a) {
+        return t === a;
+      };
+    };
+    var isUndefined = eq(undefined);
 
     var global$1 = tinymce.util.Tools.resolve('tinymce.util.Delay');
 
@@ -41,23 +48,31 @@
       return editor.getParam('autosave_ask_before_unload', true);
     };
     var getAutoSavePrefix = function (editor) {
-      var location = domGlobals.document.location;
+      var location = document.location;
       return editor.getParam('autosave_prefix', 'tinymce-autosave-{path}{query}{hash}-{id}-').replace(/{path}/g, location.pathname).replace(/{query}/g, location.search).replace(/{hash}/g, location.hash).replace(/{id}/g, editor.id);
     };
     var shouldRestoreWhenEmpty = function (editor) {
       return editor.getParam('autosave_restore_when_empty', false);
     };
     var getAutoSaveInterval = function (editor) {
-      return parse(editor.settings.autosave_interval, '30s');
+      return parse(editor.getParam('autosave_interval'), '30s');
     };
     var getAutoSaveRetention = function (editor) {
-      return parse(editor.settings.autosave_retention, '20m');
+      return parse(editor.getParam('autosave_retention'), '20m');
     };
 
     var isEmpty = function (editor, html) {
-      var forcedRootBlockName = editor.settings.forced_root_block;
-      html = global$3.trim(typeof html === 'undefined' ? editor.getBody().innerHTML : html);
-      return html === '' || new RegExp('^<' + forcedRootBlockName + '[^>]*>((\xA0|&nbsp;|[ \t]|<br[^>]*>)+?|)</' + forcedRootBlockName + '>|<br>$', 'i').test(html);
+      if (isUndefined(html)) {
+        return editor.dom.isEmpty(editor.getBody());
+      } else {
+        var trimmedHtml = global$3.trim(html);
+        if (trimmedHtml === '') {
+          return true;
+        } else {
+          var fragment = new DOMParser().parseFromString(trimmedHtml, 'text/html');
+          return editor.dom.isEmpty(fragment);
+        }
+      }
     };
     var hasDraft = function (editor) {
       var time = parseInt(global$2.getItem(getAutoSavePrefix(editor) + 'time'), 10) || 0;
@@ -95,10 +110,8 @@
     };
     var startStoreDraft = function (editor) {
       var interval = getAutoSaveInterval(editor);
-      global$1.setInterval(function () {
-        if (!editor.removed) {
-          storeDraft(editor);
-        }
+      global$1.setEditorInterval(editor, function () {
+        storeDraft(editor);
       }, interval);
     };
     var restoreLastDraft = function (editor) {
@@ -196,4 +209,4 @@
 
     Plugin();
 
-}(window));
+}());

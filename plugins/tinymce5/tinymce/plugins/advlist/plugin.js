@@ -4,14 +4,12 @@
  * For LGPL see License.txt in the project root for license information.
  * For commercial licenses see https://www.tiny.cloud/
  *
- * Version: 5.3.1 (2020-05-27)
+ * Version: 5.8.2 (2021-06-23)
  */
 (function () {
     'use strict';
 
     var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
-
-    var global$1 = tinymce.util.Tools.resolve('tinymce.util.Tools');
 
     var applyListFormat = function (editor, listName, styleValue) {
       var cmd = listName === 'UL' ? 'InsertUnorderedList' : 'InsertOrderedList';
@@ -26,6 +24,8 @@
         applyListFormat(editor, 'OL', value['list-style-type']);
       });
     };
+
+    var global$1 = tinymce.util.Tools.resolve('tinymce.util.Tools');
 
     var getNumberStyles = function (editor) {
       var styles = editor.getParam('advlist_number_styles', 'default,lower-alpha,lower-greek,lower-roman,upper-alpha,upper-roman');
@@ -146,7 +146,7 @@
     var from = function (value) {
       return value === null || value === undefined ? NONE : some(value);
     };
-    var Option = {
+    var Optional = {
       some: some,
       none: none,
       from: from
@@ -166,7 +166,7 @@
     var getSelectedStyleType = function (editor) {
       var listElm = editor.dom.getParent(editor.selection.getNode(), 'ol,ul');
       var style = editor.dom.getStyle(listElm, 'listStyleType');
-      return Option.from(style);
+      return Optional.from(style);
     };
 
     var findIndex = function (list, predicate) {
@@ -253,7 +253,7 @@
       });
     };
     var addControl = function (editor, id, tooltip, cmd, nodeName, styles) {
-      if (styles.length > 0) {
+      if (styles.length > 1) {
         addSplitButton(editor, id, tooltip, cmd, nodeName, styles);
       } else {
         addButton(editor, id, tooltip, cmd, nodeName);
@@ -266,13 +266,11 @@
 
     function Plugin () {
       global.add('advlist', function (editor) {
-        var hasPlugin = function (editor, plugin) {
-          var plugins = editor.settings.plugins ? editor.settings.plugins : '';
-          return global$1.inArray(plugins.split(/[ ,]/), plugin) !== -1;
-        };
-        if (hasPlugin(editor, 'lists')) {
+        if (editor.hasPlugin('lists')) {
           register$1(editor);
           register(editor);
+        } else {
+          console.error('Please use the Lists plugin together with the Advanced List plugin.');
         }
       });
     }

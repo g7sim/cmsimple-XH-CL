@@ -4,9 +4,9 @@
  * For LGPL see License.txt in the project root for license information.
  * For commercial licenses see https://www.tiny.cloud/
  *
- * Version: 5.3.1 (2020-05-27)
+ * Version: 5.8.2 (2021-06-23)
  */
-(function (domGlobals) {
+(function () {
     'use strict';
 
     var Cell = function (initial) {
@@ -26,9 +26,9 @@
     var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
     var hasProPlugin = function (editor) {
-      if (/(^|[ ,])powerpaste([, ]|$)/.test(editor.settings.plugins) && global.get('powerpaste')) {
-        if (typeof domGlobals.window.console !== 'undefined' && domGlobals.window.console.log) {
-          domGlobals.window.console.log('PowerPaste is incompatible with Paste plugin! Remove \'paste\' from the \'plugins\' option.');
+      if (editor.hasPlugin('powerpaste', true)) {
+        if (typeof window.console !== 'undefined' && window.console.log) {
+          window.console.log('PowerPaste is incompatible with Paste plugin! Remove \'paste\' from the \'plugins\' option.');
         }
         return true;
       } else {
@@ -43,51 +43,18 @@
       };
     };
 
-    var firePastePreProcess = function (editor, html, internal, isWordHtml) {
-      return editor.fire('PastePreProcess', {
-        content: html,
-        internal: internal,
-        wordContent: isWordHtml
-      });
+    var isSimpleType = function (type) {
+      return function (value) {
+        return typeof value === type;
+      };
     };
-    var firePastePostProcess = function (editor, node, internal, isWordHtml) {
-      return editor.fire('PastePostProcess', {
-        node: node,
-        internal: internal,
-        wordContent: isWordHtml
-      });
+    var isNullable = function (a) {
+      return a === null || a === undefined;
     };
-    var firePastePlainTextToggle = function (editor, state) {
-      return editor.fire('PastePlainTextToggle', { state: state });
+    var isNonNullable = function (a) {
+      return !isNullable(a);
     };
-    var firePaste = function (editor, ieFake) {
-      return editor.fire('paste', { ieFake: ieFake });
-    };
-
-    var togglePlainTextPaste = function (editor, clipboard) {
-      if (clipboard.pasteFormat.get() === 'text') {
-        clipboard.pasteFormat.set('html');
-        firePastePlainTextToggle(editor, false);
-      } else {
-        clipboard.pasteFormat.set('text');
-        firePastePlainTextToggle(editor, true);
-      }
-      editor.focus();
-    };
-
-    var register = function (editor, clipboard) {
-      editor.addCommand('mceTogglePlainTextPaste', function () {
-        togglePlainTextPaste(editor, clipboard);
-      });
-      editor.addCommand('mceInsertClipboardContent', function (ui, value) {
-        if (value.content) {
-          clipboard.pasteHtml(value.content, value.internal);
-        }
-        if (value.text) {
-          clipboard.pasteText(value.text);
-        }
-      });
-    };
+    var isFunction = isSimpleType('function');
 
     var noop = function () {
     };
@@ -199,20 +166,22 @@
     var from = function (value) {
       return value === null || value === undefined ? NONE : some(value);
     };
-    var Option = {
+    var Optional = {
       some: some,
       none: none,
       from: from
     };
 
-    var isSimpleType = function (type) {
-      return function (value) {
-        return typeof value === type;
-      };
-    };
-    var isFunction = isSimpleType('function');
-
     var nativeSlice = Array.prototype.slice;
+    var exists = function (xs, pred) {
+      for (var i = 0, len = xs.length; i < len; i++) {
+        var x = xs[i];
+        if (pred(x, i)) {
+          return true;
+        }
+      }
+      return false;
+    };
     var map = function (xs, f) {
       var len = xs.length;
       var r = new Array(len);
@@ -249,18 +218,18 @@
     };
 
     var value = function () {
-      var subject = Cell(Option.none());
+      var subject = Cell(Optional.none());
       var clear = function () {
-        subject.set(Option.none());
+        return subject.set(Optional.none());
       };
       var set = function (s) {
-        subject.set(Option.some(s));
-      };
-      var on = function (f) {
-        subject.get().each(f);
+        return subject.set(Optional.some(s));
       };
       var isSet = function () {
         return subject.get().isSome();
+      };
+      var on = function (f) {
+        return subject.get().each(f);
       };
       return {
         clear: clear,
@@ -270,78 +239,49 @@
       };
     };
 
+    var checkRange = function (str, substr, start) {
+      return substr === '' || str.length >= substr.length && str.substr(start, start + substr.length) === substr;
+    };
+    var startsWith = function (str, prefix) {
+      return checkRange(str, prefix, 0);
+    };
+    var endsWith = function (str, suffix) {
+      return checkRange(str, suffix, str.length - suffix.length);
+    };
+    var repeat = function (s, count) {
+      return count <= 0 ? '' : new Array(count + 1).join(s);
+    };
+
     var global$1 = tinymce.util.Tools.resolve('tinymce.Env');
 
     var global$2 = tinymce.util.Tools.resolve('tinymce.util.Delay');
 
     var global$3 = tinymce.util.Tools.resolve('tinymce.util.Promise');
 
-    var global$4 = tinymce.util.Tools.resolve('tinymce.util.Tools');
+    var global$4 = tinymce.util.Tools.resolve('tinymce.util.VK');
 
-    var global$5 = tinymce.util.Tools.resolve('tinymce.util.VK');
-
-    var internalMimeType = 'x-tinymce/html';
-    var internalMark = '<!-- ' + internalMimeType + ' -->';
-    var mark = function (html) {
-      return internalMark + html;
-    };
-    var unmark = function (html) {
-      return html.replace(internalMark, '');
-    };
-    var isMarked = function (html) {
-      return html.indexOf(internalMark) !== -1;
-    };
-    var internalHtmlMime = function () {
-      return internalMimeType;
-    };
-
-    var global$6 = tinymce.util.Tools.resolve('tinymce.html.Entities');
-
-    var isPlainText = function (text) {
-      return !/<(?:\/?(?!(?:div|p|br|span)>)\w+|(?:(?!(?:span style="white-space:\s?pre;?">)|br\s?\/>))\w+\s[^>]+)>/i.test(text);
-    };
-    var toBRs = function (text) {
-      return text.replace(/\r?\n/g, '<br>');
-    };
-    var openContainer = function (rootTag, rootAttrs) {
-      var key;
-      var attrs = [];
-      var tag = '<' + rootTag;
-      if (typeof rootAttrs === 'object') {
-        for (key in rootAttrs) {
-          if (rootAttrs.hasOwnProperty(key)) {
-            attrs.push(key + '="' + global$6.encodeAllRaw(rootAttrs[key]) + '"');
-          }
-        }
-        if (attrs.length) {
-          tag += ' ' + attrs.join(' ');
-        }
-      }
-      return tag + '>';
-    };
-    var toBlockElements = function (text, rootTag, rootAttrs) {
-      var blocks = text.split(/\n\n/);
-      var tagOpen = openContainer(rootTag, rootAttrs);
-      var tagClose = '</' + rootTag + '>';
-      var paragraphs = global$4.map(blocks, function (p) {
-        return p.split(/\n/).join('<br />');
+    var firePastePreProcess = function (editor, html, internal, isWordHtml) {
+      return editor.fire('PastePreProcess', {
+        content: html,
+        internal: internal,
+        wordContent: isWordHtml
       });
-      var stitch = function (p) {
-        return tagOpen + p + tagClose;
-      };
-      return paragraphs.length === 1 ? paragraphs[0] : global$4.map(paragraphs, stitch).join('');
     };
-    var convert = function (text, rootTag, rootAttrs) {
-      return rootTag ? toBlockElements(text, rootTag === true ? 'p' : rootTag, rootAttrs) : toBRs(text);
+    var firePastePostProcess = function (editor, node, internal, isWordHtml) {
+      return editor.fire('PastePostProcess', {
+        node: node,
+        internal: internal,
+        wordContent: isWordHtml
+      });
+    };
+    var firePastePlainTextToggle = function (editor, state) {
+      return editor.fire('PastePlainTextToggle', { state: state });
+    };
+    var firePaste = function (editor, ieFake) {
+      return editor.fire('paste', { ieFake: ieFake });
     };
 
-    var global$7 = tinymce.util.Tools.resolve('tinymce.html.DomParser');
-
-    var global$8 = tinymce.util.Tools.resolve('tinymce.html.Serializer');
-
-    var global$9 = tinymce.util.Tools.resolve('tinymce.html.Node');
-
-    var global$a = tinymce.util.Tools.resolve('tinymce.html.Schema');
+    var global$5 = tinymce.util.Tools.resolve('tinymce.util.Tools');
 
     var shouldBlockDrop = function (editor) {
       return editor.getParam('paste_block_drop', false);
@@ -386,11 +326,102 @@
     var shouldUseDefaultFilters = function (editor) {
       return editor.getParam('paste_enable_default_filters', true);
     };
+    var getValidate = function (editor) {
+      return editor.getParam('validate');
+    };
+    var getAllowHtmlDataUrls = function (editor) {
+      return editor.getParam('allow_html_data_urls', false, 'boolean');
+    };
+    var getPasteDataImages = function (editor) {
+      return editor.getParam('paste_data_images', false, 'boolean');
+    };
+    var getImagesDataImgFilter = function (editor) {
+      return editor.getParam('images_dataimg_filter');
+    };
+    var getImagesReuseFilename = function (editor) {
+      return editor.getParam('images_reuse_filename');
+    };
+    var getForcedRootBlock = function (editor) {
+      return editor.getParam('forced_root_block');
+    };
+    var getForcedRootBlockAttrs = function (editor) {
+      return editor.getParam('forced_root_block_attrs');
+    };
+    var getTabSpaces = function (editor) {
+      return editor.getParam('paste_tab_spaces', 4, 'number');
+    };
+    var getAllowedImageFileTypes = function (editor) {
+      var defaultImageFileTypes = 'jpeg,jpg,jpe,jfi,jif,jfif,png,gif,bmp,webp';
+      return global$5.explode(editor.getParam('images_file_types', defaultImageFileTypes, 'string'));
+    };
+
+    var internalMimeType = 'x-tinymce/html';
+    var internalMark = '<!-- ' + internalMimeType + ' -->';
+    var mark = function (html) {
+      return internalMark + html;
+    };
+    var unmark = function (html) {
+      return html.replace(internalMark, '');
+    };
+    var isMarked = function (html) {
+      return html.indexOf(internalMark) !== -1;
+    };
+    var internalHtmlMime = function () {
+      return internalMimeType;
+    };
+
+    var global$6 = tinymce.util.Tools.resolve('tinymce.html.Entities');
+
+    var isPlainText = function (text) {
+      return !/<(?:\/?(?!(?:div|p|br|span)>)\w+|(?:(?!(?:span style="white-space:\s?pre;?">)|br\s?\/>))\w+\s[^>]+)>/i.test(text);
+    };
+    var toBRs = function (text) {
+      return text.replace(/\r?\n/g, '<br>');
+    };
+    var openContainer = function (rootTag, rootAttrs) {
+      var key;
+      var attrs = [];
+      var tag = '<' + rootTag;
+      if (typeof rootAttrs === 'object') {
+        for (key in rootAttrs) {
+          if (rootAttrs.hasOwnProperty(key)) {
+            attrs.push(key + '="' + global$6.encodeAllRaw(rootAttrs[key]) + '"');
+          }
+        }
+        if (attrs.length) {
+          tag += ' ' + attrs.join(' ');
+        }
+      }
+      return tag + '>';
+    };
+    var toBlockElements = function (text, rootTag, rootAttrs) {
+      var blocks = text.split(/\n\n/);
+      var tagOpen = openContainer(rootTag, rootAttrs);
+      var tagClose = '</' + rootTag + '>';
+      var paragraphs = global$5.map(blocks, function (p) {
+        return p.split(/\n/).join('<br />');
+      });
+      var stitch = function (p) {
+        return tagOpen + p + tagClose;
+      };
+      return paragraphs.length === 1 ? paragraphs[0] : global$5.map(paragraphs, stitch).join('');
+    };
+    var convert = function (text, rootTag, rootAttrs) {
+      return rootTag ? toBlockElements(text, rootTag === true ? 'p' : rootTag, rootAttrs) : toBRs(text);
+    };
+
+    var global$7 = tinymce.util.Tools.resolve('tinymce.html.DomParser');
+
+    var global$8 = tinymce.util.Tools.resolve('tinymce.html.Serializer');
 
     var nbsp = '\xA0';
 
-    function filter$1(content, items) {
-      global$4.each(items, function (v) {
+    var global$9 = tinymce.util.Tools.resolve('tinymce.html.Node');
+
+    var global$a = tinymce.util.Tools.resolve('tinymce.html.Schema');
+
+    var filter$1 = function (content, items) {
+      global$5.each(items, function (v) {
         if (v.constructor === RegExp) {
           content = content.replace(v, '');
         } else {
@@ -398,15 +429,15 @@
         }
       });
       return content;
-    }
-    function innerText(html) {
+    };
+    var innerText = function (html) {
       var schema = global$a();
       var domParser = global$7({}, schema);
       var text = '';
       var shortEndedElements = schema.getShortEndedElements();
-      var ignoreElements = global$4.makeMap('script noscript style textarea video audio iframe object', ' ');
+      var ignoreElements = global$5.makeMap('script noscript style textarea video audio iframe object', ' ');
       var blockElements = schema.getBlockElements();
-      function walk(node) {
+      var walk = function (node) {
         var name = node.name, currentNode = node;
         if (name === 'br') {
           text += '\n';
@@ -438,18 +469,18 @@
             text += '\n';
           }
         }
-      }
+      };
       html = filter$1(html, [/<!\[[^\]]+\]>/g]);
       walk(domParser.parse(html));
       return text;
-    }
-    function trimHtml(html) {
-      function trimSpaces(all, s1, s2) {
+    };
+    var trimHtml = function (html) {
+      var trimSpaces = function (all, s1, s2) {
         if (!s1 && !s2) {
           return ' ';
         }
         return nbsp;
-      }
+      };
       html = filter$1(html, [
         /^[\s\S]*<body[^>]*>\s*|\s*<\/body[^>]*>[\s\S]*$/ig,
         /<!--StartFragment-->|<!--EndFragment-->/g,
@@ -461,25 +492,36 @@
         /<br>$/i
       ]);
       return html;
-    }
-    function createIdGenerator(prefix) {
+    };
+    var createIdGenerator = function (prefix) {
       var count = 0;
       return function () {
         return prefix + count++;
       };
-    }
-    var isMsEdge = function () {
-      return domGlobals.navigator.userAgent.indexOf(' Edge/') !== -1;
+    };
+    var getImageMimeType = function (ext) {
+      var lowerExt = ext.toLowerCase();
+      var mimeOverrides = {
+        jpg: 'jpeg',
+        jpe: 'jpeg',
+        jfi: 'jpeg',
+        jif: 'jpeg',
+        jfif: 'jpeg',
+        pjpeg: 'jpeg',
+        pjp: 'jpeg',
+        svg: 'svg+xml'
+      };
+      return global$5.hasOwn(mimeOverrides, lowerExt) ? 'image/' + mimeOverrides[lowerExt] : 'image/' + lowerExt;
     };
 
-    function isWordContent(content) {
-      return /<font face="Times New Roman"|class="?Mso|style="[^"]*\bmso-|style='[^'']*\bmso-|w:WordDocument/i.test(content) || /class="OutlineElement/.test(content) || /id="?docs\-internal\-guid\-/.test(content);
-    }
-    function isNumericList(text) {
-      var found, patterns;
-      patterns = [
-        /^[IVXLMCD]{1,2}\.[ \u00a0]/,
-        /^[ivxlmcd]{1,2}\.[ \u00a0]/,
+    var isWordContent = function (content) {
+      return /<font face="Times New Roman"|class="?Mso|style="[^"]*\bmso-|style='[^']*\bmso-|w:WordDocument/i.test(content) || /class="OutlineElement/.test(content) || /id="?docs\-internal\-guid\-/.test(content);
+    };
+    var isNumericList = function (text) {
+      var found;
+      var patterns = [
+        /^[IVXLMCD]+\.[ \u00a0]/,
+        /^[ivxlmcd]+\.[ \u00a0]/,
         /^[a-z]{1,2}[\.\)][ \u00a0]/,
         /^[A-Z]{1,2}[\.\)][ \u00a0]/,
         /^[0-9]+\.[ \u00a0]/,
@@ -487,20 +529,20 @@
         /^[\u58f1\u5f10\u53c2\u56db\u4f0d\u516d\u4e03\u516b\u4e5d\u62fe]+\.[ \u00a0]/
       ];
       text = text.replace(/^[\u00a0 ]+/, '');
-      global$4.each(patterns, function (pattern) {
+      global$5.each(patterns, function (pattern) {
         if (pattern.test(text)) {
           found = true;
           return false;
         }
       });
       return found;
-    }
-    function isBulletList(text) {
+    };
+    var isBulletList = function (text) {
       return /^[\s\u00a0]*[\u2022\u00b7\u00a7\u25CF]\s*/.test(text);
-    }
-    function convertFakeListsToProperLists(node) {
+    };
+    var convertFakeListsToProperLists = function (node) {
       var currentListNode, prevListNode, lastLevel = 1;
-      function getText(node) {
+      var getText = function (node) {
         var txt = '';
         if (node.type === 3) {
           return node.value;
@@ -511,8 +553,8 @@
           } while (node = node.next);
         }
         return txt;
-      }
-      function trimListStart(node, regExp) {
+      };
+      var trimListStart = function (node, regExp) {
         if (node.type === 3) {
           if (regExp.test(node.value)) {
             node.value = node.value.replace(regExp, '');
@@ -527,8 +569,8 @@
           } while (node = node.next);
         }
         return true;
-      }
-      function removeIgnoredNodes(node) {
+      };
+      var removeIgnoredNodes = function (node) {
         if (node._listIgnore) {
           node.remove();
           return;
@@ -538,8 +580,8 @@
             removeIgnoredNodes(node);
           } while (node = node.next);
         }
-      }
-      function convertParagraphToLi(paragraphNode, listName, start) {
+      };
+      var convertParagraphToLi = function (paragraphNode, listName, start) {
         var level = paragraphNode._listLevel || lastLevel;
         if (level !== lastLevel) {
           if (level < lastLevel) {
@@ -570,7 +612,7 @@
         trimListStart(paragraphNode, /^\u00a0+/);
         trimListStart(paragraphNode, /^\s*([\u2022\u00b7\u00a7\u25CF]|\w+\.)/);
         trimListStart(paragraphNode, /^\u00a0+/);
-      }
+      };
       var elements = [];
       var child = node.firstChild;
       while (typeof child !== 'undefined' && child !== null) {
@@ -609,11 +651,11 @@
           currentListNode = null;
         }
       }
-    }
-    function filterStyles(editor, validStyles, node, styleValue) {
+    };
+    var filterStyles = function (editor, validStyles, node, styleValue) {
       var outputStyles = {}, matches;
       var styles = editor.dom.parseStyle(styleValue);
-      global$4.each(styles, function (value, name) {
+      global$5.each(styles, function (value, name) {
         switch (name) {
         case 'mso-list':
           matches = /\w+ \w+([0-9]+)/i.exec(styleValue);
@@ -676,12 +718,12 @@
         return outputStyles;
       }
       return null;
-    }
+    };
     var filterWordContent = function (editor, content) {
-      var retainStyleProperties, validStyles;
-      retainStyleProperties = getRetainStyleProps(editor);
+      var validStyles;
+      var retainStyleProperties = getRetainStyleProps(editor);
       if (retainStyleProperties) {
-        validStyles = global$4.makeMap(retainStyleProperties.split(/[, ]/));
+        validStyles = global$5.makeMap(retainStyleProperties.split(/[, ]/));
       }
       content = filter$1(content, [
         /<br class="?Apple-interchange-newline"?>/gi,
@@ -708,7 +750,7 @@
         valid_elements: validElements,
         valid_children: '-li[p]'
       });
-      global$4.each(schema.elements, function (rule) {
+      global$5.each(schema.elements, function (rule) {
         if (!rule.attributes.class) {
           rule.attributes.class = {};
           rule.attributesOrder.push('class');
@@ -780,7 +822,7 @@
       if (shouldConvertWordFakeLists(editor)) {
         convertFakeListsToProperLists(rootNode);
       }
-      content = global$8({ validate: editor.settings.validate }, schema).serialize(rootNode);
+      content = global$8({ validate: getValidate(editor) }, schema).serialize(rootNode);
       return content;
     };
     var preProcess = function (editor, content) {
@@ -790,15 +832,15 @@
     var preProcess$1 = function (editor, html) {
       var parser = global$7({}, editor.schema);
       parser.addNodeFilter('meta', function (nodes) {
-        global$4.each(nodes, function (node) {
-          return node.remove();
+        global$5.each(nodes, function (node) {
+          node.remove();
         });
       });
       var fragment = parser.parse(html, {
         forced_root_block: false,
         isRootContent: true
       });
-      return global$8({ validate: editor.settings.validate }, editor.schema).serialize(fragment);
+      return global$8({ validate: getValidate(editor) }, editor.schema).serialize(fragment);
     };
     var processResult = function (content, cancelled) {
       return {
@@ -836,8 +878,10 @@
     var isAbsoluteUrl = function (url) {
       return /^https?:\/\/[\w\?\-\/+=.&%@~#]+$/i.test(url);
     };
-    var isImageUrl = function (url) {
-      return isAbsoluteUrl(url) && /.(gif|jpe?g|png)$/.test(url);
+    var isImageUrl = function (editor, url) {
+      return isAbsoluteUrl(url) && exists(getAllowedImageFileTypes(editor), function (type) {
+        return endsWith(url.toLowerCase(), '.' + type.toLowerCase());
+      });
     };
     var createImage = function (editor, url, pasteHtmlFn) {
       editor.undoManager.extra(function () {
@@ -859,10 +903,10 @@
       return editor.selection.isCollapsed() === false && isAbsoluteUrl(html) ? createLink(editor, html, pasteHtmlFn) : false;
     };
     var insertImage = function (editor, html, pasteHtmlFn) {
-      return isImageUrl(html) ? createImage(editor, html, pasteHtmlFn) : false;
+      return isImageUrl(editor, html) ? createImage(editor, html, pasteHtmlFn) : false;
     };
     var smartInsertContent = function (editor, html) {
-      global$4.each([
+      global$5.each([
         linkSelection,
         insertImage,
         pasteHtml
@@ -887,10 +931,12 @@
     var isNewline = function (text, idx) {
       return idx < text.length && idx >= 0 ? isNewLineChar(text[idx]) : false;
     };
-    var normalizeWhitespace = function (text) {
-      var result = foldl(text, function (acc, c) {
+    var normalizeWhitespace = function (editor, text) {
+      var tabSpace = repeat(' ', getTabSpaces(editor));
+      var normalizedText = text.replace(/\t/g, tabSpace);
+      var result = foldl(normalizedText, function (acc, c) {
         if (isCollapsibleWhitespace(c) || c === nbsp) {
-          if (acc.pcIsSpace || acc.str === '' || acc.str.length === text.length - 1 || isNewline(text, acc.str.length + 1)) {
+          if (acc.pcIsSpace || acc.str === '' || acc.str.length === normalizedText.length - 1 || isNewline(normalizedText, acc.str.length + 1)) {
             return {
               pcIsSpace: false,
               str: acc.str + nbsp
@@ -926,8 +972,8 @@
     };
     var pasteText = function (editor, text) {
       var encodedText = editor.dom.encode(text).replace(/\r\n/g, '\n');
-      var normalizedText = normalizeWhitespace(encodedText);
-      var html = convert(normalizedText, editor.settings.forced_root_block, editor.settings.forced_root_block_attrs);
+      var normalizedText = normalizeWhitespace(editor, encodedText);
+      var html = convert(normalizedText, getForcedRootBlock(editor), getForcedRootBlockAttrs(editor));
       doPaste(editor, html, false, true);
     };
     var getDataTransferItems = function (dataTransfer) {
@@ -956,8 +1002,7 @@
       return items;
     };
     var getClipboardContent = function (editor, clipboardEvent) {
-      var content = getDataTransferItems(clipboardEvent.clipboardData || editor.getDoc().dataTransfer);
-      return isMsEdge() ? global$4.extend(content, { 'text/html': '' }) : content;
+      return getDataTransferItems(clipboardEvent.clipboardData || editor.getDoc().dataTransfer);
     };
     var hasContentType = function (clipboardContent, mimeType) {
       return mimeType in clipboardContent && clipboardContent[mimeType].length > 0;
@@ -979,26 +1024,30 @@
         };
       }
     };
-    var isValidDataUriImage = function (settings, imgElm) {
-      return settings.images_dataimg_filter ? settings.images_dataimg_filter(imgElm) : true;
+    var isValidDataUriImage = function (editor, imgElm) {
+      var filter = getImagesDataImgFilter(editor);
+      return filter ? filter(imgElm) : true;
     };
     var extractFilename = function (editor, str) {
-      var m = str.match(/([\s\S]+?)\.(?:jpeg|jpg|png|gif)$/i);
-      return m ? editor.dom.encode(m[1]) : null;
+      var m = str.match(/([\s\S]+?)(?:\.[a-z0-9.]+)$/i);
+      return isNonNullable(m) ? editor.dom.encode(m[1]) : null;
     };
     var uniqueId = createIdGenerator('mceclip');
     var pasteImage = function (editor, imageItem) {
       var _a = parseDataUri(imageItem.uri), base64 = _a.data, type = _a.type;
       var id = uniqueId();
-      var name = editor.settings.images_reuse_filename && imageItem.blob.name ? extractFilename(editor, imageItem.blob.name) : id;
-      var img = new domGlobals.Image();
+      var file = imageItem.blob;
+      var img = new Image();
       img.src = imageItem.uri;
-      if (isValidDataUriImage(editor.settings, img)) {
+      if (isValidDataUriImage(editor, img)) {
         var blobCache = editor.editorUpload.blobCache;
         var blobInfo = void 0;
         var existingBlobInfo = blobCache.getByData(base64, type);
         if (!existingBlobInfo) {
-          blobInfo = blobCache.create(id, imageItem.blob, base64, name);
+          var useFileName = getImagesReuseFilename(editor) && isNonNullable(file.name);
+          var name_1 = useFileName ? extractFilename(editor, file.name) : id;
+          var filename = useFileName ? file.name : undefined;
+          blobInfo = blobCache.create(id, file, base64, name_1, filename);
           blobCache.add(blobInfo);
         } else {
           blobInfo = existingBlobInfo;
@@ -1011,10 +1060,13 @@
     var isClipboardEvent = function (event) {
       return event.type === 'paste';
     };
-    var readBlobsAsDataUris = function (items) {
+    var isDataTransferItem = function (item) {
+      return isNonNullable(item.getAsFile);
+    };
+    var readFilesAsDataUris = function (items) {
       return global$3.all(map(items, function (item) {
         return new global$3(function (resolve) {
-          var blob = item.getAsFile ? item.getAsFile() : item;
+          var blob = isDataTransferItem(item) ? item.getAsFile() : item;
           var reader = new window.FileReader();
           reader.onload = function () {
             resolve({
@@ -1026,27 +1078,32 @@
         });
       }));
     };
-    var getImagesFromDataTransfer = function (dataTransfer) {
+    var isImage = function (editor) {
+      var allowedExtensions = getAllowedImageFileTypes(editor);
+      return function (file) {
+        return startsWith(file.type, 'image/') && exists(allowedExtensions, function (extension) {
+          return getImageMimeType(extension) === file.type;
+        });
+      };
+    };
+    var getImagesFromDataTransfer = function (editor, dataTransfer) {
       var items = dataTransfer.items ? map(from$1(dataTransfer.items), function (item) {
         return item.getAsFile();
       }) : [];
       var files = dataTransfer.files ? from$1(dataTransfer.files) : [];
-      var images = filter(items.length > 0 ? items : files, function (file) {
-        return /^image\/(jpeg|png|gif|bmp)$/.test(file.type);
-      });
-      return images;
+      return filter(items.length > 0 ? items : files, isImage(editor));
     };
     var pasteImageData = function (editor, e, rng) {
       var dataTransfer = isClipboardEvent(e) ? e.clipboardData : e.dataTransfer;
-      if (editor.settings.paste_data_images && dataTransfer) {
-        var images = getImagesFromDataTransfer(dataTransfer);
+      if (getPasteDataImages(editor) && dataTransfer) {
+        var images = getImagesFromDataTransfer(editor, dataTransfer);
         if (images.length > 0) {
           e.preventDefault();
-          readBlobsAsDataUris(images).then(function (blobResults) {
+          readFilesAsDataUris(images).then(function (fileResults) {
             if (rng) {
               editor.selection.setRng(rng);
             }
-            each(blobResults, function (result) {
+            each(fileResults, function (result) {
               pasteImage(editor, result);
             });
           });
@@ -1057,30 +1114,30 @@
     };
     var isBrokenAndroidClipboardEvent = function (e) {
       var clipboardData = e.clipboardData;
-      return domGlobals.navigator.userAgent.indexOf('Android') !== -1 && clipboardData && clipboardData.items && clipboardData.items.length === 0;
+      return navigator.userAgent.indexOf('Android') !== -1 && clipboardData && clipboardData.items && clipboardData.items.length === 0;
     };
     var isKeyboardPasteEvent = function (e) {
-      return global$5.metaKeyPressed(e) && e.keyCode === 86 || e.shiftKey && e.keyCode === 45;
+      return global$4.metaKeyPressed(e) && e.keyCode === 86 || e.shiftKey && e.keyCode === 45;
     };
     var registerEventHandlers = function (editor, pasteBin, pasteFormat) {
       var keyboardPasteEvent = value();
+      var keyboardPastePressed = value();
       var keyboardPastePlainTextState;
+      editor.on('keyup', keyboardPastePressed.clear);
       editor.on('keydown', function (e) {
-        function removePasteBinOnKeyUp(e) {
+        var removePasteBinOnKeyUp = function (e) {
           if (isKeyboardPasteEvent(e) && !e.isDefaultPrevented()) {
             pasteBin.remove();
           }
-        }
+        };
         if (isKeyboardPasteEvent(e) && !e.isDefaultPrevented()) {
           keyboardPastePlainTextState = e.shiftKey && e.keyCode === 86;
-          if (keyboardPastePlainTextState && global$1.webkit && domGlobals.navigator.userAgent.indexOf('Version/') !== -1) {
+          if (keyboardPastePlainTextState && global$1.webkit && navigator.userAgent.indexOf('Version/') !== -1) {
             return;
           }
           e.stopImmediatePropagation();
           keyboardPasteEvent.set(e);
-          window.setTimeout(function () {
-            keyboardPasteEvent.clear();
-          }, 100);
+          keyboardPastePressed.set(true);
           if (global$1.ie && keyboardPastePlainTextState) {
             e.preventDefault();
             firePaste(editor, true);
@@ -1094,8 +1151,8 @@
           });
         }
       });
-      function insertClipboardContent(clipboardContent, isKeyBoardPaste, plainTextMode, internal) {
-        var content, isPlainTextHtml, isImage;
+      var insertClipboardContent = function (editor, clipboardContent, isKeyBoardPaste, plainTextMode, internal) {
+        var content;
         if (hasContentType(clipboardContent, 'text/html')) {
           content = clipboardContent['text/html'];
         } else {
@@ -1107,12 +1164,12 @@
         }
         content = trimHtml(content);
         pasteBin.remove();
-        isPlainTextHtml = internal === false && isPlainText(content);
-        isImage = isImageUrl(content);
-        if (!content.length || isPlainTextHtml && !isImage) {
+        var isPlainTextHtml = internal === false && isPlainText(content);
+        var isAbsoluteUrl$1 = isAbsoluteUrl(content);
+        if (!content.length || isPlainTextHtml && !isAbsoluteUrl$1) {
           plainTextMode = true;
         }
-        if (plainTextMode || isImage) {
+        if (plainTextMode || isAbsoluteUrl$1) {
           if (hasContentType(clipboardContent, 'text/plain') && isPlainTextHtml) {
             content = clipboardContent['text/plain'];
           } else {
@@ -1130,12 +1187,15 @@
         } else {
           pasteHtml$1(editor, content, internal);
         }
-      }
+      };
       var getLastRng = function () {
         return pasteBin.getLastRng() || editor.selection.getRng();
       };
       editor.on('paste', function (e) {
-        var isKeyBoardPaste = keyboardPasteEvent.isSet();
+        var isKeyboardPaste = keyboardPasteEvent.isSet() || keyboardPastePressed.isSet();
+        if (isKeyboardPaste) {
+          keyboardPasteEvent.clear();
+        }
         var clipboardContent = getClipboardContent(editor, e);
         var plainTextMode = pasteFormat.get() === 'text' || keyboardPastePlainTextState;
         var internal = hasContentType(clipboardContent, internalHtmlMime());
@@ -1148,10 +1208,10 @@
           pasteBin.remove();
           return;
         }
-        if (!isKeyBoardPaste) {
+        if (!isKeyboardPaste) {
           e.preventDefault();
         }
-        if (global$1.ie && (!isKeyBoardPaste || e.ieFake) && !hasContentType(clipboardContent, 'text/html')) {
+        if (global$1.ie && (!isKeyboardPaste || e.ieFake) && !hasContentType(clipboardContent, 'text/html')) {
           pasteBin.create();
           editor.dom.bind(pasteBin.getEl(), 'paste', function (e) {
             e.stopPropagation();
@@ -1164,10 +1224,10 @@
           if (!internal) {
             internal = isMarked(clipboardContent['text/html']);
           }
-          insertClipboardContent(clipboardContent, isKeyBoardPaste, plainTextMode, internal);
+          insertClipboardContent(editor, clipboardContent, isKeyboardPaste, plainTextMode, internal);
         } else {
           global$2.setEditorTimeout(editor, function () {
-            insertClipboardContent(clipboardContent, isKeyBoardPaste, plainTextMode, internal);
+            insertClipboardContent(editor, clipboardContent, isKeyboardPaste, plainTextMode, internal);
           }, 0);
         }
       });
@@ -1190,7 +1250,7 @@
         var isDataUri = function (src) {
           return src.indexOf('data:') === 0;
         };
-        if (!editor.settings.paste_data_images && isPasteInsert(args)) {
+        if (!getPasteDataImages(editor) && isPasteInsert(args)) {
           var i = nodes.length;
           while (i--) {
             src = nodes[i].attr('src');
@@ -1199,7 +1259,7 @@
             }
             if (isWebKitFakeUrl(src)) {
               remove(nodes[i]);
-            } else if (!editor.settings.allow_html_data_urls && isDataUri(src)) {
+            } else if (!getAllowHtmlDataUrls(editor) && isDataUri(src)) {
               remove(nodes[i]);
             }
           }
@@ -1208,7 +1268,7 @@
     };
 
     var getPasteBinParent = function (editor) {
-      return global$1.ie && editor.inline ? domGlobals.document.body : editor.getBody();
+      return global$1.ie && editor.inline ? document.body : editor.getBody();
     };
     var isExternalPasteBin = function (editor) {
       return getPasteBinParent(editor) !== editor.getBody();
@@ -1224,9 +1284,8 @@
     };
     var create = function (editor, lastRngCell, pasteBinDefaultContent) {
       var dom = editor.dom, body = editor.getBody();
-      var pasteBinElm;
       lastRngCell.set(editor.selection.getRng());
-      pasteBinElm = editor.dom.add(getPasteBinParent(editor), 'div', {
+      var pasteBinElm = editor.dom.add(getPasteBinParent(editor), 'div', {
         'id': 'mcepastebin',
         'class': 'mce-pastebin',
         'contentEditable': true,
@@ -1261,21 +1320,20 @@
       return editor.dom.get('mcepastebin');
     };
     var getHtml = function (editor) {
-      var pasteBinElm, pasteBinClones, i, dirtyWrappers, cleanWrapper;
       var copyAndRemove = function (toElm, fromElm) {
         toElm.appendChild(fromElm);
         editor.dom.remove(fromElm, true);
       };
-      pasteBinClones = global$4.grep(getPasteBinParent(editor).childNodes, function (elm) {
+      var pasteBinClones = global$5.grep(getPasteBinParent(editor).childNodes, function (elm) {
         return elm.id === 'mcepastebin';
       });
-      pasteBinElm = pasteBinClones.shift();
-      global$4.each(pasteBinClones, function (pasteBinClone) {
+      var pasteBinElm = pasteBinClones.shift();
+      global$5.each(pasteBinClones, function (pasteBinClone) {
         copyAndRemove(pasteBinElm, pasteBinClone);
       });
-      dirtyWrappers = editor.dom.select('div[id=mcepastebin]', pasteBinElm);
-      for (i = dirtyWrappers.length - 1; i >= 0; i--) {
-        cleanWrapper = editor.dom.create('div');
+      var dirtyWrappers = editor.dom.select('div[id=mcepastebin]', pasteBinElm);
+      for (var i = dirtyWrappers.length - 1; i >= 0; i--) {
+        var cleanWrapper = editor.dom.create('div');
         pasteBinElm.insertBefore(cleanWrapper, dirtyWrappers[i]);
         copyAndRemove(cleanWrapper, dirtyWrappers[i]);
       }
@@ -1344,8 +1402,33 @@
       };
     };
 
+    var togglePlainTextPaste = function (editor, clipboard) {
+      if (clipboard.pasteFormat.get() === 'text') {
+        clipboard.pasteFormat.set('html');
+        firePastePlainTextToggle(editor, false);
+      } else {
+        clipboard.pasteFormat.set('text');
+        firePastePlainTextToggle(editor, true);
+      }
+      editor.focus();
+    };
+
+    var register = function (editor, clipboard) {
+      editor.addCommand('mceTogglePlainTextPaste', function () {
+        togglePlainTextPaste(editor, clipboard);
+      });
+      editor.addCommand('mceInsertClipboardContent', function (ui, value) {
+        if (value.content) {
+          clipboard.pasteHtml(value.content, value.internal);
+        }
+        if (value.text) {
+          clipboard.pasteText(value.text);
+        }
+      });
+    };
+
     var hasWorkingClipboardApi = function (clipboardData) {
-      return global$1.iOS === false && clipboardData !== undefined && typeof clipboardData.setData === 'function' && isMsEdge() !== true;
+      return global$1.iOS === false && typeof (clipboardData === null || clipboardData === void 0 ? void 0 : clipboardData.setData) === 'function';
     };
     var setHtml5Clipboard = function (clipboardData, html, text) {
       if (hasWorkingClipboardApi(clipboardData)) {
@@ -1415,7 +1498,7 @@
       return function (evt) {
         if (hasSelectedContent(editor)) {
           setClipboardData(evt, getData(editor), fallback(editor), function () {
-            if (global$1.browser.isChrome()) {
+            if (global$1.browser.isChrome() || global$1.browser.isFirefox()) {
               var rng_1 = editor.selection.getRng();
               global$2.setEditorTimeout(editor, function () {
                 editor.selection.setRng(rng_1);
@@ -1431,8 +1514,7 @@
     var copy = function (editor) {
       return function (evt) {
         if (hasSelectedContent(editor)) {
-          setClipboardData(evt, getData(editor), fallback(editor), function () {
-          });
+          setClipboardData(evt, getData(editor), fallback(editor), noop);
         }
       };
     };
@@ -1470,12 +1552,11 @@
         });
       }
       editor.on('drop', function (e) {
-        var dropContent, rng;
-        rng = getCaretRangeFromEvent(editor, e);
+        var rng = getCaretRangeFromEvent(editor, e);
         if (e.isDefaultPrevented() || draggingInternallyState.get()) {
           return;
         }
-        dropContent = clipboard.getDataTransferItems(e.dataTransfer);
+        var dropContent = clipboard.getDataTransferItems(e.dataTransfer);
         var internal = clipboard.hasContentType(dropContent, internalHtmlMime());
         if ((!clipboard.hasHtmlOrText(dropContent) || isPlainTextFileUrl(dropContent)) && clipboard.pasteImageData(e, rng)) {
           return;
@@ -1531,22 +1612,22 @@
       }
     };
 
-    function addPreProcessFilter(editor, filterFunc) {
+    var addPreProcessFilter = function (editor, filterFunc) {
       editor.on('PastePreProcess', function (e) {
         e.content = filterFunc(editor, e.content, e.internal, e.wordContent);
       });
-    }
-    function addPostProcessFilter(editor, filterFunc) {
+    };
+    var addPostProcessFilter = function (editor, filterFunc) {
       editor.on('PastePostProcess', function (e) {
         filterFunc(editor, e.node);
       });
-    }
-    function removeExplorerBrElementsAfterBlocks(editor, html) {
+    };
+    var removeExplorerBrElementsAfterBlocks = function (editor, html) {
       if (!isWordContent(html)) {
         return html;
       }
       var blockElements = [];
-      global$4.each(editor.schema.getBlockElements(), function (block, blockName) {
+      global$5.each(editor.schema.getBlockElements(), function (block, blockName) {
         blockElements.push(blockName);
       });
       var explorerBlocksRegExp = new RegExp('(?:<br>&nbsp;[\\s\\r\\n]+|<br>)*(<\\/?(' + blockElements.join('|') + ')[^>]*>)(?:<br>&nbsp;[\\s\\r\\n]+|<br>)*', 'g');
@@ -1569,8 +1650,8 @@
         ]
       ]);
       return html;
-    }
-    function removeWebKitStyles(editor, content, internal, isWordHtml) {
+    };
+    var removeWebKitStyles = function (editor, content, internal, isWordHtml) {
       if (isWordHtml || internal) {
         return content;
       }
@@ -1613,12 +1694,12 @@
         return before + ' style="' + value + '"' + after;
       });
       return content;
-    }
-    function removeUnderlineAndFontInAnchor(editor, root) {
+    };
+    var removeUnderlineAndFontInAnchor = function (editor, root) {
       editor.$('a', root).find('font,u').each(function (i, node) {
         editor.dom.remove(node, true);
       });
-    }
+    };
     var setup$2 = function (editor) {
       if (global$1.webkit) {
         addPreProcessFilter(editor, removeWebKitStyles);
@@ -1680,4 +1761,4 @@
 
     Plugin();
 
-}(window));
+}());
