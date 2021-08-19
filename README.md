@@ -4,7 +4,7 @@
 
 * It has the same GPL3  license (Licenses of plugins are to be observed) - there ist also a Wikipedia article https://en.wikipedia.org/wiki/CMSimple about Cmsimple
 
-* It needs at least php 5.6+ (not php 5.3 !)  and is tested with php 7.4
+* You should use at least php 7.0 (not php 5.3 !),  and it is tested with php 7.4 and php 8.0
 
 * It offers both tinymce 4.91 (with bootstrap - plugins under configuration : flexible) and 
 
