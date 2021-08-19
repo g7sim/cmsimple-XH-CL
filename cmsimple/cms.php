@@ -1184,11 +1184,11 @@ XH_buildHc();
  * Newsbox text titled 'Site/CMS Info' will appear at the beginning
  * of the generated page.
  */
-if ($su == uenc('site/cms info')) {
-    $f = $title = 'Site/CMS Info';
+if ($su == uenc('site cms info')) {
+    $f = $title = 'CMS Info';
     $s = -1;
     $o .= '<h1>' . $title . '</h1>';
-    $o .= newsbox('Site/CMS Info') . XH_poweredBy();
+    $o .= newsbox('CMS Info') . XH_poweredBy();
 }
 
 if (XH_ADM) {
