@@ -274,8 +274,8 @@ function searchbox()
 {
     global $sn, $tx;
 
-    return '<form id="searchbox" action="' . $sn . '" method="get">' . "\n"
-        . '<input type="search" class="text" name="search" title="'
+       return '<form id="searchbox" action="' . $sn . '" method="post">' . "\n"
+        . '<input type="text" id="searchfield" class="text" name="search" title="'
         . $tx['search']['label'] . '" placeholder="' . $tx['search']['label']
         . '" size="12">' . "\n"
         . '<input type="hidden" name="function" value="search">' . "\n" . ' '
