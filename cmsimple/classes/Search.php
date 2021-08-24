@@ -214,7 +214,7 @@ class Search
                 $pageData = $pd_router->find_page($i);
                 $site = isset($pageData['title']) ? $pageData['title'] : '';
                 $title = XH_title($site, $h[$i]);
-                $url = $sn . '?' . $u[$i] . '&amp;search=' . urlencode($words);
+                $url = $sn . $u[$i] . '&amp;search=' . urlencode($words);
                 $o .= '    <li><a href="' . $url . '">' . $title . '</a>';
                 $description = isset($pageData['description'])
                     ? $pageData['description'] : '';
