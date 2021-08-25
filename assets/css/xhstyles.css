@@ -11,6 +11,24 @@ body.xh_login div.xh_login {
     margin: 2em auto 0 auto;
 }
 
+div.xh_login h1 {}
+
+div.xh_login a{color:gray;text-decoration:none; border:1px gray solid;border-radius:4px;
+padding-left:4px;padding-right:4px;}
+
+div.xh_login a:before{content: "«  ";
+  color: gray; 
+  }
+
+div.xh_login{border:1px lightgray outset;border-radius:5px;
+padding:20px;
+box-shadow: 0 3px 20px 0 rgba(0,0,0,.1);
+-moz-box-shadow: 0 3px 20px 0 rgba(0,0,0,.1);
+-webkit-box-shadow: 0 3px 20px 0 rgba(0,0,0,.1);
+-o-box-shadow: 0 3px 20px 0 rgba(0,0,0,.1);
+-ms-box-shadow: 0 3px 20px 0 rgba(0,0,0,.1);
+}
+
 /*
  * Adminmenu
  */

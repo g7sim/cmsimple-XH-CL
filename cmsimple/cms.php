@@ -235,6 +235,7 @@ $pth['folder']['base'] = is_dir('./cmsimple') ? './' : '../';
 $pth['folder']['cmsimple'] = $pth['folder']['base'] . 'cmsimple/';
 $pth['folder']['classes'] = $pth['folder']['cmsimple'] . 'classes/';
 $pth['folder']['plugins'] = $pth['folder']['base'] . 'plugins/';
+$pth['folder']['assets'] = $pth['folder']['base'] . 'assets/';
 
 $pth['file']['log'] = $pth['folder']['cmsimple'] . 'log.txt';
 $pth['file']['cms'] = $pth['folder']['cmsimple'] . 'cms.php';
