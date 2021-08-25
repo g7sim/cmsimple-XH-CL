@@ -22,7 +22,7 @@ box-shadow: 0 3px 20px 0 rgba(0,0,0,.1);
 -ms-box-shadow: 0 3px 20px 0 rgba(0,0,0,.1);
 }
 
-
+input.submit{margin-left:4px;}
 /*
  * Adminmenu
  */
