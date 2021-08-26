@@ -8,9 +8,9 @@
   plugins: [
     "advlist anchor autolink autosave charmap code colorpicker contextmenu emoticons fullscreen hr",
     "image importcss insertdatetime link lists media nonbreaking paste",
-    "save searchreplace table textcolor visualblocks visualchars wordcount fontawesome iconfonts xhplugincall bootstrap3grid bootstrap4grid bootstrap"
+    "save searchreplace table textcolor visualblocks visualchars wordcount fontawesome iconfonts xhplugincall bootstrap3grid bootstrap4grid bootstrap mathslate"
   ],
-  toolbar: "save | fullscreen | code | formatselect | fontselect | fontsizeselect | styleselect | bold | italic | underline | strikethrough | alignleft |aligncenter | alignright | alignjustify | cut | copy | paste | pastetext | bullist | numlist | outdent | indent | blockquote | undo | redo | link | unlink |anchor | image | media | hr | nonbreaking | removeformat | visualblocks | visualchars | forecolor | backcolor | searchreplace | charmap | emoticons | subscript | superscript | table | inserttime | fontawesome | iconfonts | xhplugincall | bootstrap3grid | bootstrap4grid | bootstrap",
+  toolbar: "save | fullscreen | code | formatselect | fontselect | fontsizeselect | styleselect | bold | italic | underline | strikethrough | alignleft |aligncenter | alignright | alignjustify | cut | copy | paste | pastetext | bullist | numlist | outdent | indent | blockquote | undo | redo | link | unlink |anchor | image | media | hr | nonbreaking | removeformat | visualblocks | visualchars | forecolor | backcolor | searchreplace | charmap | emoticons | subscript | superscript | table | inserttime | fontawesome | iconfonts | xhplugincall | bootstrap3grid | bootstrap4grid | bootstrap | mathslate",
   image_advtab: true,
   image_title: true,
   file_browser_callback : "%FILEBROWSER_CALLBACK%",
