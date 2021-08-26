@@ -160,3 +160,5 @@
 }
 
 i.mce-ico.mce-i-flag:before{ content: url('../fontawesome.png')} 
+span.mce-fontawesome-panel-accordion-indicator.fa-chevron-down:before{ content: ">"; }
+span.mce-fontawesome-panel-accordion-indicator.fa-chevron-right:before{ content: ">"; }
