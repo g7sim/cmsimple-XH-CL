@@ -158,3 +158,5 @@
 .mce-i-flag:before {
 	content: "\f024"
 }
+
+i.mce-ico.mce-i-flag:before{ content: url('../fontawesome.png')} 

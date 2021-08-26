@@ -159,4 +159,4 @@
 	content: "\f024"
 }
 
-.mce-ico.mce-i-flag:before{ content: url('../fontawesome.png')} 
+i.mce-ico.mce-i-flag:before{ content: url('../fontawesome.png')} 
