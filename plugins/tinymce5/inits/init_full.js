@@ -11,7 +11,7 @@
     "xhplugincall":"%CMSIMPLE_ROOT%plugins/tinymce5/tinymce/plugins/xhplugincall/plugin.min.js",
 	"fontawesomepicker": "%CMSIMPLE_ROOT%plugins/tinymce5/tinymce/plugins/fontawesomepicker/plugin.js"
   },
-  fontawesomeUrl: 'https://www.unpkg.com/@fortawesome/fontawesome-free@5.13.0/css/all.min.css',
+  fontawesomeUrl: 'https://www.unpkg.com/@fortawesome/fontawesome-free@5.15.4/css/all.min.css',
   toolbar1: "save | fullscreen code formatselect fontselect fontsizeselect styleselect",
   toolbar2: "bold italic underline strikethrough | alignleft aligncenter alignright alignjustify cut copy paste pastetext | bullist numlist outdent indent blockquote",
   toolbar3: "undo redo | link unlink anchor image media | hr nonbreaking removeformat visualblocks visualchars | forecolor backcolor | searchreplace | charmap",
