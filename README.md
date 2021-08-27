@@ -24,7 +24,7 @@
 
 * The final version will have a different admin-ui and other templates inklusive Bootstrap ( https://github.com/g7sim/Bootstrap3-XH  and https://github.com/g7sim/Bootstrap4-XH ) and https://github.com/g7sim/Smartmenus-XH as You can find them in this git.
 
-* If You find bugs, please make an issue (or post in the forum). You may also make a fork and a push with Your solution.
+* If You find bugs, please open an issue above. You may also make a fork and a push with Your solution.
 
 * For installation please see here above under Wiki
 
