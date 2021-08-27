@@ -26,4 +26,5 @@
 
 * If You find bugs, please make an issue (or post in the forum). You may also make a fork and a push with Your solution.
 
+* For installation please see here above under Wiki
 
