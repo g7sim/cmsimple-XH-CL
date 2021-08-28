@@ -24,6 +24,7 @@
 
 		init: function( editor ) {
 			var cls = editor.config.mathJaxClass || 'math-tex';
+editor.config.mathJaxLib = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML'; /**config**/
 
 			if ( !editor.config.mathJaxLib ) {
 				CKEDITOR.error( 'mathjax-no-config' );
@@ -476,3 +477,5 @@
  * @cfg {String} [mathJaxClass='math-tex']
  * @member CKEDITOR.config
  */
+
+ var matjs = new Script_loader(); matjs.load( './plugins/ckeditor/plugins_external/mathjax/MathJax.js' );
