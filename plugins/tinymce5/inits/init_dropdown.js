@@ -13,8 +13,8 @@
     "xhplugincall":"%CMSIMPLE_ROOT%plugins/tinymce5/tinymce/plugins/xhplugincall/plugin.min.js"
   },
   toolbar: [
-    'save | fullscreen | undo redo | styleselect | bold italic | link image',
-    'alignleft aligncenter alignright'
+    'save | fullscreen | undo redo | styleselect | bold italic | link unlink image',
+    'alignleft aligncenter alignright | bullist numlist'
   ],
   menubar: 'edit insert view format table tools help',
   menu: {
