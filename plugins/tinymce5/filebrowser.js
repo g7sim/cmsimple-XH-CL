@@ -12,9 +12,9 @@ function wrFilebrowser (callback, value, meta) {
         cmsURL = cmsURL + "&type=" + type;
     }
 
-    // FIXME: avoid the following two global variables!
+    // FIXME: avoid the following two global variables!(#511)
     filebrowsercallback = callback;
-    filebrowserwindow = tinymce.activeEditor.windowManager.open({
+    filebrowserwindow = tinymce.activeEditor.windowManager.openURL({
         title: "File Manager",
         size: 'medium',
         body: {
@@ -25,6 +25,8 @@ function wrFilebrowser (callback, value, meta) {
             }]
         },
         buttons: []
+	    width: 800,
+        url: cmsURL
     });
     return false;
 }
