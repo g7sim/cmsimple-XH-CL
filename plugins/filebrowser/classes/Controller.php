@@ -532,8 +532,9 @@ class Controller
             return;
         }
         if (!mkdir($folder)) {
-            $this->view->error('error_cant_create_folder');
-        }
+            $this->view->error('error_cant_create_folder'); return;
+        } 
+		chmod($folder, 0755);
         $this->view->success('success_folder_created', array(basename($folder)));
     }
 
