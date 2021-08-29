@@ -1,15 +1,13 @@
 <?php
 
 $script = '
-<script language="javascript" type="text/javascript">
-
+<script>
 
 var FileBrowserDialogue = {
 
     init : function () {
         // Nothing to do
     },
-
 
     submit : function (url) {
         var URL = url;
@@ -22,7 +20,6 @@ var FileBrowserDialogue = {
         top.tinymce.activeEditor.windowManager.close();
     }
 }
-
 
 function setLink(link){
 
