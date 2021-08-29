@@ -60,7 +60,8 @@ class Link
      * Linked anchor (URI fragment) is missing.
      */
     const STATUS_ANCHOR_MISSING = -6;
-
+    const STATUS_TEL = -7;
+    const STATUS_NOT_CHECKED = -8;	 
     /**
      * The URL.
      *
