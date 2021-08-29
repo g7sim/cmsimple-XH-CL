@@ -5,14 +5,12 @@
  * Creates the menu for the user to change
  * page-parameters per page.
  *
- * @category  CMSimple_XH
- * @package   Pageparams
  * @author    Martin Damken <kontakt@zeichenkombinat.de>
  * @author    Jerry Jakobsfeld <mail@simplesolutions.dk>
  * @author    The CMSimple_XH developers <devs@cmsimple-xh.org>
- * @copyright 2009-2017 The CMSimple_XH developers <http://cmsimple-xh.org/?The_Team>
+ * @copyright 2009-2019 The CMSimple_XH developers <http://cmsimple-xh.org/?The_Team>
  * @license   http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link      http://cmsimple-xh.org/
+ * @see       http://cmsimple-xh.org/
  */
 
 /**
@@ -21,9 +19,6 @@
  * @return string HTML
  *
  * @since 1.6
- *
- * @global array The paths of system files and folders.
- * @global array The localization of the plugins.
  */
 function Pageparams_hjs()
 {
@@ -76,11 +71,9 @@ function Pageparams_checkbox($name, $checked)
 /**
  * Returns the last edit radio group.
  *
- * @param int $value The current value.
+ * @param string $value The current value.
  *
  * @return string HTML
- *
- * @global array The localization of the plugins.
  *
  * @since 1.6
  */
@@ -90,7 +83,7 @@ function Pageparams_lastEditRadiogroup($value)
 
     $o = '';
     foreach (array('top' => 2, 'bottom' => 1, 'no' => 0) as $string => $number) {
-        $checked = $value == $number ? ' checked="checked"' : '';
+        $checked = (int) $value === $number ? ' checked="checked"' : '';
         $radio = '<input type="radio" name="show_last_edit"'
             . ' value="' . $number . '"' . $checked . '>';
         $o .= "\n\t\t" . '<label>' . $radio
@@ -103,11 +96,9 @@ function Pageparams_lastEditRadiogroup($value)
 /**
  * Returns the redirect radio group.
  *
- * @param int $value The current value.
+ * @param string $value The current value.
  *
  * @return string HTML
- *
- * @global array The localization of the plugins.
  *
  * @since 1.6
  */
@@ -118,7 +109,7 @@ function Pageparams_redirectRadiogroup($value)
     $o = '';
     $options = array('yes_new' => 2, 'yes_same' => 1, 'no' => 0);
     foreach ($options as $string => $number) {
-        $checked = $value == $number ? ' checked="checked"' : '';
+        $checked = (int) $value === $number ? ' checked="checked"' : '';
         $radio = '<input type="radio" name="use_header_location"'
             . ' value="' . $number . '"' . $checked . '>';
         $o .= "\n\t\t" . '<label>' . $radio
@@ -172,8 +163,6 @@ function Pageparams_scheduleInput($name, $value, $disabled)
  *
  * @return string HTML
  *
- * @global array The localization of the plugins.
- *
  * @since 1.6
  */
 function Pageparams_templateSelectbox(array $page)
@@ -208,8 +197,6 @@ function Pageparams_templateSelectbox(array $page)
  *
  * @return string HTML
  *
- * @global array The localization of the plugins.
- *
  * @since 1.6
  */
 function Pageparams_linkList($default, $disabled)
@@ -237,11 +224,6 @@ function Pageparams_linkList($default, $disabled)
  * @param array $page Page data of the current page.
  *
  * @return string HTML
- *
- * @global string The script name.
- * @global string The URL of the current page.
- * @global string Document fragment to insert into the HEAD element.
- * @global array  The localization of the plugins.
  */
 function Pageparams_view(array $page)
 {
