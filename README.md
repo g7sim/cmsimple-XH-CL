@@ -22,7 +22,7 @@
 
 * With <a href=https://https://github.com/TN03/hi_admin_xh> Hi Admin</a> you can edit more(to install make entry under Konfiguration), and most of the 1.7x - plugins function.
 
-* The RC - version contains FHS-templates and  several ( <a href=https://github.com/g7sim/Bootstrap3-XH> Bootstrap 3</a>- and <a href=https://https://github.com/g7sim/Bootstrap4-XH> Bootstrap 4 -</a> ) and <a href=https://https://github.com/g7sim/Smartmenus-XH> Smartmenus -</a> templatesas You also can find them in this git.
+* The RC - version contains FHS-templates and  several <a href=https://github.com/g7sim/Bootstrap3-XH> Bootstrap 3</a>- and <a href=https://https://github.com/g7sim/Bootstrap4-XH> Bootstrap 4 -</a>  and <a href=https://https://github.com/g7sim/Smartmenus-XH> Smartmenus -</a> templatesas You also can find them in this git.
 
 * If You find bugs, please open an issue above. You may also make a fork and a push with Your solution.
 
