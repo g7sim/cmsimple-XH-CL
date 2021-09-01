@@ -26,5 +26,5 @@
 
 * If You find bugs, please open an issue above. You may also make a fork and a push with Your solution.
 
-* For installation and other questions please see above under "Wiki":https://github.com/g7sim/cmsimple-XH-CL/wiki
+* For installation and other questions please see above under <a href=//https://github.com/g7sim/cmsimple-XH-CL/wiki>Wiki</a>
 
