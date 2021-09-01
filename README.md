@@ -14,7 +14,7 @@
 
 * The inbuilt  FA-Plugin uses Font Awesome 5.15 free.
 
-* This Cmsimple - version has an integrated full-backup from the Cmsimple_XH - forum ( start with : ...com/backup ). The zip  appears after a long while under userfiles (filebrowser), and is there ready for download.
+* This Cmsimple - version has an integrated full-backup from the Cmsimple_XH - forum (start with : ...com/backup). The resulting zip  appears after a long while under userfiles (filebrowser), and is there ready for download.
 
 * You may not use ( ) ] [ < = or ? in links ) - also for security reasons
 
