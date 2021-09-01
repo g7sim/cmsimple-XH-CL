@@ -181,8 +181,8 @@ class Mailform
         $this->mail->addHeader('X-Remote', sv('REMOTE_ADDR'));
         $this->mail->setSubject($this->subject);
         $this->mail->setMessage(
-            $tx['mailform']['sendername'] . $this->sendername . "\n"
-            . $tx['mailform']['senderphone'] . $this->senderphone . "\n\n"
+            rtrim($tx['mailform']['sendername'] . $this->sendername) . "\n"
+            . rtrim($tx['mailform']['senderphone'] . $this->senderphone) . "\n\n"
             . $this->mailform
         );
         $sent = $this->mail->send();
