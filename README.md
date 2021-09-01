@@ -16,9 +16,9 @@
 
 * This Cmsimple - version has an integrated full-backup from the Cmsimple_XH - forum (start with : ...com/backup). The resulting zip  appears after a long while under userfiles (filebrowser), and is there ready for download.
 
-* You may not use ( ) ] [ < = or ? in links ) - also for security reasons
+* You may not use ( ) ] [ < = or ? in links  - also for security reasons (htmlspecialchar)
 
-* It has  a limitation in WINDOWS (like Xampp etc.) :  URI-pathes which begin with /plugins or /cmsimple or /templates or   /content or /assets - which have their equivalent in first level of the CMS-directory-structure - are  not allowed in Windows - but function in the Web!) 
+* It has  a limitation in WINDOWS (like Xampp etc.) :  URI-pathes which begin with /plugins or /cmsimple or /templates or   /content or /assets - which have their equivalent in first level of the CMS-directory-structure - are  not allowed in Windows - but function in the Web!
 
 * With <a href=https://https://github.com/TN03/hi_admin_xh> Hi Admin</a> you can edit more(to install make entry under Konfiguration), and most of the 1.7x - plugins function.
 
