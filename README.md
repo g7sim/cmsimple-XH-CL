@@ -2,7 +2,7 @@
 
 * This git contains a  modified  Fork of Cmsimple XH 1.7.2 with clean urls and a http - security filter and several corrected issues until XH - version 1.74
 
-* It has the same GPL3  license (Licenses of plugins are to be observed), und there is also a Wikipedia article about the <a href=https://https://en.wikipedia.org/wiki/CMSimple> history of Cmsimple</a>
+* It has the same GPL3  license (Licenses of plugins are to be observed), und there is also a Wikipedia article about the <a href=https://en.wikipedia.org/wiki/CMSimple> history of Cmsimple</a>
 
 * You should use at least php 7.0 (not php 5.3 !),  and it is tested with php 7.4 and php 8.0
 
