@@ -75,4 +75,3 @@ $('[href^="#"]').addClass('cross').attr("onclick","return false");
 
 	})();					  
    
-$("span[data-toggle=popover]").popover();  
