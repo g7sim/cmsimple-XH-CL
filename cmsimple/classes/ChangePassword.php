@@ -115,7 +115,7 @@ class ChangePassword
         global $sn;
 
         return '<form id="xh_change_password" action="' . $sn
-            . '?&xh_change_password" method="post">'
+            . '&xh_change_password" method="post">'
             . $this->csrfProtector->tokenInput()
             . $this->renderField('old', $this->passwordOld)
             . $this->renderField('new', $this->passwordNew)
