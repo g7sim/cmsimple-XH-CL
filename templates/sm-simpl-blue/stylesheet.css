@@ -161,7 +161,7 @@ box-shadow: 0px 2px 7px -1px rgba(219,215,219,1); }
 /*  ----  search ---- */
 #search {display: inline-block;
     position:relative;
-    margin:8px 5px 8px;
+    margin:8px -15px 8px 5px;
 	}
 #searchfield {width:auto;}
 
