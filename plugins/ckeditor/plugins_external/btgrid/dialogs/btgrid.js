@@ -68,14 +68,14 @@ CKEDITOR.dialog.add( 'btgrid', function( editor ) {
             id: 'rowCount',
             type: 'text',
             width: '50px',
-            required: false,
+            required: true,
             label: lang.genNrRows,
             validate: validatorNum(lang.numRowsError),
             setup: function( widget ) {
-              widget.data.rowCount ? this.setValue( widget.data.rowCount ) : 1;
+              this.setValue( widget.data.rowCount );
             },
             commit: function( widget ) {
-              widget.setData( 'rowCount', this.getValue() ? this.getValue() : 1);
+              widget.setData( 'rowCount', this.getValue());
             }
           }
         ]

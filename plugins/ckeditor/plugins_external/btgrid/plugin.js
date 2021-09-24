@@ -18,7 +18,7 @@
        });
        editor.widgets.add('btgrid',
          {
-           allowedContent: 'div(!btgrid);div(!row,!row-*);div(!col-*-*);div(!btcontent)',
+           allowedContent: 'div(!btgrid);div(!row,!row-*);div(!col-*-*);div(!content)',
            requiredContent: 'div(btgrid)',
            parts: {
              btgrid: 'div.btgrid',
@@ -65,7 +65,7 @@
              var content = '<div class="row row-' + rowNumber + '">';
              for (var i = 1; i <= colCount; i++) {
                content = content + '<div class="col col-md-' + maxGridColumns/colCount + '">' +
-                                   '  <div class="btcontent">' +
+                                   '  <div class="content">' +
                                    '    <p>Col ' + i + ' content area</p>' +
                                    '  </div>' +
                                    '</div>';
