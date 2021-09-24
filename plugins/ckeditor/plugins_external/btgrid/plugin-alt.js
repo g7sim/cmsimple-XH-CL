@@ -18,13 +18,13 @@
        });
        editor.widgets.add('btgrid',
          {
-           allowedContent: 'div(!btgrid);div(!row,!row-*);div(!col-*-*);div(!bcontent)',
+           allowedContent: 'div(!btgrid);div(!row,!row-*);div(!col-*-*);div(!content)',
            requiredContent: 'div(btgrid)',
            parts: {
              btgrid: 'div.btgrid',
            },
            editables: {
-             bcontent: '',
+             content: '',
            },
            template:
                    '<div class="btgrid">' +
@@ -65,7 +65,7 @@
              var content = '<div class="row row-' + rowNumber + '">';
              for (var i = 1; i <= colCount; i++) {
                content = content + '<div class="col col-md-' + maxGridColumns/colCount + '">' +
-                                   '  <div class="bcontent">' +
+                                   '  <div class="content">' +
                                    '    <p>Col ' + i + ' content area</p>' +
                                    '  </div>' +
                                    '</div>';
@@ -78,7 +78,7 @@
            createEditable: function(colCount,rowNumber) {
              for (var i = 1; i <= colCount; i++) {
                this.initEditable( 'content'+ rowNumber + i, {
-                  selector: '.row-'+ rowNumber +' > div:nth-child('+ i +') div.bcontent'
+                  selector: '.row-'+ rowNumber +' > div:nth-child('+ i +') div.content'
                 } );
               }
             }
