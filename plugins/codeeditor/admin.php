@@ -1,49 +1,23 @@
 <?php
 
 /**
- * Administration of Codeeditor_XH.
+ * Copyright 2011-2021 Christoph M. Becker
  *
- * PHP version and 5
+ * This file is part of Codeeditor_XH.
  *
- * @category  CMSimple_XH
- * @package   Codeeditor
- * @author    Christoph M. Becker <cmbecker69@gmx.de>
- * @copyright 2011-2017 Christoph M. Becker <http://3-magi.net/>
- * @license   http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link      http://3-magi.net/?CMSimple_XH/Codeeditor_XH
- */
-
-/*
- * Prevent direct access and usage from unsupported CMSimple_XH versions.
- */
-if (!defined('CMSIMPLE_XH_VERSION')
-    || strpos(CMSIMPLE_XH_VERSION, 'CMSimple_XH') !== 0
-    || version_compare(CMSIMPLE_XH_VERSION, 'CMSimple_XH 1.6', 'lt')
-) {
-    header('HTTP/1.1 403 Forbidden');
-    header('Content-Type: text/plain; charset=UTF-8');
-    die(<<<EOT
-Codeeditor_XH detected an unsupported CMSimple_XH version.
-Uninstall Codeeditor_XH or upgrade to a supported CMSimple_XH version!
-EOT
-    );
-}
-
-/**
- * The version number.
- */
-define('CODEEDITOR_VERSION', '1.2');
-
-/**
- * Returns all available themes.
+ * Codeeditor_XH is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * @return array
+ * Codeeditor_XH is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Codeeditor_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
-function Codeeditor_getThemes()
-{
-    return Codeeditor_Controller::getThemes();
-}
 
-Codeeditor_Controller::dispatch();
 
-?>
+Codeeditor\Plugin::dispatch();

@@ -2,8 +2,8 @@
   border: 1px solid #999;
 }
 
-.CodeMirror-fullscreen {
-  z-index: 9999 !important;
+div.CodeMirror-fullscreen {
+  z-index: 9999;
   border: 0;
 }
 
