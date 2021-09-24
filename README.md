@@ -1,10 +1,10 @@
-# Cmsimple-XC - RC1
+# Cmsimple-XC - RC2
 
 * This git contains a  modified  Fork of Cmsimple XH 1.7.2 with clean urls and a http - security filter and several corrected issues until XH - version 1.74
 
 * It has the same GPL3  license (Licenses of plugins are to be observed), und there is also a Wikipedia article about the <a href=https://en.wikipedia.org/wiki/CMSimple> history of Cmsimple</a>
 
-* You should use at least php 7.0 (not php 5.3 !),  and it is tested with php 7.4 and php 8.0
+* You should use at least php 7.0,  and it is tested with php 7.4 and php 8.0
 
 * It offers both tinymce 4.91 (with bootstrap - plugins under configuration : flexible) and 
 
@@ -13,6 +13,8 @@
 * A version of CKEDITOR 4.16, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!). At <a href=https://https://ckeditor.com/cke4/addons/plugins/all> Ckeditor.com</a> and  at github (search) are more than 20 bootstrap-plugins from sestolab(based on smethods), akilli etc. 
 
 * The inbuilt  FA-Plugin uses Font Awesome 5.15 free.
+
+* I has a built in CSS preprocessor ( Crush ) in assets 
 
 * This Cmsimple - version has an integrated full-backup from the Cmsimple_XH - forum (start with : ...com/backup). The resulting zip  appears after a long while under userfiles (filebrowser), and is there ready for download.
 
