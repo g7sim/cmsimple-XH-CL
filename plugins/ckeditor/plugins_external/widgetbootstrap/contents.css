@@ -1,4 +1,7 @@
 /* Bootstrap styles */
+
+.row.three-col, .row.two-col, .row.two-col-left, .row.two-col-right {width:100%;}
+
 .row {
   margin-left: -15px;
   margin-right: -15px;
