@@ -6,9 +6,9 @@
 
 * You should use at least php 7.0,  and it is tested with php 7.4 and php 8.0
 
-* It offers both tinymce 4.91 (with bootstrap - plugins under configuration : flexible) and 
+* It offers both tinymce 4.9.11 (with bootstrap - plugins under configuration : flexible) and 
 
-* Tinymce 5.3.1 (standard, for professional use You may need a license ) with  free extensions
+* Tinymce 5.9.2 (standard, for professional use You may need a license ) with  free extensions
 
 * A version of CKEDITOR 4.16, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!). At <a href=https://https://ckeditor.com/cke4/addons/plugins/all> Ckeditor.com</a> and  at github (search) are more than 20 bootstrap-plugins from sestolab(based on smethods), akilli etc. 
 
