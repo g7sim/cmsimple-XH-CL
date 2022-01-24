@@ -285,9 +285,5 @@ function log($message, $context = [], $type = 'debug') {
     Crush::$config->logger->$type($message, $context);
 }
 
-// Compat with PHP < 7.2.
-if (! defined('PREG_UNMATCHED_AS_NULL')) {
-    define('PREG_UNMATCHED_AS_NULL', null);
-}
 
 Crush::init();

@@ -31,10 +31,7 @@ class IO
     {
         $options = $this->process->options;
 
-        $inputBasename = $this->process->input->filename
-            ? basename($this->process->input->filename, '.css')
-            : 'styles';
-
+        $inputBasename = basename($this->process->input->filename, '.css');
         $outputBasename = $inputBasename;
 
         if (! empty($options->output_file)) {
