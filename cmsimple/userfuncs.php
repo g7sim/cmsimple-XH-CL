@@ -48,6 +48,7 @@ function fullBackup()
 function redir301($goto)
 { if(!ob_start("ob_gzhandler")) ob_start();
   $proto = "Location: http://"; /*in a https-domain use https:// */
+  /* $protocol = apache_getenv('HTTPS') ? 'https:' : 'http:'; */
   header("HTTP/1.1 301 Moved Permanently");
   header( $proto.$goto ); 
   header("Connection: close");
