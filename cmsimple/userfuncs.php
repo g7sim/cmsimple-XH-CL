@@ -61,8 +61,7 @@ function redir301($goto)
 { 
   $goto  = $_SERVER['HTTP_HOST']; 
   $repl = array('?q=', '?', '==', '%', '<', 'cgi' , '404' );
-  $cluri = str_replace( $repl , "" , $_SERVER['REQUEST_URI'] );
- 			   
+  $cluri = str_replace( $repl , "" , $_SERVER['REQUEST_URI'] ); 			   
 											   
  $goto .= $cluri;	
  
