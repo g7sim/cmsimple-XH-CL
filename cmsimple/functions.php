@@ -1061,7 +1061,7 @@ function XH_uenc($s, array $search, array $replace)
     global $cf;
 
     $separator = $cf['uri']['word_separator'];
-    $s = str_replace($search, $replace, $s);
+    $s = $s ? str_replace($search, $replace, $s):"";
     $s = str_replace('+', $separator, urlencode($s));
     $s = trim($s, $separator);
     $s = preg_replace('/' . preg_quote($separator, '/') . '+/', $separator, $s);
