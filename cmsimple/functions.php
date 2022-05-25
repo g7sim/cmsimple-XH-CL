@@ -1,4 +1,6 @@
 <?php
+use function \PHP81_BC\strftime;
+require_once $pth['folder']['classes'] . 'strftime.php';
 
 /**
  * @file functions.php
