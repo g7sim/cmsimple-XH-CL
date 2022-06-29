@@ -6,9 +6,7 @@
 
 * You should use at least php 7.3,  and it is tested with php 7.4 and php 8.1
 
-* It contains a version of CKEDITOR 4.18, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!). 
-
-* <a href="https://ckeditor.com/cke4/builder/download/55f2d3c7a5ee9df62a35a2842c506c27" target=_blank> Here</a> alway the newest version).
+* It contains a version of CKEDITOR 4.18, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!).  (<a href="https://ckeditor.com/cke4/builder/download/55f2d3c7a5ee9df62a35a2842c506c27" target=_blank> Here</a> alway the newest version).
 
 * At <a href=https://https://ckeditor.com/cke4/addons/plugins/all> Ckeditor.com</a> and  at github (search) are more than 20 bootstrap-plugins from sestolab(based on smethods), akilli etc. 
 
