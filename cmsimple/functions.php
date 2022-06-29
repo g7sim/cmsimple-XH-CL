@@ -247,7 +247,7 @@ function XH_evaluateSinglePluginCall($___expression)
     return preg_replace_callback(
         '/#(CMSimple .*?)#/is',
         'XH_escapeCMSimpleScripting',
-        eval('return ' . $___expression . ';')
+        eval('return ' . $___expression . ';') ?? ''
     );
 }
 
