@@ -242,25 +242,25 @@ class Mailform
         // fields before textarea
         $o .= '<div>' . "\n" . '<label for="xh_mailform_sendername">'
             . $tx['mailform']['sendername'] . '</label>' . '<br>' . "\n"
-            . '<input type="text" class="text" size="35" name="sendername"'
+            . '<input type="text" class="text" size="35" maxlength="200" name="sendername"'
             . ' id="xh_mailform_sendername" value="'
             . XH_hsc($this->sendername).'">' . "\n"
             . '</div>' . "\n"
             . '<div>' . "\n" . '<label for="xh_mailform_senderphone">'
             . $tx['mailform']['senderphone'] . '</label>' . '<br>' . "\n"
-            . '<input type="tel" class="text" size="35" name="senderphone"'
+            . '<input type="tel" class="text" size="35" maxlength="200" name="senderphone"'
             . ' id="xh_mailform_senderphone" value="'
             . XH_hsc($this->senderphone).'">' . "\n"
             . '</div>' . "\n"
             . '<div>' . "\n" . '<label for="xh_mailform_sender">'
             . $tx['mailform']['sender'] . '</label>' . '<br>' . "\n"
-            . '<input type="email" class="text" size="35" name="sender"'
+            . '<input type="email" class="text" size="35" maxlength="200" name="sender"'
             . ' id="xh_mailform_sender" value="'
             . XH_hsc($this->sender).'" required="required">' . "\n"
             . '</div>' . "\n"
             . '<div>' . "\n" .  '<label for="xh_mailform_subject">'
             . $tx['mailform']['subject'] . '</label>'. '<br>' . "\n"
-            . '<input type="text" class="text" size="35" name="subject"'
+            . '<input type="text" class="text" size="35" maxlength="200" name="subject"'
             . ' id="xh_mailform_subject" value="'
             . XH_hsc($this->subject).'" required="required">' . "\n"
             . '</div>' . "\n"
@@ -268,7 +268,7 @@ class Mailform
 
         // textarea
         $name = $this->embedded ? 'xh_mailform' : 'mailform';
-        $o .= '<textarea rows="12" cols="40" name="' . $name
+        $o .= '<textarea rows="12" cols="40" maxlength="200000" name="' . $name
             . '" required="required" title="' . $tx['mailform']['message'] . '">'
             . XH_hsc($this->mailform) . '</textarea>';
 
@@ -278,7 +278,7 @@ class Mailform
         ) {
             $o .= '<p>' .  $tx['mailform']['captcha'] . '</p>' . "\n"
                 .  '<input type="text" name="cap" class="xh_captcha_input"'
-                . ' required="required">'
+                . ' maxlength="10" required="required">'
                 . "\n" .  '<span class="xh_captcha_code">' . "\n"
                 .  $random . '</span>' . "\n";
         }
