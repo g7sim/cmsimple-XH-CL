@@ -345,7 +345,6 @@ function XH_printUrl()
  * Returns the link to the mail form.
  *
  * @return string HTML
- *
  * @global array The configuration of the core.
  */
 function mailformlink()
@@ -355,6 +354,7 @@ function mailformlink()
     if ($cf['mailform']['email'] != '') {
         return ml('mailform');
     }
+	return "";
 }
 
 /**
@@ -362,7 +362,6 @@ function mailformlink()
  *
  * @global int    The index of the requested page.
  * @global array  The localization of the core.
- *
  * @return string HTML
  */
 function loginlink()
@@ -373,6 +372,7 @@ function loginlink()
         return a($s > -1 ? $s : 0, '&amp;login" rel="nofollow')
             . $tx['menu']['login'] . '</a>';
     }
+	return "";
 }
 
 
@@ -523,13 +523,13 @@ function submenu($html = '')
             }
         }
     }
+	return "";
 }
 
 /**
  * Returns a link to the previous page.
  *
  * @return string HTML
- *
  * @global array The localization of the core.
  *
  * @see nextpage()
@@ -542,6 +542,7 @@ function previouspage()
     if ($index !== false) {
         return a($index, '" rel="prev') . $tx['navigator']['previous'] . '</a>';
     }
+	return "";
 }
 
 /**
@@ -550,7 +551,6 @@ function previouspage()
  * @return string HTML
  *
  * @global array The localization of the core.
- *
  * @see previouspage()
  */
 function nextpage()
@@ -561,6 +561,7 @@ function nextpage()
     if ($index !== false) {
         return a($index, '" rel="next') . $tx['navigator']['next'] . '</a>';
     }
+	return "";
 }
 
 /**

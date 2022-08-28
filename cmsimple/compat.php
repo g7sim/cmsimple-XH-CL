@@ -94,7 +94,6 @@ function amp()
  * Returns the link to the guestbook.
  *
  * @return string HTML
- *
  * @deprecated since 1.5.4
  */
 function guestbooklink()
@@ -103,6 +102,7 @@ function guestbooklink()
     if (function_exists('gblink')) {
         return gblink();
     }
+	return "";
 }
 
 /**

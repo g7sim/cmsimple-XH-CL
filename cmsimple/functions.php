@@ -54,13 +54,13 @@ function geturl($u)
         fclose($fh);
         return preg_replace("/.*<body[^>]*>(.*)<\/body>.*/is", '$1', $t);
     }
+	return "";
 }
 
 /**
  * Returns the contents of the given URL adding all current GET parameters.
  *
  * @param string $u A URL.
- *
  * @return string HTML
  */
 function geturlwp($u)
@@ -76,6 +76,7 @@ function geturlwp($u)
         fclose($fh);
         return $t;
     }
+	return "";
 }
 
 /**
@@ -966,7 +967,6 @@ function a($i, $x)
  * <var>null</var> otherwise.
  *
  * @param string $n The name attribute.
- *
  * @global array The configuration of the core.
  * @global array The localization of the core.
  * @global bool  Whether print mode is active.
@@ -983,6 +983,7 @@ function meta($n)
         $content = XH_hsc($value);
         return '<meta name="' . $n . '" content="' . $content . '">' . "\n";
     }
+	return null;
 }
 
 /**
@@ -1500,7 +1501,6 @@ function XH_plugins($admin = false)
  * Returns the value of a cookie, or <var>null</var> if the cookie doesn't exist.
  *
  * @param string $s The name of the cookie.
- *
  * @return string
  */
 function gc($s)
@@ -1508,6 +1508,7 @@ function gc($s)
     if (isset($_COOKIE[$s])) {
         return $_COOKIE[$s];
     }
+	return null;
 }
 
 /**
