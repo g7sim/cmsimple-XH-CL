@@ -83,7 +83,7 @@ function amp()
 
     trigger_error('Function amp() is deprecated', E_USER_DEPRECATED);
 
-    if ($cf['xhtml']['amp'] == 'true') {
+    if (isset($cf['xhtml']['amp']) && $cf['xhtml']['amp'] == 'true') {
         return '&amp;';
     } else {
         return '&';
@@ -126,7 +126,7 @@ function chkdl($fl)
     $m = false;
     if (is_dir($pth['folder']['downloads'])) {
         if ($fd = opendir($pth['folder']['downloads'])) {
-            while (($p = readdir($fd)) == true) {
+            while (($p = readdir($fd))) {
                 if (preg_match("/.+\..+$/", $p)) {
                     if ($fl == $sn . '?download=' . $p) {
                         $m = true;

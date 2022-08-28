@@ -545,7 +545,7 @@ class Controller
     {
         global $tx, $o;
 
-        $interval = 1000 * (ini_get('session.gc_maxlifetime') - 1);
+        $interval = 1000 * ((int)ini_get('session.gc_maxlifetime') - 1);
         $o .= <<<EOT
 <script type="text/javascript">
 if (document.cookie.indexOf('status=adm') == -1) {

@@ -822,8 +822,8 @@ function XH_readContents($language = null)
             $temp = $tx['toc']['empty'] . ' ' . $empty;
         }
         $h[] = $temp;
-        $ancestors[$l[$i] - 1] = XH_uenc($temp, $search, $replace);
-        $ancestors = array_slice($ancestors, 0, $l[$i]);
+        $ancestors[(int) $l[$i] - 1] = XH_uenc($temp, $search, $replace);
+        $ancestors = array_slice($ancestors, 0, (int) $l[$i]);
         $url = implode($cf['uri']['seperator'], $ancestors);
         $u[] = utf8_substr($url, 0, $cf['uri']['length']);
         $tooLong[] = utf8_strlen($url) > $cf['uri']['length'];
@@ -1216,7 +1216,7 @@ function XH_debugmode()
     $dbglevel = '';
     $filename = $pth['folder']['downloads'] . '_XHdebug.txt';
     if (file_exists($filename)) {
-        ini_set('display_errors', 0);
+        ini_set('display_errors', "0");
         $dbglevel = file_get_contents($filename);
         if (strlen($dbglevel) == 1) {
             set_error_handler('XH_debug');
