@@ -54,13 +54,14 @@ function geturl($u)
         fclose($fh);
         return preg_replace("/.*<body[^>]*>(.*)<\/body>.*/is", '$1', $t);
     }
-	return "";
+	 return "";
 }
 
 /**
  * Returns the contents of the given URL adding all current GET parameters.
  *
  * @param string $u A URL.
+ *
  * @return string HTML
  */
 function geturlwp($u)
@@ -76,7 +77,7 @@ function geturlwp($u)
         fclose($fh);
         return $t;
     }
-	return "";
+	 return "";
 }
 
 /**
@@ -822,8 +823,8 @@ function XH_readContents($language = null)
             $temp = $tx['toc']['empty'] . ' ' . $empty;
         }
         $h[] = $temp;
-        $ancestors[(int) $l[$i] - 1] = XH_uenc($temp, $search, $replace);
-        $ancestors = array_slice($ancestors, 0, (int) $l[$i]);
+        $ancestors[(int)$l[$i] - 1] = XH_uenc($temp, $search, $replace);
+        $ancestors = array_slice($ancestors, 0, (int)$l[$i]);
         $url = implode($cf['uri']['seperator'], $ancestors);
         $u[] = utf8_substr($url, 0, $cf['uri']['length']);
         $tooLong[] = utf8_strlen($url) > $cf['uri']['length'];
@@ -967,6 +968,7 @@ function a($i, $x)
  * <var>null</var> otherwise.
  *
  * @param string $n The name attribute.
+ *
  * @global array The configuration of the core.
  * @global array The localization of the core.
  * @global bool  Whether print mode is active.
@@ -1251,7 +1253,7 @@ function XH_debugmode()
             error_reporting(E_ERROR | E_USER_ERROR | E_USER_WARNING | E_PARSE);
         }
     } else {
-        ini_set('display_errors', 0);
+        ini_set('display_errors', "0");
         error_reporting(0);
     }
     return error_reporting() > 0;
@@ -1501,6 +1503,7 @@ function XH_plugins($admin = false)
  * Returns the value of a cookie, or <var>null</var> if the cookie doesn't exist.
  *
  * @param string $s The name of the cookie.
+ *
  * @return string
  */
 function gc($s)

@@ -96,8 +96,8 @@ class PageDataEditor
     private function renderMessage($deleted)
     {
         global $pth, $tx;
-
         $ptx = $tx['pagedata'];
+		
         if (isset($deleted)) {
             if ($deleted === false) {
                 return XH_message('fail', $ptx['fail'], $pth['file']['content']);
@@ -107,7 +107,7 @@ class PageDataEditor
                 $suffix = $deleted == 1 ? '1' : ($deleted >= 5 ? '5' : '2_4');
                 return XH_message('success', $ptx['deleted_' . $suffix], $deleted);
             }
-        }
+        }  
 		return "";
     }
 

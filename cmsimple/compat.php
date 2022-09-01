@@ -94,6 +94,7 @@ function amp()
  * Returns the link to the guestbook.
  *
  * @return string HTML
+ *
  * @deprecated since 1.5.4
  */
 function guestbooklink()
@@ -126,7 +127,7 @@ function chkdl($fl)
     $m = false;
     if (is_dir($pth['folder']['downloads'])) {
         if ($fd = opendir($pth['folder']['downloads'])) {
-            while (($p = readdir($fd))) {
+            while ($p = readdir($fd)) {
                 if (preg_match("/.+\..+$/", $p)) {
                     if ($fl == $sn . '?download=' . $p) {
                         $m = true;

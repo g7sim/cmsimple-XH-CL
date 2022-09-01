@@ -1,7 +1,7 @@
 <?php
 
 $cf['security']['password']="\$2y\$10\$TtMCJlxEv6D27BngvfdNrewGqIx2R0aPCHORruqpe63LQpz7.E9Gq";
-$cf['security']['secret']="653fddc6d112ece740ad759b";
+$cf['security']['secret']="c409e1dd1481c2e41a08f6ff";
 $cf['security']['email']="";
 $cf['security']['frame_options']="";
 $cf['site']['template']="sm-simpl-blue";
