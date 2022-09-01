@@ -223,7 +223,7 @@ class View
                     . $action . '" class="filebrowser_delete_folder" data-path="'
                     . XH_hsc($this->basePath) . $folder . '">'
                     . '<input type="image" src="' . $this->browserPath
-                    . 'css/icons/delete.png" alt="delete" title="'
+                    . 'css/icons/Trash_font_awesome.png" alt="delete" style="margin:0 2px 0 2px;" title="'
                     . $this->translate('delete_folder') . '">'
                     . '<input type="hidden" name="deleteFolder">'
                     . '<input type="hidden" name="folder" value="' . $folder . '">'
@@ -285,9 +285,9 @@ class View
                 . $action . '" class="filebrowser_delete_file" data-path="'
                 . XH_hsc($this->currentDirectory . $file) . '">'
                 . '<input type="image" src="' . $this->browserPath
-                . 'css/icons/delete.png" alt="delete" title="'
+                . 'css/icons/Trash_font_awesome.png" alt="delete" title="'
                 . $this->translate('delete_file')
-                . '" style="width: 16px; height: 16px">'
+                . '" style="width: 20px; height: 20px; margin: 0 3px 0 3px;">'
                 . '<input type="hidden" name="deleteFile">'
                 . '<input type="hidden" name="filebrowser_file" value="'
                 . $file . '">'
@@ -300,7 +300,7 @@ class View
                 . $file . '">'
                 . '<input type="hidden" name="oldName" value="' . $file . '">'
                 . '<input type="image" src="' . $this->browserPath
-                . 'css/icons/rename.png"' . ' alt="'
+                . 'css/icons/pencil-solid.png"' . ' alt="'
                 . $this->translate('rename_file') . '" title="'
                 . $this->translate('rename_file')
                 . '" style="width: 16px; height: 16px">'

@@ -1,0 +1,8 @@
+
+ file.png and folder.png  are from https://github.com/vscode-icons/vscode-icons MIT
+ 
+ FA-icons are from FA5 free (https://github.com/FortAwesome/Font-Awesome/releases/tag/5.15.4)
+          # Icons: CC BY 4.0 License (https://creativecommons.org/licenses/by/4.0/)
+		  
+ (SVG to png ) :  https://github.com/Rush/Font-Awesome-SVG-PNG
+		 Font-Awesome-SVG-PNG is licensed under the MIT license
