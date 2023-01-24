@@ -649,3 +649,11 @@ textarea.xh_file_edit {
 img.helpicon {
     background: none;
 }
+
+form#ta{
+     height:800px;
+    min-height:800px;
+    overflow-y:scroll;
+scrollbar-color: gray lightgray;
+  scrollbar-width: thin;
+}
