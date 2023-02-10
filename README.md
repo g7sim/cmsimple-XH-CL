@@ -6,13 +6,12 @@
 
 * You should use at least php 7.3,  and it is tested with php 7.4 and php 8.1
 
-* It contains a version of CKEDITOR 4.18, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!).  (<a href="https://ckeditor.com/cke4/builder/download/55f2d3c7a5ee9df62a35a2842c506c27" target=_blank> Here</a> always the newest version ). For dynamic height You can install  the <a href=https://ckeditor.com/cke4/addon/autogrow target=_blank>autogrow-plugin </a>  under plugins/ckeditor/plugins_external. Then in init_full.js - line 35 : 
+* It contains a version of CKEDITOR 4.18, which allows simple adding of a plugin by extraction into the plugins_external - directory (with dependencies!).  (<a href="https://ckeditor.com/cke4/builder/download/55f2d3c7a5ee9df62a35a2842c506c27" target=_blank> Here</a> always the newest version ). For dynamic height You can install  the <a href=https://ckeditor.com/cke4/addon/autogrow target=_blank>autogrow-plugin </a>  under plugins/ckeditor/plugins_external.
+Then in init_full.js - line 35 : 
  //%extraPlugins%  line 34
-	extraPlugins: 'autogrow',
-	  autoGrow_minHeight: 200,
-      autoGrow_maxHeight: 600,
-      autoGrow_bottomSpace: 50,
-    //%additionaConfigs%
+ 
+extraPlugins: 'autogrow', autoGrow_minHeight: 200, autoGrow_maxHeight: 600, autoGrow_bottomSpace: 50,
+
 
 * At <a href=https://https://ckeditor.com/cke4/addons/plugins/all> Ckeditor.com</a> and  at github (search) are more than 20 plugins from sestolab(based on smethods), akilli etc. 
 
