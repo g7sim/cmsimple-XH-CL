@@ -32,6 +32,10 @@
     //%FILEBROWSER%
     //%removePlugins%
     //%extraPlugins%
+    extraPlugins: 'autogrow',
+    autoGrow_minHeight: 200,
+    autoGrow_maxHeight: 600,
+    autoGrow_bottomSpace: 50,	
     //%additionaConfigs%
     format_tags : '%FORMAT_TAGS%',
     font_names : %FORMAT_FONTS%,
