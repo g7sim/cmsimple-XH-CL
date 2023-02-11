@@ -145,7 +145,7 @@ class View
     {
         global $tx;
 
-        $html = '<ul><li class="openFolder"><a href="?'
+        $html = '<ul class="filenav"><li class="openFolder"><a href="?'
             . XH_hsc($this->linkParams) . '">'
             . $tx['title']['userfiles'] . ' ' . $this->lang['folder'] . '</a>';
         if (!empty($folders)) {
