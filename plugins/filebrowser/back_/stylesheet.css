@@ -6,7 +6,6 @@ div.xhFilebrowserDiv {
 	background: #fff !important;
 	border: 0 !important;
 	margin: 0 !important;
-	box-shadow:rgba(99,99,99,0.2) 0px 2px 8px 0px;
 	padding: 0.5em !important;
 	letter-spacing: normal;
 	text-shadow: none !important;
@@ -130,6 +129,10 @@ span.xhfbfile img {
 	max-width: 10em !important;
 	box-shadow: none !important;
 }
+a.xhfbfile span,
+span.xhfbfile span {
+	display: none;
+}
 
 #xhFilebrowser a { color: #333;}
 a.xhfbfile, span.xhfbfile {padding: 0 2px 0 0; line-height: 1em;}
@@ -142,7 +145,6 @@ a.xhfbfile img, span.xhfbfile img {
     max-width: 10em !important;
     box-shadow: none !important;
 }
-span.xhfbfile {cursor: pointer}
 a.xhfbfile span, span.xhfbfile span {display: none;}
 a.xhfbfile:hover span, #filebrowser_files ul li:hover a.xhfbfile span,
 span.xhfbfile:hover span, #filebrowser_files ul li:hover span.xhfbfile span {
@@ -175,13 +177,13 @@ div.xhFilebrowserDiv span.fa {
 }
 div.xhFilebrowserDiv span.fa-folder,
 div.xhFilebrowserDiv span.fa-folder-open {
-	color: Tan;
+	color: rgb(255,153,0);
 }
-div.xhFilebrowserDiv span.fa-edit {
-	color: SteelBlue;
+div.xhFilebrowserDiv span.fa-tag {
+	color: rgb(51,153,204);
 }
-div.xhFilebrowserDiv span.fa-trash {
-	color: Tomato;
+div.xhFilebrowserDiv span.fa-remove {
+	color: rgb(255,51,0);
 }
 /* Buttons */
 div.xhFilebrowserDiv button {
@@ -278,16 +280,4 @@ div.xhFilebrowserDiv h1 {
 	margin: 0 0 .5em 0;
 	letter-spacing: normal;
 	text-shadow: none !important;
-}
-
-/* belongs to https://github.com/cmsimple-xh/cmsimple-xh/issues/515 */
-
-.tox .tox-dialog iframe{
-	max-height: 400px;
-	min-height: 400px !important;
-}
-#filebrowser_files::after {
-	content: "";
-	display: block;
-	height: calc(9em - 2px);
 }

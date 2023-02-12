@@ -3,13 +3,11 @@
 /**
  * The file browser controller.
  *
- * @category  CMSimple_XH
- * @package   Filebrowser
  * @author    Martin Damken <kontakt@zeichenkombinat.de>
  * @author    The CMSimple_XH developers <devs@cmsimple-xh.org>
- * @copyright 2009-2017 The CMSimple_XH developers <http://cmsimple-xh.org/?The_Team>
+ * @copyright 2009-2021 The CMSimple_XH developers <http://cmsimple-xh.org/?The_Team>
  * @license   http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link      http://cmsimple-xh.org/
+ * @see       http://cmsimple-xh.org/
  */
 
 namespace Filebrowser;
@@ -17,12 +15,10 @@ namespace Filebrowser;
 /**
  * The file browser controller class.
  *
- * @category CMSimple_XH
- * @package  Filebrowser
  * @author   Martin Damken <kontakt@zeichenkombinat.de>
  * @author   The CMSimple_XH developers <devs@cmsimple-xh.org>
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://cmsimple-xh.org/
+ * @see      http://cmsimple-xh.org/
  *
  * @todo Document meaning of properties.
  */
@@ -128,9 +124,6 @@ class Controller
 
     /**
      * Constructs an instance.
-     *
-     * @global array The paths of system files and folders.
-     * @global array The configuration of the plugins.
      */
     public function __construct()
     {
@@ -181,11 +174,7 @@ class Controller
      *
      * @param string $file A file name.
      *
-     * @global array The headings of the pages.
-     * @global array The content of the pages.
-     * @global array The URLs of the pages.
-     *
-     * @return array
+     * @return array|false
      */
     private function fileIsLinked($file)
     {
@@ -215,10 +204,6 @@ class Controller
      * where the images are used.
      *
      * @return array
-     *
-     * @global array The content of the pages.
-     * @global array The headings of the pages.
-     * @global int   The number of pages.
      */
     public function usedImages()
     {
@@ -268,8 +253,8 @@ class Controller
                 }
             }
             closedir($handle);
-            natcasesort($this->folders);
-            natcasesort($this->files);
+            sort($this->folders, SORT_NATURAL | SORT_FLAG_CASE);
+            sort($this->files, SORT_NATURAL | SORT_FLAG_CASE);
         }
     }
 
@@ -298,7 +283,7 @@ class Controller
                 }
             }
             closedir($handle);
-            natcasesort($folders);
+            sort($folders, SORT_NATURAL | SORT_FLAG_CASE);
         }
         return $folders;
     }
@@ -532,9 +517,10 @@ class Controller
             return;
         }
         if (!mkdir($folder)) {
-            $this->view->error('error_cant_create_folder'); return;
-        } 
-		chmod($folder, 0755);
+            $this->view->error('error_cant_create_folder');
+            return;
+        }
+        chmod($folder, 0777);
         $this->view->success('success_folder_created', array(basename($folder)));
     }
 

@@ -1,0 +1,6 @@
+<div id="xhFilebrowserMenu"   <800px
+div id="filebrowser_folders">
+
+<div id="xhFilebrowser">
+
+s.a. core.css  oder css importieren mit neuem Objekt

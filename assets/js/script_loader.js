@@ -181,6 +181,9 @@ var loadsfont = new Script_loader();
 
 loadsfont.load( './assets/css/system-font.css' );
 
+var loadsfile = new Script_loader();
+
+loadsfont.load( './plugins/filebrowser/css/stylesheet.css' );
 
 var loaderjs = new Script_loader();
 

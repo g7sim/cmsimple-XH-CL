@@ -3,13 +3,11 @@
 /**
  * Internal Filebrowser -- admin.php
  *
- * @category  CMSimple_XH
- * @package   Filebrowser
  * @author    Martin Damken <kontakt@zeichenkombinat.de>
  * @author    The CMSimple_XH developers <devs@cmsimple-xh.org>
- * @copyright 2009-2017 The CMSimple_XH developers <http://cmsimple-xh.org/?The_Team>
+ * @copyright 2009-2021 The CMSimple_XH developers <http://cmsimple-xh.org/?The_Team>
  * @license   http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link      http://cmsimple-xh.org/
+ * @see       http://cmsimple-xh.org/
  */
 
 /*
@@ -25,6 +23,13 @@ $_XH_filebrowser->setBrowseBase(CMSIMPLE_BASE);
 $_XH_filebrowser->setBrowserPath($pth['folder']['plugins'] . 'filebrowser/');
 $_XH_filebrowser->setMaxFileSize('images', $cf['images']['maxsize']);
 $_XH_filebrowser->setMaxFileSize('downloads', $cf['downloads']['maxsize']);
+
+/*
+ * Register the plugin menu items.
+ */
+if (function_exists('XH_registerStandardPluginMenuItems')) {
+    XH_registerStandardPluginMenuItems(false);
+}
 
 if (XH_wantsPluginAdministration('filebrowser')) {
     $o .= print_plugin_admin('off');
@@ -56,6 +61,9 @@ if (!$cf['filebrowser']['external']
         $f = 'media';
     }
 
+    $temp = new Fa\RequireCommand;
+    $temp->execute();
+
     $bjs .= '<script type="text/javascript" src="' . $pth['folder']['plugins']
         . 'filebrowser/js/filebrowser.min.js"></script>';
 
@@ -80,22 +88,27 @@ if (!$cf['filebrowser']['external']
         );
     }
     if (isset($_POST['deleteFile']) && isset($_POST['filebrowser_file'])) {
+        // @phan-suppress-next-line PhanNonClassMethodCall
         $_XH_csrfProtection->check();
         $_XH_filebrowser->deleteFile($_POST['filebrowser_file']);
     }
     if (isset($_POST['deleteFolder']) && isset($_POST['folder'])) {
+        // @phan-suppress-next-line PhanNonClassMethodCall
         $_XH_csrfProtection->check();
         $_XH_filebrowser->deleteFolder($_POST['folder']);
     }
     if (isset($_POST['upload'])) {
+        // @phan-suppress-next-line PhanNonClassMethodCall
         $_XH_csrfProtection->check();
         $_XH_filebrowser->uploadFile();
     }
     if (isset($_POST['createFolder'])) {
+        // @phan-suppress-next-line PhanNonClassMethodCall
         $_XH_csrfProtection->check();
         $_XH_filebrowser->createFolder();
     }
     if (isset($_POST['renameFile'])) {
+        // @phan-suppress-next-line PhanNonClassMethodCall
         $_XH_csrfProtection->check();
         $_XH_filebrowser->renameFile();
     }
@@ -117,10 +130,6 @@ if (isset($_GET['filebrowser']) && $_GET['filebrowser'] == 'editorbrowser') {
  * Handles the editorbrowser.
  *
  * @return void
- *
- * @global array                  The paths of system files and folders.
- * @global XH\CSRFProtection      The CSRF protector.
- * @global Filebrowser_Controller The filebrowser controller.
  */
 function Filebrowser_forEditor()
 {
@@ -173,10 +182,12 @@ function Filebrowser_forEditor()
         $_XH_filebrowser->determineCurrentType();
 
         if (isset($_POST['upload'])) {
+            // @phan-suppress-next-line PhanNonClassMethodCall
             $_XH_csrfProtection->check();
             $_XH_filebrowser->uploadFile();
         }
         if (isset($_POST['createFolder'])) {
+            // @phan-suppress-next-line PhanNonClassMethodCall
             $_XH_csrfProtection->check();
             $_XH_filebrowser->createFolder();
         }

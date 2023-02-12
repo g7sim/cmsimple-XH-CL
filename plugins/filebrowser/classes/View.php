@@ -3,13 +3,11 @@
 /**
  * The file browser view class.
  *
- * @category  CMSimple_XH
- * @package   Filebrowser
  * @author    Martin Damken <kontakt@zeichenkombinat.de>
  * @author    The CMSimple_XH developers <devs@cmsimple-xh.org>
- * @copyright 2009-2017 The CMSimple_XH developers <http://cmsimple-xh.org/?The_Team>
+ * @copyright 2009-2021 The CMSimple_XH developers <http://cmsimple-xh.org/?The_Team>
  * @license   http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link      http://cmsimple-xh.org/
+ * @see       http://cmsimple-xh.org/
  */
 
 namespace Filebrowser;
@@ -17,12 +15,10 @@ namespace Filebrowser;
 /**
  * The file browser view class.
  *
- * @category CMSimple_XH
- * @package  Filebrowser
  * @author   Martin Damken <kontakt@zeichenkombinat.de>
  * @author   The CMSimple_XH developers <devs@cmsimple-xh.org>
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://cmsimple-xh.org/
+ * @see      http://cmsimple-xh.org/
  */
 class View
 {
@@ -122,8 +118,6 @@ class View
 
     /**
      * Initializes a newly created instance.
-     *
-     * @global array  The localization of the plugins.
      */
     public function __construct()
     {
@@ -138,15 +132,13 @@ class View
      * @param array $folders An array of folders.
      *
      * @return string HTML
-     *
-     * @global array The localization of the core.
      */
     private function folderList(array $folders)
     {
         global $tx;
 
-        $html = '<ul class="filenav"><li class="openFolder"><a href="?'
-            . XH_hsc($this->linkParams) . '">'
+        $html = '<ul><li class="openFolder"><a href="?'
+            . XH_hsc($this->linkParams) . '"><span class="fa fa-folder-open fa-fw fa-lg"></span> '
             . $tx['title']['userfiles'] . ' ' . $this->lang['folder'] . '</a>';
         if (!empty($folders)) {
             $html .= '<ul>';
@@ -176,15 +168,17 @@ class View
         global $sn;
 
         $class = 'folder';
+        $fa_class = 'folder';
         if (substr($this->currentDirectory, 0, strlen("$folder/")) == "$folder/") {
             $class = 'openFolder';
+            $fa_class = 'folder-open';
         }
         $temp = explode('/', $folder);
         $html = '<li class="' . $class . '"><a href="' . $sn . '?'
-            . XH_hsc($this->linkParams) . '&amp;subdir=' . $folder . '">'
+            . XH_hsc($this->linkParams) . '&amp;subdir=' . $folder . '"><span class="fa fa-' . $fa_class . ' fa-fw fa-lg"></span> '
             . end($temp) . '</a>';
         if (count($folders[$folder]['children']) > 0) {
-            if (substr($this->currentDirectory, 0, strlen($folder)) !== $folder) {
+            if (substr($this->currentDirectory, 0, strlen("$folder/")) !== "$folder/") {
                 $class = 'unseen';
             }
 
@@ -204,9 +198,6 @@ class View
      * @param array $folders An array of folders.
      *
      * @return string
-     *
-     * @global object The CRSF protection object.
-     * @global string The script name.
      */
     private function subfolderList(array $folders)
     {
@@ -219,25 +210,25 @@ class View
             foreach ($folders as $folder) {
                 $name = str_replace($this->currentDirectory, '', $folder);
                 $html .= '<li class="folder">'
-                    . '<form style="display: inline;" method="post" action="'
+                    . '<form method="post" action="'
                     . $action . '" class="filebrowser_delete_folder" data-path="'
                     . XH_hsc($this->basePath) . $folder . '">'
-                    . '<input type="image" src="' . $this->browserPath
-                    . 'css/icons/Trash_font_awesome.png" alt="delete" style="margin:0 2px 0 2px;" title="'
+                    . '<button class="xhButtonImg" title="'
                     . $this->translate('delete_folder') . '">'
+                    .'<span class="fa fa-trash fa-lg fa-fw"></span></button>'
                     . '<input type="hidden" name="deleteFolder">'
                     . '<input type="hidden" name="folder" value="' . $folder . '">'
                     . $_XH_csrfProtection->tokenInput()
                     . '</form>'
                     . '<a href="?' . $this->linkParams . '&amp;subdir=' . $folder
-                    . '">' . $name . '</a></li>';
+                    . '"><span class="fa fa-folder fa-fw fa-lg"></span>' . $name . '</a></li>';
             }
             $html .= '</ul>';
         }
         return $html;
     }
 
-   /**
+    /**
      * Returns whether a file is an image file.
      *
      * @param string $filename A file name.
@@ -247,20 +238,16 @@ class View
     private function isImageFile($filename)
     {
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
-        $exts = array('gif', 'jpg', 'jpeg', 'png', 'bmp', 'tiff', 'ico');
+        $exts = array('gif', 'jpg', 'jpeg', 'png', 'bmp', 'webp', 'tiff', 'ico');
         return in_array(strtolower($ext), $exts);
     }
-	
+
     /**
      * Returns the file list view for the CMS browser.
      *
      * @param array $files An array of files.
      *
      * @return string
-     *
-     * @global string     The script name.
-     * @global object     The CRSF protection object.
-     * @global Controller The filebrowser controller.
      */
     private function fileList(array $files)
     {
@@ -280,33 +267,30 @@ class View
         $action = $sn . '?' . XH_hsc($_SERVER['QUERY_STRING']);
         foreach ($files as $file) {
             $class = $class == 'odd' ? 'even' : 'odd';
-            $html .= '<li style="white-space:nowrap;" class="' . $class . '">'
-                . '<form style="display: inline;" method="post" action="'
+            $html .= '<li class="' . $class . '">'
+                . '<form method="post" action="'
                 . $action . '" class="filebrowser_delete_file" data-path="'
                 . XH_hsc($this->currentDirectory . $file) . '">'
-                . '<input type="image" src="' . $this->browserPath
-                . 'css/icons/Trash_font_awesome.png" alt="delete" title="'
-                . $this->translate('delete_file')
-                . '" style="width: 20px; height: 20px; margin: 0 3px 0 3px;">'
+                . '<button class="xhButtonImg" title="'
+                . $this->translate('delete_file') . '">'
+                .'<span class="fa fa-trash fa-lg fa-fw"></span></button>'
                 . '<input type="hidden" name="deleteFile">'
                 . '<input type="hidden" name="filebrowser_file" value="'
                 . $file . '">'
                 . $_XH_csrfProtection->tokenInput()
                 . '</form>'
-                . '<form method="post" style="display:inline;" action="'
+                . '<form method="post" action="'
                 . $action . '" class="filebrowser_rename_file" data-path="'
                 . XH_hsc($file) . '">'
                 . '<input type="hidden" name="renameFile" value="'
                 . $file . '">'
                 . '<input type="hidden" name="oldName" value="' . $file . '">'
-                . '<input type="image" src="' . $this->browserPath
-                . 'css/icons/pencil-solid.png"' . ' alt="'
-                . $this->translate('rename_file') . '" title="'
-                . $this->translate('rename_file')
-                . '" style="width: 16px; height: 16px">'
+                . '<button class="xhButtonImg" title="'
+                . $this->translate('rename_file') . '">'
+                .'<span class="fa fa-edit fa-lg fa-fw"></span></button>'
                 . $_XH_csrfProtection->tokenInput()
                 . '</form>'
-                . '<a style="position:relative" class="xhfbfile" href="'
+                . '<a class="xhfbfile" href="'
                 . $this->basePath . $this->currentDirectory . $file
                 . '" target="_blank">' . $file;
 
@@ -355,7 +339,7 @@ class View
 
             $path = $dir . $file;
             if (strpos($this->linkParams, 'type=images') !== false
-               && $this->isImageFile($path) && ($image = getimagesize($path))
+                && $this->isImageFile($path) && ($image = getimagesize($path))
             ) {
                 $html .= $this->renderImage($path, $file, $image);
             }
@@ -383,8 +367,8 @@ class View
             $width = 150;
             $height = $width / $ratio;
         }
-        return '<span style="position: relative;  z-index: 4; ">'
-            . '<span style="font-weight: normal; border: none;">'
+        return '<span>'
+            . '<span>'
             . $image[0] . ' x ' . $image[1] . ' px</span>' . '<br>'
             . '<img src="' . $path . '" width="' . $width . '" height="'
             . $height . '" alt="' . $file . '">'
@@ -437,7 +421,7 @@ class View
      * Appends a localized error message to the message area of the view.
      *
      * @param string $message A message key.
-     * @param array  $args    Arguments.
+     * @param ?array $args    Arguments.
      *
      * @return void
      */
@@ -451,7 +435,7 @@ class View
      * Appends a localized success message to the message area of the view.
      *
      * @param string $message A message key.
-     * @param array  $args    The arguments.
+     * @param ?array $args    The arguments.
      *
      * @return void
      */
@@ -465,7 +449,7 @@ class View
      * Appends a localized info message to the message area of the view.
      *
      * @param string $message A message key.
-     * @param array  $args    The arguments.
+     * @param ?array $args    The arguments.
      *
      * @return void
      */
@@ -484,14 +468,14 @@ class View
      */
     public function message($message)
     {
-        $this->message .= '<p style="width: auto;">' . $message . '</p>';
+        $this->message .= '<p>' . $message . '</p>';
     }
 
     /**
      * Returns a localized message.
      *
      * @param string $string A message key.
-     * @param mixed  $args   A single argument or an array of arguments.
+     * @param ?array $args   A single argument or an array of arguments.
      *
      * @return string
      */
@@ -513,8 +497,6 @@ class View
      * Renders the JavaScript configuration script element.
      *
      * @return string HTML
-     *
-     * @global array The localization of the plugins.
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
