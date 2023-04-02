@@ -109,6 +109,7 @@ function ckeditor_parseConfig($element = false, $config = false) {
 
     //extra plugins
     $extraPlugins = array('CMSimpleSave');
+    $extraPlugins[] = 'autogrow';
     if (ckeditor_isFontawesomeAvailable()) {
         $extraPlugins[] = 'fontawesome';
     }
