@@ -15,4 +15,6 @@ $plugin_cf['ckeditor']['toolbarset_sidebar']="CKEDITOR.editorConfig = function( 
 $plugin_cf['ckeditor']['autogrow_enabled']="true";
 $plugin_cf['ckeditor']['autogrow_on_startup']="true";
 $plugin_cf['ckeditor']['plugins_remove']="pagebreak,bidi";
-$plugin_cf['ckeditor']['configuration_additional_options']="//add here any additional config - settings you need\r\n//(remember: no comma after last entry),\r\n//for example:\r\n//autoGrow_maxHeight : 2000,\r\n//autoGrow_bottomSpace : 100,\r\n//autoGrow_minHeight : 600";
+$plugin_cf['ckeditor']['configuration_additional_options']="//add here any additional config - settings you need\r\n//(remember: no comma after last entry),\r\n//for example:\r\nextraPlugins: 'autogrow',\r\nautoGrow_maxHeight : 800,\r\nautoGrow_bottomSpace : 100,\r\nautoGrow_minHeight : 600";
+
+
