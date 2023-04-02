@@ -16,7 +16,9 @@
 
 * The inbuilt  FA-Plugin uses Font Awesome 5.13 free.
 
-* I has a CSS preprocessor ( Crush ) in '/assets' which has offers a simple preprocessor-language and prefixing and css-minimization. 
+* The IDE is based at Jquery-Ui 13.2 and jquery 3.60.
+
+* I has an optional CSS preprocessor ( CssCrush ) in '/assets' which has offers a simple preprocessor-language and prefixing and css-minimization. 
 
 * This Cmsimple - version has an integrated full-backup from the Cmsimple_XH - forum (start with : ...com/backup). The resulting zip  appears after a long while under userfiles (filebrowser), and is there ready for download.
 
