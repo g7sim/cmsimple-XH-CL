@@ -82,3 +82,7 @@ $c[$i]
 /*----------------------CssCrush init----------------------------------------*/
 require_once ('assets/crush/CssCrush.php');
 use CssCrush\Crush;
+
+/*----------------------Jshrink init----------------------------------------*/
+require_once ('assets/js/Minifier.php');
+use JShrink\Minifier;
