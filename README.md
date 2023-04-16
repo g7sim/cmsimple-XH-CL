@@ -26,7 +26,7 @@
 
 * It has  a limitation in WINDOWS (like Xampp etc.) :  URI-pathes which begin with /plugins or /cmsimple or /templates or  /content or /assets - which have their equivalent in first level of the CMS-directory-structure - are  not allowed in Windows - but function in the Web!
 
-* With <a href=https://https://github.com/TN03/hi_admin_xh> Hi Admin</a> you can edit more(to install make entry under Konfiguration), and most of the 1.7x - plugins function.
+* With <a href=https://github.com/g7sim/hi_admin_xh> Hi Admin</a> you can edit more(to install make entry under Konfiguration), and most of the 1.7x - plugins function.
 
 * The RC - version contains FHS-templates and  several <a href=https://github.com/g7sim/Bootstrap3-XH> Bootstrap 3</a>- and <a href=https://github.com/g7sim/Bootstrap4-XH> Bootstrap 4 -</a>  and <a href=https://github.com/g7sim/Smartmenus-XH> Smartmenus -</a> templatesas You also can find them in this git.
 
