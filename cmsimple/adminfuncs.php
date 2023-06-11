@@ -101,7 +101,7 @@ function XH_systemCheck(array $data)
             } else {
                 $notok = 'warning';
             }
-            $o .= XH_systemCheckLi($cat, is_writable($file ?? '')) ? 'success' : $notok, sprintf($stx['writable'], $file));
+            $o .= XH_systemCheckLi($cat, is_writable($file ?? '') ? 'success' : $notok, sprintf($stx['writable'], $file));
             $cat = '';
         }
     }
