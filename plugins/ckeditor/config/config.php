@@ -1,7 +1,7 @@
 <?php
 
 $plugin_cf['ckeditor']['toolbar']="full";
-$plugin_cf['ckeditor']['skin']="moono";
+$plugin_cf['ckeditor']['skin']="kama";
 $plugin_cf['ckeditor']['language']="CMSimple";
 $plugin_cf['ckeditor']['filebrowser_window_width']="'80%'";
 $plugin_cf['ckeditor']['filebrowser_window_height']="'70%'";
