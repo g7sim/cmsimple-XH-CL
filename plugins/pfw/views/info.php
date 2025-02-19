@@ -5,8 +5,10 @@
         Version: <?=$version?>
     </p>
     <p>
-        Copyright &copy; 2016-2017 <a href="http://3-magi.net"
-        target="_blank">Christoph M. Becker</a>
+        Copyright &copy; 2016-2024 <a href="http://3-magi.net"
+        target="_blank">Christoph M. Becker</a><br>
+        Copyright &copy; 2025 <a href="https://www.cmsimple-xh.org/?About-CMSimple_XH/The-XH-Team"
+        target="_blank">CMSimple_XH developers</a>
     </p>
     <p class="pfw_license">
         Pfw_XH is free software: you can redistribute it and/or modify it under

@@ -21,9 +21,9 @@
 
 namespace Pfw;
 
-final class Plugin
+class Plugin
 {
-    const VERSION = '0.2.0';
+    const VERSION = '0.3.0';
 
     /**
      * @return void
@@ -31,7 +31,7 @@ final class Plugin
     public function run()
     {
         if (XH_ADM) {
-            XH_registerStandardPluginMenuItems(false);
+            XH_registerStandardPluginMenuItems(true);
             if (XH_wantsPluginAdministration('pfw')) {
                 $this->handleAdministration();
             }
@@ -45,9 +45,10 @@ final class Plugin
     {
         global $o, $admin, $action;
 
-        $o .= print_plugin_admin('off');
+        $o .= print_plugin_admin('on');
         switch ($admin) {
             case '':
+            case 'plugin_main':
                 ob_start();
                 (new InfoController)->defaultAction();
                 $o .= ob_get_clean();

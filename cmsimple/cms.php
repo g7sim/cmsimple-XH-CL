@@ -206,7 +206,7 @@ $j = null;
 /**
  * The version in textual representation, e.g. CMSimple_XH 1.6
  */
-define('CMSIMPLE_XH_VERSION', 'CMSimple_XH 1.7.2');
+define('CMSIMPLE_XH_VERSION', 'CMSimple_XH 1.7.3');
 /**
  * The build number as integer: YYYYMMDDBB
  */

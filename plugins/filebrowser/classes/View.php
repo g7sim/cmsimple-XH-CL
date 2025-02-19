@@ -425,11 +425,11 @@ class View
      *
      * @return void
      */
-    public function error($message = '', array $args = null)
-    {
-        $this->message .= '<p class="xh_fail">'
-            . $this->translate($message, $args) . '</p>';
-    }
+    public function error(?string $message = '', ?array $args = null): void
+      {
+       $this->message .= '<p class="xh_fail">'
+        . $this->translate($message, $args) . '</p>';
+      }
 
     /**
      * Appends a localized success message to the message area of the view.
@@ -439,11 +439,11 @@ class View
      *
      * @return void
      */
-    public function success($message, array $args = null)
-    {
-        $this->message .= '<p class="xh_success">'
-            . $this->translate($message, $args) . '</p>';
-    }
+   public function success(string $message, ?array $args = null): void
+      {
+      $this->message .= '<p class="xh_success">'
+        . $this->translate($message, $args) . '</p>';
+      }
 
     /**
      * Appends a localized info message to the message area of the view.
@@ -453,10 +453,10 @@ class View
      *
      * @return void
      */
-    public function info($message, array $args = null)
+   public function info(string $message, ?array $args = null): void
     {
-        $this->message .= '<p class="xh_info">'
-            . $this->translate($message, $args) . '</p>';
+    $this->message .= '<p class="xh_info">'
+        . $this->translate($message, $args) . '</p>';
     }
 
     /**
@@ -479,19 +479,16 @@ class View
      *
      * @return string
      */
-    public function translate($string = '', array $args = null)
-    {
-        if (strlen($string) === 0) {
-            return '';
-        }
-        $html = '';
-        if (!isset($this->lang[$string])) {
-            $html = '{' . $string . '}';
-        } else {
-            $html = $this->lang[$string];
-        }
-        return vsprintf($html, isset($args) ? $args : array());
-    }
+    
+    public function translate(?string $string = '', ?array $args = null): string
+      {
+      if ($string === '' || $string === null) {
+        return '';
+      }
+      $html = isset($this->lang[$string]) ? $this->lang[$string] : '{' . $string . '}';
+      return vsprintf($html, $args ?? []);
+      }
+
 
     /**
      * Renders the JavaScript configuration script element.

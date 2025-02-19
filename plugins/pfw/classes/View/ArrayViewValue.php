@@ -23,11 +23,12 @@ namespace Pfw\View;
 
 use Iterator;
 
-final class ArrayViewValue extends ViewValue implements Iterator
+class ArrayViewValue extends ViewValue implements Iterator
 {
     /**
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return self::create($this->view_, current($this->value_));
@@ -36,6 +37,7 @@ final class ArrayViewValue extends ViewValue implements Iterator
     /**
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return self::create($this->view_, key($this->value_));
@@ -44,6 +46,7 @@ final class ArrayViewValue extends ViewValue implements Iterator
     /**
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         next($this->value_);
@@ -52,6 +55,7 @@ final class ArrayViewValue extends ViewValue implements Iterator
     /**
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         reset($this->value_);
@@ -60,6 +64,7 @@ final class ArrayViewValue extends ViewValue implements Iterator
     /**
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return key($this->value_) !== null;
