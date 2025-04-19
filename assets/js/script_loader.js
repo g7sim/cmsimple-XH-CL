@@ -11,164 +11,286 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License.
+ * limitations under the License. - modified 2025 by github.com/g7sim
  */
- 
-(function(){
-	
-	// private variables, global for all instances of the functions within this closure
-	var max_loaded_id = 0;
-	var loaded_elements = [];
 
-	// add our constructor function to the global scope.
-	window.Script_loader = function(){	
+(function(window) {
+    "use strict";
 
-		// private functions
-		function isNumber(n) {
-			// returns true if n is a number
-			return !isNaN(parseFloat(n)) && isFinite(n);
-		}
-		function isset( argument ){
-			// returns true if argument has a value
-			if( typeof(argument) !== 'undefined' ){
-				if( isNumber(argument) ){
-					return true;
-				}
-				if( argument !== null && argument !== "" ){
-					return true;
-				}
-			}
-			return false;
-		}
-		function add_to_element_list( url, ref ){
-			// function stores a reference to the inserted element in the loaded_elements array
+    let maxLoadedId = 0;
+    /** @type {Map<number, {id: number, ref: HTMLElement, src: string, type: string}>} */
+    const loadedElements = new Map();
+    /** @type {Map<string, number>} */
+    const urlToIdMap = new Map(); // For faster unload by URL
 
-			max_loaded_id++;				
-			loaded_elements[ max_loaded_id ] = {
-				"id" : max_loaded_id,
-				"ref" : ref,
-				"src" : url
-			};
-			return max_loaded_id;
-		}
-		function remove_from_element_list( obj ){
-			// function removes a reference to an element from the loaded_elements array
+    /**
+     * Checks if a value is a valid number.
+     * @param {*} n - The value to check.
+     * @returns {boolean} True if n is a finite number.
+     */
+    function isNumber(n) {
+        return typeof n === 'number' && isFinite(n);
+    }
 
-			if( isset(obj) ){
-				var index = loaded_elements.indexOf(obj);
-				loaded_elements[ index ] = undefined;
+    /**
+     * Extracts the file extension from a URL, ignoring query parameters and fragments.
+     * @param {string} url - The URL string.
+     * @returns {string|null} The file extension (e.g., "js", "css") or null if not found.
+     */
+    function getUrlExtension(url) {
+        if (typeof url !== 'string' || !url) {
+            return null;
+        }
+        
+        const path = url.split(/[?#]/)[0];
+        
+        const match = path.match(/\.([^./\\]+)$/);
+        return match ? match[1].toLowerCase() : null;
+    }
 
-				return true;
-			}	
-			return false;
-		}
-		function get_element_list(){
-			// return the loaded_elements array
+    /**
+     * Adds a reference to the shared loaded element map.
+     * @param {string} url - The URL of the loaded resource.
+     * @param {HTMLElement} ref - The DOM element reference (<script> or <link>).
+     * @param {string} type - The type of resource ('js' or 'css').
+     * @returns {number} The unique ID assigned to this element.
+     */
+    function addToList(url, ref, type) {
+        maxLoadedId++;
+        const entry = {
+            id: maxLoadedId,
+            ref: ref,
+            src: url,
+            type: type
+        };
+        loadedElements.set(maxLoadedId, entry);
+        urlToIdMap.set(url, maxLoadedId); // Add to URL lookup map
+        console.log(`Added to list: ID=${maxLoadedId}, URL=${url}`); // Debug log
+        return maxLoadedId;
+    }
 
-			return loaded_elements;
-		}
-		function get_loaded_ids(){
-			// return an array of all ids of the reference objects in the loaded_elements array
-		
-			var id_array = [];
-			for( var i = 0; i <= max_loaded_id; i++ ){
-				if( isset(loaded_elements[i]) && isset( loaded_elements[i].id ) ){
-					id_array.push( loaded_elements[i].id );
-				}
-			}
-			return id_array;
-		}
+    /**
+     * Removes an element reference from the shared internal maps by its ID.
+     * @param {number} id - The ID of the element to remove.
+     * @returns {boolean} True if the element was found and removed, false otherwise.
+     */
+    function removeFromListById(id) {
+        const entry = loadedElements.get(id);
+        if (entry) {
+            const url = entry.src; // Get URL before deleting
+            loadedElements.delete(id);
+            urlToIdMap.delete(url); // Remove from URL lookup map using the stored URL
+            console.log(`Removed from list: ID=${id}, URL=${url}`); // Debug log
+            return true;
+        }
+        console.log(`Attempted remove from list, ID not found: ${id}`); // Debug log
+        return false;
+    }
+
+    /**
+     * Removes the DOM element safely.
+     * @param {HTMLElement} element - The DOM element to remove.
+     */
+    function removeDomElement(element) {
+        if (element && element.parentNode) {
+            try {
+                element.parentNode.removeChild(element);
+                console.log(`Removed DOM element: ${element.tagName} src/href=${element.src || element.href}`); // Debug log
+            } catch (e) {
+                console.error("ScriptLoader: Failed to remove DOM element.", e, element);
+            }
+        } else {
+             console.log(`Attempted remove DOM element, but element or parentNode missing.`); // Debug log
+        }
+    }
+
+    // --- Constructor Function ---
+    /**
+     * Creates an instance of the Script Loader.
+     * Note: All instances share the same list of loaded resources.
+     * @constructor
+     */
+    window.Script_loader = function() {
+
+        return {
+            /**
+             * Gets a copy of the list of loaded element details.
+             * @returns {Array<{id: number, ref: HTMLElement, src: string, type: string}>} An array of loaded element objects.
+             */
+            getLoadedElements: function() {
+                // Return a copy to prevent external modification
+                return Array.from(loadedElements.values());
+            },
+
+            /**
+             * Gets an array of the IDs of all currently loaded elements.
+             * @returns {number[]} An array of loaded element IDs.
+             */
+            getIds: function() {
+                return Array.from(loadedElements.keys());
+            },
+
+            /**
+             * Loads a script or stylesheet dynamically.
+             * @param {string} url - The URL of the script (.js) or stylesheet (.css) to load.
+             * @param {function} [callback] - Optional function to execute when the script loads successfully. Not reliably called for CSS.
+             * @returns {number} The unique ID assigned to the loaded element.
+             * @throws {Error} If the URL is invalid or the file type is unsupported.
+             */
+            load: function(url, callback) {
+                if (typeof url !== 'string' || !url.trim()) {
+                    throw new Error("ScriptLoader.load: Argument 1 must be a non-empty URL string.");
+                }
+                if (callback && typeof callback !== 'function') {
+                    console.warn("ScriptLoader.load: Optional callback argument must be a function.");
+                    callback = null; // Ignore invalid callback
+                }
+
+                if (urlToIdMap.has(url)) {
+                    const existingId = urlToIdMap.get(url);
+                    console.warn(`ScriptLoader.load: URL "${url}" (ID: ${existingId}) is already loaded or loading.`);
+                    // Optionally call callback immediately if it's already loaded and was a script?
+                    // Or just return the existing ID.
+                    return existingId;
+                }
+
+                const type = getUrlExtension(url);
+                const head = document.head || document.getElementsByTagName('head')[0];
+
+                if (!head) {
+                    throw new Error("ScriptLoader.load: Cannot find document <head> element.");
+                }
+
+                let element;
+                let elementId = -1; // Placeholder
+
+                const handleLoad = () => {
+                    // Cleanup listeners to prevent memory leaks
+                    if (element.removeEventListener) { // Standard
+                        element.removeEventListener('load', handleLoad);
+                        element.removeEventListener('error', handleError);
+                    } else if (element.detachEvent) { // IE < 9 fallback
+                        element.detachEvent('onload', handleLoad);
+                        element.detachEvent('onerror', handleError);
+                    }
+                    
+                    element.onreadystatechange = null;
+
+                    if (callback) {
+                        try {
+                            callback();
+                        } catch (e) {
+                            console.error(`ScriptLoader: Error in callback for ${url}`, e);
+                        }
+                    }
+                };
+
+                const handleError = (errorEvent) => {
+                   
+                    if (element.removeEventListener) {
+                        element.removeEventListener('load', handleLoad);
+                        element.removeEventListener('error', handleError);
+                    } else if (element.detachEvent) {
+                        element.detachEvent('onload', handleLoad);
+                        element.detachEvent('onerror', handleError);
+                    }
+                    element.onreadystatechange = null;
+
+                    console.error(`ScriptLoader.load: Failed to load script from ${url}`, errorEvent);
+                    
+                    if (elementId !== -1) {
+                        removeFromListById(elementId); 
+                    }
+                    
+                };
 
 
-		// public object
-		return {
-			"loaded_elements" : function(){
-				return get_element_list();
-			},
-			"get_ids" : function(){
-				return get_loaded_ids();
-			},
-			"load" : function( url, callback ){
-				// add the script / stylesheet 'url' to the <head>
-		
-				if( !isset(url) ){
-					throw new Error("function expects argument 1 to be an url.");
-				}
+                switch (type) {
+                    case "js":
+                        element = document.createElement("script");
+                        element.src = url;
+                        element.type = "text/javascript";
+                        element.async = true; // Load asynchronously
 
-				// determine type
-				var type_info = url.split(".");
-				var type = type_info[type_info.length - 1];
+                        element.addEventListener('load', handleLoad, { once: true });
+                        element.addEventListener('error', handleError, { once: true });
 
-				// functions inserted after the loading element can not be called by it, so we always insert the scripts before it.
-				var scripts = document.getElementsByTagName('head')[0].getElementsByTagName("script");
-				var loading_element = scripts[ scripts.length - 1 ];
+                        // IE fallback (mainly IE < 9)
+                        element.onreadystatechange = function() {
+                            
+                            if (this.readyState === 'loaded' || this.readyState === 'complete') {
+                                
+                                element.onreadystatechange = null; 
+                                handleLoad();
+                            }
+                        };
 
-				// append to head
-				switch(type){
-					case "js":
-						var script = document.createElement("script");
-						script.src = url;
-						script.type = "text/javascript";
-						script.onreadystatechange = function () {		// IE compatibility mode
-							if (this.readyState == 'complete'){
-								if( isset(callback) && typeof(callback) == "function" ){
-									callback();
-								}
-							}
-						}
-						script.onload = callback;
-						var ref = document.getElementsByTagName('head')[0].insertBefore(script, loading_element);
-					 break;
-					case "css":
-						var css = document.createElement("link");
-						css.href = url;
-						css.type = "text/css";
-						css.rel  = 'stylesheet';
-						var ref = document.getElementsByTagName('head')[0].insertBefore(css, loading_element);
-					 break;
-					default:
-						throw new Error("Unknown type: " + type + ".");
-					break;
-				}
-				return add_to_element_list( url, ref );
-			},
-			"unload" : function( identifier ){
-				// remove the element that corresponds the to id given in the array loaded_elements
+                        head.appendChild(element);
+                        elementId = addToList(url, element, type); 
+                        break;
 
-				if( !isset(identifier) ){
-					throw new Error("function expects argument 1 to be an id or url.");
-				}
-			
-				var ids = get_loaded_ids();
-				var element_list = get_element_list();
+                    case "css":
+                        element = document.createElement("link");
+                        element.href = url;
+                        element.type = "text/css";
+                        element.rel = 'stylesheet';
 
-				if( isNumber(identifier) ){
-					// delete based on id
+                        if (callback) {
+                            console.warn("ScriptLoader.load: Callbacks for CSS loading are not reliably supported across all browsers.");
+                           }
 
-					if( isset(element_list[identifier]) ){
-						document.getElementsByTagName('head')[0].removeChild( element_list[identifier].ref );
-					}
+                        head.appendChild(element);
+                        elementId = addToList(url, element, type); 
+                        break;
 
-					remove_from_element_list( element_list[identifier] );
+                    default:
+                        throw new Error(`ScriptLoader.load: Unknown or unsupported file type for URL: ${url} (Type detected: ${type})`);
+                }
 
-				} else {
-					// delete based on url
+                return elementId;
+            },
 
-					ids.forEach( function( id ){
-						if( isset(element_list[id]) && isset(element_list[id].src) ){
-							if( element_list[id].src == identifier ){
+            /**
+             * Unloads a previously loaded script or stylesheet.
+             * @param {number|string} identifier - The ID (number) returned by load() or the URL (string) of the resource to unload.
+             * @returns {boolean} True if the element was found and removed, false otherwise.
+             * @throws {Error} If the identifier is missing or invalid.
+             */
+            unload: function(identifier) {
+                if (identifier == null) { 
+                    throw new Error("ScriptLoader.unload: Argument 1 (identifier) must be provided.");
+                }
 
-								document.getElementsByTagName('head')[0].removeChild( element_list[id].ref );
-								remove_from_element_list( element_list[id] );
-							}
-						}
-					});
-				}
-			}
-		};
-	}
-})();
+                let idToUnload = -1;
 
+                if (isNumber(identifier)) {
+                    idToUnload = identifier;
+                } else if (typeof identifier === 'string' && identifier.trim()) {
+                    // Lookup ID by URL using the shared secondary map
+                    if (urlToIdMap.has(identifier)) {
+                        idToUnload = urlToIdMap.get(identifier);
+                    } else {
+                        console.warn(`ScriptLoader.unload: URL "${identifier}" not found in loaded elements map.`);
+                        return false; // URL not found
+                    }
+                } else {
+                    throw new Error("ScriptLoader.unload: Identifier must be a number (ID) or a non-empty string (URL).");
+                }
+
+                // Now unload using the determined ID from the shared map
+                if (idToUnload !== -1 && loadedElements.has(idToUnload)) {
+                    const entry = loadedElements.get(idToUnload);
+                    removeDomElement(entry.ref); // Remove from DOM first using shared function
+                    return removeFromListById(idToUnload); // Then remove from shared tracking maps
+                } else {
+                    console.warn(`ScriptLoader.unload: Element with identifier "${identifier}" (resolved ID: ${idToUnload}) not found.`);
+                    return false; // ID not found in map
+                }
+            }
+        }; 
+    }; 
+
+})(window);
 
 
 
