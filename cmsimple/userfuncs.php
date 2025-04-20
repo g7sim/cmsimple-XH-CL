@@ -172,27 +172,51 @@ if (defined('XH_ADM') && XH_ADM && isset($_GET['backup'])) {
 
 /* -------------------- uriclean and security filter -----------------------*/
 
-function redir301($goto)
-{ if(!ob_start("ob_gzhandler")) ob_start();
-  $proto = "Location: http://"; /*in a https-domain use https:// */
-  /* $protocol = apache_getenv('HTTPS') ? 'https:' : 'http:'; */
-  header("HTTP/1.1 301 Moved Permanently");
-  header( $proto.$goto ); 
-  header("Connection: close");
-  
-  ob_end_flush();     
-  die();
+function redir301($goto, $protocol = "http://")
+{
+    while (ob_get_level() > 0) {
+        ob_end_clean();
+    }
+
+    header("HTTP/1.1 301 Moved Permanently");
+    header("Location: " . $protocol . $goto);
+    header("Connection: close"); 
+    exit(); 
 }
- 
- if ( strpos ( $_SERVER['REQUEST_URI'], '?' ) ||  strpos($_SERVER['REQUEST_URI'], '==') )
-{ 
-  $goto  = $_SERVER['HTTP_HOST']; 
-  $repl = array('?q=', '?', '==', '%', '<', 'cgi' , '404' );
-  $cluri = str_replace( $repl , "" , $_SERVER['REQUEST_URI'] ); 			   
-											   
- $goto .= $cluri;	
- 
- if ( (!$adm) &&  ($su != '&login') ) { redir301( $goto );  } 
+
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443
+            ? "https://"
+            : "http://";
+
+$current_uri = $_SERVER['REQUEST_URI'];
+
+$chars_to_remove = ['?', '[', ']', '(', ')', '==']; 
+
+$needs_redirect = false;
+
+foreach ($chars_to_remove as $char) {
+    if (strpos($current_uri, $char) !== false) {
+        $needs_redirect = true;
+        break; 
+    }
+}
+
+if ($needs_redirect) {
+    
+    $host = $_SERVER['HTTP_HOST'];
+
+    $cleaned_uri = str_replace($chars_to_remove, '', $current_uri);
+
+    $cleaned_uri = preg_replace('#/+#', '/', $cleaned_uri);
+
+    $goto = $host . $cleaned_uri;
+
+    $is_admin = isset($adm) && $adm; 
+    $is_login_action = isset($su) && $su == '&login'; 
+
+    if (!$is_admin && !$is_login_action && ($host . $current_uri !== $goto) ) {
+         redir301($goto, $protocol);
+    }
 }
 
 /* ----------------------  anchors -------------------*/
