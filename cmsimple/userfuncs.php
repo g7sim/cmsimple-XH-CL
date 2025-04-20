@@ -1,46 +1,173 @@
 <?php
 
 function fullBackup()
-      {
-          global $pth, $o;
-          $maxsize = 200000000;
-          $part = 1;
-      
-          $date = date('Y-m-d');
-          $archive = new ZipArchive();
-          $archive->open(
-              "./userfiles/Sicherung-{$date}_$part.zip",
-              ZipArchive::CREATE
-          );
-      
-          $totalSize = 0;
-          $it = new RecursiveIteratorIterator(
-              new RecursiveDirectoryIterator($pth['folder']['base'])
-          );
-          $it->rewind();
-          while ($it->valid()) {
-              if (!$it->isDot() && $it->key() != $pth['folder']['base'] . 'backup.zip') {
-                  $size = filesize($it->key());
-                  if ($totalSize + $size > $maxsize) {
-                      $archive->close();
-                      $part++;
-                      $archive->open(
-                          "./userfiles/Sicherung-[/color]{$date}_$part.zip",
-                          ZipArchive::CREATE
-                      );
-                      $totalSize = 0;
-                  }
-                  $archive->addFile($it->key(), $it->getSubPathName());
-                  $totalSize += $size;
-              }
-              $it->next();
-          }
-                $archive->close();
-      }
-            if (XH_ADM && isset($_GET['backup'])) {
-          fullBackup();
-	$GLOBALS['o'] .= XH_message('success', 'Backup finished : Download in Menu : Files');
-      }
+{
+    global $pth, $o;
+
+    $sourceDirectory = realpath($pth['folder']['base']);
+    if ($sourceDirectory === false) {
+        $errorMessage = 'Error: Source directory path is invalid or does not exist: ' . htmlspecialchars($pth['folder']['base']);
+        if (function_exists('XH_message')) {
+             $GLOBALS['o'] .= XH_message('fail', $errorMessage);
+        } else {
+            error_log('Backup Error: ' . $errorMessage);
+        }
+        return false;
+    }
+    
+    $sourceDirectory = rtrim(str_replace('\\', '/', $sourceDirectory), '/');
+
+    $backupDirectoryRelative = 'userfiles/backups'; 
+    $backupDirectory = $sourceDirectory . '/' . $backupDirectoryRelative; 
+
+    $maxsize = 200000000; // 200 MB limit 
+    $part = 1;
+    $date = date('Y-m-d');
+    $backupFileBaseName = "Sicherung-{$date}"; // Base name for zip files
+
+    if (!is_dir($sourceDirectory) || !is_readable($sourceDirectory)) {
+        $errorMessage = 'Error: Source directory not found or not readable: ' . htmlspecialchars($sourceDirectory);
+         if (function_exists('XH_message')) {
+             $GLOBALS['o'] .= XH_message('fail', $errorMessage);
+        } else {
+            error_log('Backup Error: ' . $errorMessage);
+        }
+        return false;
+    }
+
+    if (!is_dir($backupDirectory)) {
+        if (!mkdir($backupDirectory, 0775, true)) { // Recursive creation
+            $errorMessage = 'Error: Could not create backup directory: ' . htmlspecialchars($backupDirectory);
+             if (function_exists('XH_message')) {
+                 $GLOBALS['o'] .= XH_message('fail', $errorMessage);
+            } else {
+                error_log('Backup Error: ' . $errorMessage);
+            }
+            return false;
+        }
+    }
+    if (!is_writable($backupDirectory)) {
+         $errorMessage = 'Error: Backup directory is not writable: ' . htmlspecialchars($backupDirectory);
+         if (function_exists('XH_message')) {
+            $GLOBALS['o'] .= XH_message('fail', $errorMessage);
+        } else {
+            error_log('Backup Error: ' . $errorMessage);
+        }
+        return false;
+    }
+
+    $absoluteExcludeDir = str_replace('\\', '/', $backupDirectory); 
+
+    $archive = new ZipArchive();
+    $currentArchiveName = $backupDirectory . '/' . $backupFileBaseName . "_$part.zip";
+
+    if ($archive->open($currentArchiveName, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== TRUE) {
+        $errorMessage = 'Error: Cannot create zip file: ' . htmlspecialchars($currentArchiveName);
+        if (function_exists('XH_message')) {
+             $GLOBALS['o'] .= XH_message('fail', $errorMessage);
+        } else {
+             error_log('Backup Error: ' . $errorMessage);
+        }
+        return false;
+    }
+
+    $totalSize = 0;
+
+    try {
+        $directoryIterator = new RecursiveDirectoryIterator(
+            $sourceDirectory,
+            RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::UNIX_PATHS // Use UNIX paths for consistency
+        );
+
+        $it = new RecursiveIteratorIterator(
+            $directoryIterator,
+            RecursiveIteratorIterator::SELF_FIRST
+        );
+
+        foreach ($it as $fileinfo) {
+           
+            $filePath = $fileinfo->getPathname(); 
+
+            if (strpos($filePath, $absoluteExcludeDir . '/') === 0) { 
+			                continue; 
+            }
+
+            $relativePath = $it->getSubPathname();
+            
+            if (empty($relativePath)) {
+                continue;
+            }
+            
+            $relativePath = str_replace('\\', '/', $relativePath);
+
+            if ($fileinfo->isDir()) {
+                
+                 $archive->addEmptyDir($relativePath);
+                
+            } elseif ($fileinfo->isFile()) {
+                $fileSize = $fileinfo->getSize();
+
+                if ($totalSize > 0 && ($totalSize + $fileSize) > $maxsize) {
+                    $archive->close();
+                    $part++;
+                    $currentArchiveName = $backupDirectory . '/' . $backupFileBaseName . "_$part.zip";
+                    if ($archive->open($currentArchiveName, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== TRUE) {
+                        $errorMessage = 'Error: Cannot create zip file part: ' . htmlspecialchars($currentArchiveName);
+                        if (function_exists('XH_message')) {
+                             $GLOBALS['o'] .= XH_message('fail', $errorMessage);
+                        } else {
+                             error_log('Backup Error: ' . $errorMessage);
+                        }
+                        return false; 
+                    }
+                    $totalSize = 0;
+                }
+
+                if ($archive->addFile($filePath, $relativePath)) {
+                    $totalSize += $fileSize;
+                    
+                } else {
+                     $warningMessage = 'Warning: Could not add file to zip: ' . htmlspecialchars($relativePath);
+                     if (function_exists('XH_message')) {
+                        $GLOBALS['o'] .= XH_message('warning', $warningMessage);
+                    } else {
+                        error_log('Backup Warning: ' . $warningMessage);
+                    }
+                }
+            }
+        }
+
+    } catch (Exception $e) {
+         $errorMessage = 'Error during backup iteration: ' . $e->getMessage();
+        if (function_exists('XH_message')) {
+             $GLOBALS['o'] .= XH_message('fail', $errorMessage);
+        } else {
+            error_log('Backup Error: Exception during iteration: ' . $e->getMessage());
+        }
+        if ($archive->filename) {
+            @$archive->close();
+        }
+        return false;
+    }
+
+    $archive->close();
+    return true; 
+}
+
+
+if (defined('XH_ADM') && XH_ADM && isset($_GET['backup'])) {
+    if (fullBackup()) {
+        if (function_exists('XH_message')) {
+             $GLOBALS['o'] .= XH_message('success', 'Backup finished successfully. Download available in Menu: Files -> backups.');
+        } else {
+            error_log('Backup finished successfully.');
+        }
+    } else {
+        if (!function_exists('XH_message')) {
+             error_log('Backup process failed.'); 
+         }
+    }
+}
 
 
 /* -------------------- uriclean and security filter -----------------------*/
