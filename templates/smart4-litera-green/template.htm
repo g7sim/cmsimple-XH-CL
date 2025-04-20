@@ -25,13 +25,19 @@ if (function_exists('fa_require')) {
     
 <div class="wrap">
 
-	<?php
-        if ( $login = true ) {
-        echo "<style>
-        header.main-header nav.navbar {margin-top: 30px !important; }
-        nav.navbar.fixed-top { top: 30px !important;}
-        </style>";     }
-    ?>
+<?php
+if ($login === true) {
+    echo "<style>
+    header.main-header nav.navbar { margin-top: 30px !important; }
+    nav.navbar.fixed-top { top: 30px !important; }
+    </style>";
+} else {
+    echo "<style>
+    header.main-header nav.navbar { margin-top: 1px !important; }
+    nav.navbar.fixed-top { top: -21px !important; }
+    </style>";
+}
+?>
  
    <header class="main-header">
       <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark bg-nav flex-start">   <!--  primary #4582EC bei litera -->
