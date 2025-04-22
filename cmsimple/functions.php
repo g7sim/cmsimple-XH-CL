@@ -1,6 +1,9 @@
 <?php
-use function \PHP81_BC\strftime;
+
+
 require_once $pth['folder']['classes'] . 'strftime.php';
+use function \PHP81_BC\strftime;
+require_once $pth['folder']['classes'] . 'CSRFProtection.php';
 
 /**
  * @file functions.php
@@ -1579,10 +1582,17 @@ function XH_logMessage($type, $module, $category, $description)
  *
  * @return string HTML
  */
+
 function loginforms()
 {
-    global $cf, $tx, $onload, $f, $o, $s, $sn, $su, $u, $title, $xh_publisher;
+    global $cf, $tx, $onload, $f, $o, $s, $sn, $su, $u, $title, $xh_publisher, $_XH_csrfProtection;
 
+    $csrfTokenInput = ''; 
+      
+    if (isset($_XH_csrfProtection) && ($_XH_csrfProtection instanceof \XH\CSRFProtection)) {
+	$csrfTokenInput = $_XH_csrfProtection->tokenInput(); }
+
+    // Check if the form should be rendered
     if ($f == 'login' || $f == 'xh_login_failed') {
         $cf['meta']['robots'] = "noindex";
         $onload .= 'document.forms[\'login\'].elements[\'keycut\'].focus();';
@@ -1598,6 +1608,7 @@ function loginforms()
             . '" method="post">'
             . '<input type="hidden" name="login" value="true">'
             . '<input type="hidden" name="selected" value="' . $su . '">'
+            . $csrfTokenInput 
             . '<input type="password" name="keycut" id="passwd" value="">'
             . ' '
             . '<input type="submit" name="submit" id="submit" value="'
@@ -1617,6 +1628,7 @@ function loginforms()
         $s = -1;
     }
 }
+
 
 /**
  * Reads a file and returns its contents; <var>false</var> on failure.

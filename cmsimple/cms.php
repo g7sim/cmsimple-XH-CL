@@ -1317,6 +1317,7 @@ if ($s == -1 && !$f && $o == '') {
     shead('404');
 }
 
+$_XH_csrfProtection = new \XH\CSRFProtection();
 loginforms();
 
 $o = $_XH_controller->renderErrorMessages() . $o;

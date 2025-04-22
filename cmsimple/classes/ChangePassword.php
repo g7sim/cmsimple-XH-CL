@@ -85,7 +85,7 @@ class ChangePassword
         $this->passwordConfirmation = isset($_POST['xh_password_confirmation'])
             ? stsl($_POST['xh_password_confirmation']) : '';
         $this->config = $cf;
-        $this->lang = $tx;
+        $this->lang = $tx;			
         $this->csrfProtector = $_XH_csrfProtection;
     }
 
