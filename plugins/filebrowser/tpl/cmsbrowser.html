@@ -6,12 +6,12 @@ global $tx, $sn, $pth, $_XH_csrfProtection;
 <div id="xhFilebrowserMenu">
 <div id="filebrowser_folders">
 %MESSAGE%
-<hr>
+<hr style="visibility: hidden;">
 %FOLDERS%
 </div>
 </div>
 <div id="xhFilebrowser">
-<hr>
+<hr style="visibility: hidden;">
 <div id="filebrowser_subfolders">
 <div><b><?php echo $tx['filetype']['folder']; ?>:</b> <?php echo XH_hsc($this->currentDirectory); ?></div>
 <div class="xhfbBtnRgth">
@@ -27,7 +27,7 @@ global $tx, $sn, $pth, $_XH_csrfProtection;
 </fieldset>
 %SUBFOLDERS%
 </div>
-<hr>
+<hr style="visibility: hidden;">
 <p class="xhfb_files"><?php echo $this->translate('files');?></p>
 <div id="filebrowser_files">
 <div class="xhfbBtnRgth">
