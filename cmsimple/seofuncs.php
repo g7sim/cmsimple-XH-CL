@@ -13,6 +13,7 @@
  * @copyright 2009-2020 The CMSimple_XH developers <http://cmsimple-xh.org/?The_Team>
  * @license   http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link      http://cmsimple-xh.org/
+ * 2025 modified by github.com/g7sim
  */
 
 /**
@@ -100,34 +101,42 @@ function XH_URI_Cleaning()
 }
 
 //Encode QUERY_STRING for redirect with use uenc()
-function XH_uenc_redir($url_query_str = '')
+function XH_uenc_redir(string $url_query_str = ''): string
 {
-    global $cf;
+    global $cf; 
+    if ($url_query_str === '') {
+        return '';
+    }
 
+    if (!isset($cf['uri']['seperator']) || !is_string($cf['uri']['seperator']) || $cf['uri']['seperator'] === '') {
+        error_log('XH_uenc_redir: Configuration $cf[\'uri\'][\'seperator\'] is not defined or empty.');
+        return $url_query_str;
+    }
     $url_sep = $cf['uri']['seperator'];
-    $url_query_uencstr = '';
 
-    $url_query_parts = array();
-    if (strpos($url_query_str, '&') !== false) {
-        $url_query_parts[] = strstr($url_query_str, '&', true);
-        $url_query_parts[] = strstr($url_query_str, '&');
-    } else {
-        $url_query_parts[] = $url_query_str;
+    $path_part = $url_query_str;
+    $param_part = ''; 
+    $ampersand_pos = strpos($url_query_str, '&');
+
+    if ($ampersand_pos !== false) {
+        $path_part = substr($url_query_str, 0, $ampersand_pos);
+        $param_part = substr($url_query_str, $ampersand_pos);
     }
-    if (strpos($url_query_parts['0'], '=') === false) {
-        $url_page_array = explode($url_sep, $url_query_parts['0']);
-        foreach ($url_page_array as $url_page_tmp) {
-            $tmp = uenc($url_page_tmp);
-            $tmp = preg_replace('#%(25)*#i', '%', $tmp);
-            $url_query_uencstr .= $tmp . $url_sep;
+
+    $encoded_path_part = '';
+
+    if (strpos($path_part, '=') === false) {
+        $segments = explode($url_sep, $path_part);
+
+        $encoded_segments = [];
+        foreach ($segments as $segment) {
+            $encoded_segments[] = rawurlencode($segment);
         }
-        $url_query_uencstr = rtrim($url_query_uencstr, $url_sep);
+
+        $encoded_path_part = implode($url_sep, $encoded_segments);
     } else {
-        $url_query_uencstr = $url_query_parts['0'];
+        $encoded_path_part = $path_part;
     }
 
-    $url_query_uencstr = $url_query_uencstr
-                      . ($url_query_parts['1'] ? $url_query_parts['1'] : '');
-
-    return $url_query_uencstr;
+    return $encoded_path_part . $param_part;
 }
