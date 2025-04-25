@@ -294,7 +294,6 @@
 
 
 
-
 var loadercss = new Script_loader();
 
 loadercss.load( './assets/css/core.css' );
@@ -305,7 +304,11 @@ loadsfont.load( './assets/css/system-font.css' );
 
 var loadsfile = new Script_loader();
 
-loadsfont.load( './plugins/filebrowser/css/stylesheet.css' );
+loadsfile.load( './plugins/filebrowser/css/stylesheet.css' );
+
+var loaderdom = new Script_loader();
+
+loaderdom.load( './assets/js/purify.min.js' );
 
 var loaderjs = new Script_loader();
 
