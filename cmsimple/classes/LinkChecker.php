@@ -1,444 +1,622 @@
 <?php
 
+declare(strict_types=1); 
+
 namespace XH;
 
-/**
- * The link checker.
- *
- * $hints[$pageIndex][$type][$n] = $link, where <var>$type</var> is "errors"
- * or "caveats".
- *
- * @author    Peter Harteg <peter@harteg.dk>
- * @author    The CMSimple_XH developers <devs@cmsimple-xh.org>
- * @copyright 1999-2009 Peter Harteg
- * @copyright 2009-2019 The CMSimple_XH developers <http://cmsimple-xh.org/?The_Team>
- * @license   http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @see       http://cmsimple-xh.org/
- */
 class LinkChecker
 {
+     private const FAILURE_STATUSES = [
+        400, 403, 404, 405, 410, 500,
+        Link::STATUS_INTERNALFAIL,
+        Link::STATUS_EXTERNALFAIL,
+        Link::STATUS_CONTENT_NOT_FOUND,
+        Link::STATUS_FILE_NOT_FOUND,
+        Link::STATUS_ANCHOR_MISSING
+    ];
+
     /**
-     * Prepares the link check.
+     * Prepares the link check interface.
      *
      * @return string HTML
      */
-    public function prepare()
+    public function prepare(): string
     {
         global $sn, $pth, $tx;
 
-        $url = $sn . '?&amp;xh_do_validate';
+        if (!isset($sn, $pth['folder']['corestyle'], $tx['link']['checking'])) {
+             error_log('LinkChecker Error: Missing required global variables in prepare()');
+             return '<div id="xh_linkchecker" style="color: red;">Error: Link checker configuration is incomplete.</div>';
+        }
+
+        $url = htmlspecialchars($sn . '?&amp;xh_do_validate', ENT_QUOTES, 'UTF-8');
+        $loaderImg = htmlspecialchars($pth['folder']['corestyle'] . 'ajax-loader-bar.gif', ENT_QUOTES, 'UTF-8');
+        $altText = htmlspecialchars($tx['link']['checking'] ?? 'Checking...', ENT_QUOTES, 'UTF-8');
+
         $o = '<div id="xh_linkchecker" data-url="' . $url . '">'
-            . '<img src="' . $pth['folder']['corestyle']
-            . 'ajax-loader-bar.gif" width="128" height="15" alt="'
-            . $tx['link']['checking'] . '">'
+            . '<img src="' . $loaderImg . '" width="128" height="15" alt="' . $altText . '">'
             . '</div>';
         return $o;
     }
 
     /**
-     * Handles the actual link check request.
+     * Handles the actual link check request (synchronous).
+     * Outputs the results directly.
      *
      * @return void
      */
-    public function doCheck()
-    {
+    public function doCheck(): void
+    {       
+		if (function_exists('set_time_limit')) {
+             @set_time_limit(300); 
+        }
+
         header('Content-Type: text/plain; charset=utf-8');
-        echo $this->checkLinks();
+        try {
+            echo $this->checkLinks();
+        } catch (\Throwable $e) {
+            error_log("LinkChecker Error during checkLinks: " . $e->getMessage() . "\n" . $e->getTraceAsString());
+            echo "An internal error occurred during the link check process. Please check the server logs.";
+        }
         exit;
     }
 
     /**
-     * Checks all links and returns the result view.
+     * Checks all links gathered from the content and returns the result view.
      *
-     * @return string HTML
+     * @return string HTML report
      */
-    public function checkLinks()
+    public function checkLinks(): string
     {
-        $links = $this->gatherLinks();
-        $failure = array(
-            400, 403, 404, 405, 410, 500, Link::STATUS_INTERNALFAIL,
-            Link::STATUS_EXTERNALFAIL, Link::STATUS_CONTENT_NOT_FOUND,
-            Link::STATUS_FILE_NOT_FOUND, Link::STATUS_ANCHOR_MISSING
-        );
-        $hints = array();
-        foreach ($links as $index => $currentLinks) {
-            foreach ($currentLinks as $link) {
-                $this->determineLinkStatus($link);
-                if (($link->getStatus() !== 200)
-                    && ($link->getStatus() !== Link::STATUS_NOT_CHECKED)
-                ) {
-                    $type = in_array($link->getStatus(), $failure)
-                        ? 'errors' : 'caveats';
-                    $hints[$index][$type][] = $link;
-                }
+        $linksByPage = $this->gatherLinks(); 
+        $hints = []; 
+
+        foreach ($linksByPage as $pageIndex => $pageLinks) {
+            if (empty($pageLinks)) {
+                continue;
             }
-        }
-        return $this->message($this->countLinks($links), $hints);
-    }
+            
+            foreach ($pageLinks as $link) {
+                try {
+                    $this->determineLinkStatus($link);
 
-    /**
-     * Gathers all links in the content and returns the result.
-     *
-     * @return array
-     */
-    private function gatherLinks()
-    {
-        global $c, $u, $cl;
+                    $status = $link->getStatus();
 
-        $links = array();
-        for ($i = 0; $i < $cl; $i++) {
-            $links[$i] = array();
-            $pattern = '/<a.*?href=["]?([^"]*)["]?.*?>(.*?)<\/a>/is';
-            preg_match_all($pattern, $c[$i], $pageLinks);
-            if (count($pageLinks[1]) > 0) {
-                foreach ($pageLinks[1] as $j => $url) {
-                    $url = str_replace('&amp;', '&', $url);
-                    if (strpos($url, '#') === 0) {
-                        $url = '?' . $u[$i] . $url;
+                    if (($status !== 200) && ($status !== Link::STATUS_NOT_CHECKED)) {
+                        $type = in_array($status, self::FAILURE_STATUSES) ? 'errors' : 'caveats';
+                        $hints[$pageIndex][$type][] = $link;
                     }
-                    $text = $pageLinks[2][$j];
-                    $links[$i][] = new Link($url, $text);
+                } catch (\Throwable $e) {
+                     error_log("LinkChecker: Error processing link '{$link->getURL()}' on page index {$pageIndex}: " . $e->getMessage());
+                    
+                     $link->setStatus(Link::STATUS_INTERNALFAIL); 
+                     $hints[$pageIndex]['errors'][] = $link; 
                 }
             }
         }
-        return $links;
+
+        return $this->message($this->countLinks($linksByPage), $hints);
     }
 
     /**
-     * Returns the number of the links.
+     * Gathers all links in the content, grouped by page index.
      *
-     * @param array $links An array of page links.
-     *
-     * @return int
+     * @return array<int, array<Link>> Links grouped by page index [$pageIndex => [Link, Link,...]]
      */
-    private function countLinks(array $links)
+    private function gatherLinks(): array
     {
-        return array_sum(array_map('count', $links));
+        global $c, $u, $cl; 
+
+        $linksByPage = [];
+        for ($i = 0; $i < $cl; $i++) {
+            $linksByPage[$i] = [];
+            $content = $c[$i] ?? ''; 
+            if (empty($content)) {
+                continue;
+            }
+
+            $pattern = '/<a\s+[^>]*?href\s*=\s*(["\']?)(.*?)\1[^>]*?>(.*?)<\/a>/is';
+            preg_match_all($pattern, $content, $pageLinks, PREG_SET_ORDER);
+
+            if (!empty($pageLinks)) {
+                foreach ($pageLinks as $match) {
+                   $url = trim($match[2] ?? '');
+                    if ($url === '') {
+                        continue; 
+                    }
+
+                    $url = str_replace('&amp;', '&', $url); 
+
+                    if (strpos($url, '#') === 0) {
+                        $pageSlug = $u[$i] ?? ''; 
+                        $url = '?' . $pageSlug . $url;
+                    }
+
+                    $text = strip_tags($match[3] ?? ''); 
+                    $text = trim(preg_replace('/\s+/', ' ', $text)); 
+                    $text = $text ?: $url;
+
+                    try {
+                        
+                        $linksByPage[$i][] = new Link($url, $text);
+                    } catch (\Throwable $e) {
+                         error_log("LinkChecker: Failed to instantiate Link object for URL '{$url}': " . $e->getMessage());
+                         
+                    }
+                }
+            }
+        }
+        return $linksByPage;
     }
 
     /**
-     * Determines the status of a link.
+     * Returns the total number of links found across all pages.
      *
-     * @param Link $link A link
+     * @param array<int, array<Link>> $linksByPage An array of page links.
+     * @return int Total number of links.
+     */
+    private function countLinks(array $linksByPage): int
+    {
+        return array_sum(array_map('count', $linksByPage));
+    }
+
+    /**
+     * Determines the status of a single link by parsing its URL and dispatching to checkers.
+     * Modifies the Link object's status directly.
      *
+     * @param Link $link The Link object to check.
      * @return void
      */
-    public function determineLinkStatus(Link $link)
+    public function determineLinkStatus(Link $link): void
     {
-        global $cf;
+        global $cf; 
 
-        $parts = parse_url($link->getURL());
-        if (isset($parts['scheme'])) {
-            switch ($parts['scheme']) {
-                case 'http':
-                case 'https':
-                    $status = $this->checkExternalLink($parts);
-                    break;
-                case 'mailto':
-                    if (!empty($cf['link']['mailto'])) {
-                        $status = Link::STATUS_MAILTO;
-                    } else {
-                        $status = Link::STATUS_NOT_CHECKED;
-                    }
-                    break;
-                case 'tel':
-                    if (!empty($cf['link']['tel'])) {
-                        $status = Link::STATUS_TEL;
-                    } else {
-                        $status = Link::STATUS_NOT_CHECKED;
-                    }
-                    break;
-                case '':
-                    $status = $this->checkInternalLink($parts);
-                    break;
-                default:
-                    $status = Link::STATUS_UNKNOWN;
-            }
-        } else {
-            $status = $this->checkInternalLink($parts);
+        $url = $link->getURL();
+        
+        if (strlen($url) > 2083) { 
+             $link->setStatus(Link::STATUS_INTERNALFAIL); 
+             return;
         }
+
+        $parts = parse_url($url);
+
+        if ($parts === false) {
+            error_log("LinkChecker: Failed to parse URL: " . $url);
+            $link->setStatus(Link::STATUS_INTERNALFAIL); 
+            return;
+        }
+
+        $scheme = isset($parts['scheme']) ? strtolower($parts['scheme']) : '';
+        $status = Link::STATUS_NOT_CHECKED; 
+
+        switch ($scheme) {
+            case 'http':
+            case 'https':
+                $status = $this->checkExternalLink($parts);
+                break;
+            case 'mailto':
+                $status = !empty($cf['link']['mailto'])
+                    ? Link::STATUS_MAILTO
+                    : Link::STATUS_NOT_CHECKED;
+                break;
+            case 'tel':
+                 
+                $status = !empty($cf['link']['tel'])
+                    ? Link::STATUS_TEL
+                    : Link::STATUS_NOT_CHECKED;
+                break;
+            case '': 
+            case 'file': 
+                $status = $this->checkInternalLink($parts);
+                break;
+            default:
+                $status = !empty($cf['link']['unknown_scheme'])
+                    ? Link::STATUS_UNKNOWN
+                    : Link::STATUS_NOT_CHECKED;
+                break;
+        }
+
         $link->setStatus($status);
     }
 
     /**
-     * Checks an internal link and returns the link status.
+     * Checks an internal link (relative path, query string, fragment).
      *
-     * @param array $test URL parts.
-     *
-     * @return int
+     * @param array $test URL parts from parse_url.
+     * @return int Status code (e.g., 200, Link::STATUS_*, 404).
      */
-    private function checkInternalLink(array $test)
+    private function checkInternalLink(array $test): int
     {
-        global $c, $u, $cl, $pth, $cf;
+        global $c, $u, $cl, $pth, $cf, $plugin_cf; 
 
-        if (isset($test['path']) && !isset($test['query'])) {
+        if (isset($test['path']) && !isset($test['query']) && strpos($test['path'], '.') !== false) {
             $filename = urldecode($test['path']);
-            if (is_file($filename) && is_readable($filename)) {
-                return 200;
+            if (strpos($filename, '..') === false) {
+                 
+                 $basePath = $pth['folder']['base'] ?? $_SERVER['DOCUMENT_ROOT'] ?? '';
+                 $fullPath = rtrim($basePath, '/') . '/' . ltrim($filename, '/');               
+
+                 if (is_file($fullPath) && is_readable($fullPath) /* && $isPublicPath */) {
+                     return 200;
+                 } else {
+                     
+                 }
+            }
+             
+        }
+        
+        $queryString = $test['query'] ?? null;
+        $fragment = $test['fragment'] ?? null;
+
+        if (!$queryString) {
+             
+             return Link::STATUS_INTERNALFAIL;
+        }
+        
+        parse_str(html_entity_decode($queryString), $queryParams);
+
+        $downloadKey = null;
+        if (isset($queryParams['download'])) $downloadKey = 'download';
+        elseif (isset($queryParams['&download'])) $downloadKey = '&download'; 
+
+        if ($downloadKey !== null && isset($pth['folder']['downloads'])) {
+            $downloadFile = trim($queryParams[$downloadKey] ?? '');
+            
+            if ($downloadFile !== '' && strpos($downloadFile, '..') === false && strpos($downloadFile, '/') === false) {
+                $filePath = rtrim($pth['folder']['downloads'], '/') . '/' . $downloadFile;
+                return (is_file($filePath) && is_readable($filePath)) ? 200 : Link::STATUS_FILE_NOT_FOUND;
+            } else {
+                error_log("LinkChecker: Invalid download path detected: " . ($queryParams[$downloadKey] ?? ''));
+                return Link::STATUS_FILE_NOT_FOUND; 
             }
         }
-        if (!isset($test['query'])) {
-            return Link::STATUS_INTERNALFAIL;
+        
+        list($pageSlug) = explode('&', $queryString, 2); 
+        
+        if ($pageSlug === 'sitemap') return 200; 
+        if ($pageSlug === 'mailform' && !empty($cf['mailform']['email'])) return 200; 
+
+        $targetPageIndex = array_search($pageSlug, $u);
+
+        if ($targetPageIndex !== false) {
+            
+            if (!$fragment) {
+                return 200; 
+            }
+
+            $anchorPattern = '/<[^>]*\s+(?:id|name)\s*=\s*["\']' . preg_quote($fragment, '/') . '["\'][^>]*>/i';
+            if (isset($c[$targetPageIndex]) && preg_match($anchorPattern, $c[$targetPageIndex])) {
+                return 200; 
+            }
+            
+			static $templateContent = null; 
+            if ($templateContent === null) {
+                 $templatePath = $pth['file']['template'] ?? null;
+                 if ($templatePath && is_file($templatePath) && is_readable($templatePath)) {
+                     $templateContent = file_get_contents($templatePath);
+                 } else {
+                     $templateContent = false; 
+                     error_log("LinkChecker: Template file not found or not readable: " . ($templatePath ?? 'N/A'));
+                 }
+            }
+            if ($templateContent && preg_match($anchorPattern, $templateContent)) {
+                return 200; 
+            }
+
+            return Link::STATUS_ANCHOR_MISSING; 
         }
 
-        list($query) = explode('&', $test['query']);
-        if ($query === 'sitemap'
-            || $query === 'mailform' && $cf['mailform']['email'] !== ''
-        ) {
-            return 200;
-        }
-        $contentLength = $cl;
         if (isset($test['path'])
-            && preg_match('/\/([A-z]{2})\/[^\/]*/', $test['path'], $matches)
-            && XH_isLanguageFolder($matches[1])
+            && function_exists('XH_isLanguageFolder')
+            && function_exists('XH_readContents')
+            && preg_match('/\/([a-z]{2})\/?$/i', $test['path'], $matches) 
+            && \XH_isLanguageFolder($matches[1])
         ) {
             $lang = $matches[1];
-        }
-        if (isset($lang)) {
-            $query = str_replace('/' . $lang . '/?', '', $query);
-            $content = XH_readContents($lang);
-            if (!$content) {
-                return Link::STATUS_CONTENT_NOT_FOUND;
-            }
-            $urls = $content['urls'];
-            $pages = $content['pages'];
-            $contentLength = count($pages);
-        } else {
-            $urls = $u;
-            $pages = $c;
-        }
-        for ($i = 0; $i < $contentLength; $i++) {
-            if ($query === '' || $urls[$i] === $query) {
-                if (!isset($test['fragment'])) {
-                    return 200;
+            $langContent = \XH_readContents($lang); 
+
+            if ($langContent && isset($langContent['urls'])) {
+                $langTargetPageIndex = array_search($pageSlug, $langContent['urls']);
+                if ($langTargetPageIndex !== false) {
+                    
+                    if (!$fragment) return 200;
+
+                    $langAnchorPattern = '/<[^>]*\s+(?:id|name)\s*=\s*["\']' . preg_quote($fragment, '/') . '["\'][^>]*>/i';
+                    if (isset($langContent['pages'][$langTargetPageIndex]) && preg_match($langAnchorPattern, $langContent['pages'][$langTargetPageIndex])) {
+                        return 200;
+                    }
+                    
+                    if (isset($templateContent) && $templateContent && preg_match($langAnchorPattern, $templateContent)) {
+                        return 200;
+                    }
+                    return Link::STATUS_ANCHOR_MISSING;
                 }
-                $pattern = '/<[^>]*[id|name]\s*=\s*"' . $test['fragment'] . '"/i';
-                if (preg_match($pattern, $pages[$i])) {
-                    return 200;
-                }
-                // check for anchor in template
-                $template = file_get_contents($pth['file']['template']);
-                $pattern = '/<[^>]*[id|name]\s*=\s*"' . $test['fragment'] . '"/i';
-                if (preg_match($pattern, $template)) {
-                    return 200;
-                }
-                return Link::STATUS_ANCHOR_MISSING;
-            }
-        }
-        $parts = explode('=', $test['query']);
-        $temp = array('download', '&download', '&amp;download');
-        if (in_array($parts[0], $temp)) {
-            if (file_exists($pth['folder']['downloads'] . $parts[1])) {
-                return 200;
             } else {
-                return Link::STATUS_FILE_NOT_FOUND;
+                
             }
-        }
+        }        
+        error_log("LinkChecker: Internal link check failed for query '{$queryString}' (fragment: '{$fragment}')");
         return Link::STATUS_INTERNALFAIL;
     }
 
     /**
-     * Checks an external link and returns the status code.
+     * Checks an external link using a HEAD request.
      *
-     * @param array $parts URL parts.
-     *
-     * @return int
+     * @param array $parts URL parts from parse_url.
+     * @return int HTTP Status code or Link::STATUS_EXTERNALFAIL.
      */
-    private function checkExternalLink(array $parts)
-    {
-        set_time_limit(30);
-        $path = isset($parts['path']) ? $parts['path'] : '/';
+    private function checkExternalLink(array $parts): int
+    {        
+        if (function_exists('set_time_limit')) {
+             @set_time_limit(60); 
+        }
+
+        $path = $parts['path'] ?? '/';
         if (isset($parts['query'])) {
             $path .= "?" . $parts['query'];
         }
-        $status = $this->makeHeadRequest($parts['scheme'], $parts['host'], $path);
+        
+        $status = $this->makeHeadRequest(
+            $parts['scheme'],
+            $parts['host'],
+            $path,
+            $parts['port'] ?? null 
+        );
+        
         return ($status !== false) ? $status : Link::STATUS_EXTERNALFAIL;
     }
 
     /**
-     * Makes a head request and returns the response status code, FALSE if the
-     * request failed.
+     * Makes a HEAD request using cURL or fallback to get_headers.
+     * Returns the HTTP status code or false on complete failure.
      *
-     * @param string $scheme http(s).
-     * @param string $host A host name.
-     * @param string $path An absolute path.
+     * @param string $scheme http or https.
+     * @param string $host Host name.
+     * @param string $path Absolute path including query string.
+     * @param ?int $port Optional port number.
      *
-     * @return int|false
+     * @return int|false Status code or false on failure.
      */
-    protected function makeHeadRequest($scheme, $host, $path)
+    protected function makeHeadRequest(string $scheme, string $host, string $path, ?int $port = null): int|false
     {
-        global $cf;
-
-        $url = $scheme . '://' . $host . $path;
-        $timeout = 6;
-        $connect_timeout = 5;
-        $maxredir = (int) $cf['link']['redir'];
-        $agent = 'CMSimple_XH Link-Checker';
+        global $cf; 
+        
+        $timeout = (int) ($cf['link']['timeout'] ?? 10); 
+        $connect_timeout = (int) ($cf['link']['connect_timeout'] ?? 5); 
+        $maxredir = (int) ($cf['link']['redir'] ?? 5); 
+        $agent = $cf['link']['user_agent'] ?? 'CMSimple_XH_LinkChecker/1.0'; 
+        $verifySsl = (bool) ($cf['link']['ssl_verify'] ?? true); 
+    
+        $url = $scheme . '://' . $host . ($port ? ':' . $port : '') . $path;
 
         if (extension_loaded('curl')) {
             $ch = curl_init();
-            $options = array(
-                CURLOPT_URL             => $url,
-                CURLOPT_HEADER          => true,
-                CURLOPT_RETURNTRANSFER  => true,
-                CURLOPT_NOBODY          => true,
-                CURLOPT_USERAGENT       => $agent,
-                CURLOPT_TIMEOUT         => $timeout,
-                CURLOPT_CONNECTTIMEOUT  => $connect_timeout,
-                CURLOPT_FRESH_CONNECT   => true
-            );
+            $options = [
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HEADER => true,         
+                CURLOPT_NOBODY => true,         
+                CURLOPT_USERAGENT => $agent,
+                CURLOPT_TIMEOUT => $timeout,
+                CURLOPT_CONNECTTIMEOUT => $connect_timeout,
+                CURLOPT_FRESH_CONNECT => true,  
+                CURLOPT_SSL_VERIFYPEER => $verifySsl,
+                CURLOPT_SSL_VERIFYHOST => $verifySsl ? 2 : 0, 
+                // CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4, 
+            ];
+
             if ($maxredir > 0) {
-                $options[CURLOPT_FOLLOWLOCATION] = true;
-                $options[CURLOPT_MAXREDIRS]      = $maxredir;
+                $options[CURLOPT_FOLLOWLOCATION] = true; 
+                $options[CURLOPT_MAXREDIRS] = $maxredir;
             }
+
             curl_setopt_array($ch, $options);
-            if (curl_exec($ch) !== false) {
-                $headers = curl_getinfo($ch);
-            }
+
+            $headerContent = curl_exec($ch); 
+            $curlErrorNo = curl_errno($ch);
+            $curlError = curl_error($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
             curl_close($ch);
-            if (!empty($headers['http_code'])) {
-                return (int) $headers['http_code'];
+
+            if ($curlErrorNo !== 0) {
+                 error_log("LinkChecker cURL Error for $url: [$curlErrorNo] $curlError");
+                 return false;
             }
-        }
-        // alternative to cURL
-        if (function_exists('get_headers')) {
-            $context = stream_context_create(
-                array(
-                    'http' => array(
-                        'method'        => 'HEAD',
-                        'timeout'       => $timeout,
-                        'max_redirects' => $maxredir + 1,
-                        'user_agent'    => $agent
-                    )
-                )
-            );
-            $headers = get_headers($url, true, $context);
-            $status = array();
-            for ($i = 0; $i <= $maxredir; $i++) {
-                if (!empty($headers[$i])) {
-                    $headers_tmp = $headers[$i];
-                } else {
-                    break;
+            
+            if ($httpCode > 0) {
+                return (int) $httpCode; 
+            } else {
+                 error_log("LinkChecker cURL Warning for $url: Received HTTP status code 0.");
                 }
-            }
-			assert(isset($headers_tmp));
-            preg_match('#HTTP/[0-9\.]+\s+([0-9]+)#i', $headers_tmp, $status);
-            if (!empty($status[1])) {
-                return (int) $status[1];
-            }
         }
+
+        if (function_exists('get_headers') && ini_get('allow_url_fopen')) {
+            $contextOptions = [
+                'http' => [
+                    'method' => 'HEAD', 
+                    'timeout' => $timeout,
+                    'max_redirects' => $maxredir + 1, 
+                    'user_agent' => $agent,
+                    'ignore_errors' => true, 
+                ],
+                 'ssl' => [ 
+                    'verify_peer' => $verifySsl,
+                    'verify_peer_name' => $verifySsl,
+                    // 'allow_self_signed' => !$verifySsl, 
+                 ]
+            ];
+            $context = stream_context_create($contextOptions);
+
+            $headers = @get_headers($url, true, $context); 
+
+            if ($headers !== false && !empty($headers)) {
+                $statusLine = null;
+                
+                $lastResponseHeaders = end($headers); 
+
+                if (is_array($lastResponseHeaders) && isset($lastResponseHeaders[0]) && str_starts_with($lastResponseHeaders[0], 'HTTP/')) {
+                    
+                    $statusLine = $lastResponseHeaders[0];
+                } elseif (isset($headers[0]) && is_string($headers[0]) && str_starts_with($headers[0], 'HTTP/')) {
+                    
+                    $statusLine = $headers[0];
+                } else {
+                    
+                    if(is_array($lastResponseHeaders)) {
+                        foreach($lastResponseHeaders as $headerLine) {
+                            if (is_string($headerLine) && str_starts_with($headerLine, 'HTTP/')) {
+                                $statusLine = $headerLine;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if ($statusLine && preg_match('#^HTTP/\d\.\d\s+(\d{3})#i', $statusLine, $matches)) {
+                    return (int) $matches[1]; 
+                } else {
+                     error_log("LinkChecker get_headers Warning for $url: Could not parse status line from headers: " . print_r($headers, true));
+                }
+            } else {
+                
+                 error_log("LinkChecker get_headers failed for $url");
+            }
+        } elseif (!extension_loaded('curl')) {
+             error_log("LinkChecker Error: Neither cURL extension nor allow_url_fopen with get_headers is available.");
+        }
+        
         return false;
     }
 
     /**
-     * Returns the report of a single error.
+     * Returns the HTML report for a single error.
      *
-     * @param Link $link A link.
-     *
-     * @return string HTML
+     * @param Link $link A link object with an error status.
+     * @return string HTML list item.
      */
-    public function reportError(Link $link)
+    public function reportError(Link $link): string
     {
-        global $tx;
+        global $tx; 
 
-        $o = '<li>' . "\n" . '<b>' . $tx['link']['link'] . '</b>'
-            . '<a target="_blank" href="' . $link->getURL() . '">' . $link->getText() . '</a>'
+        $urlEsc = htmlspecialchars($link->getURL(), ENT_QUOTES, 'UTF-8');
+        $textEsc = htmlspecialchars($link->getText(), ENT_QUOTES, 'UTF-8');
+
+        $o = '<li>' . "\n"
+            . '<b>' . ($tx['link']['link'] ?? 'Link:') . '</b> '
+            . '<a target="_blank" rel="noopener noreferrer" href="' . $urlEsc . '">' . $textEsc . '</a>'
             . '<br>' . "\n"
-            . '<b>' . $tx['link']['linked_page'] . '</b>' . $link->getURL()
+            . '<b>' . ($tx['link']['linked_page'] ?? 'Source URL:') . '</b> ' . $urlEsc
             . '<br>' . "\n"
-            . '<b>' . $tx['link']['error'] . '</b>';
-        switch ($link->getStatus()) {
-            case Link::STATUS_INTERNALFAIL:
-            case Link::STATUS_CONTENT_NOT_FOUND:
-                $o .= $tx['link']['int_error'];
-                break;
-            case Link::STATUS_ANCHOR_MISSING:
-                $o .= $tx['link']['int_error_fragment'];
-                break;
-            case Link::STATUS_EXTERNALFAIL:
-                $o .= $tx['link']['ext_error_domain'];
-                break;
-            default:
-                $o .= $tx['link']['ext_error_page'] . '<br>' . "\n"
-                    . '<b>' . $tx['link']['returned_status'] . '</b>'
-                    . $link->getStatus();
-        }
-        $o .= "\n" . '</li>' . "\n";
+            . '<b>' . ($tx['link']['error'] ?? 'Error:') . '</b> ';
+
+        $status = $link->getStatus();
+        $errorMessage = match ($status) {
+            Link::STATUS_INTERNALFAIL => $tx['link']['int_error'] ?? 'Internal link invalid or page not found.',
+            Link::STATUS_CONTENT_NOT_FOUND => $tx['link']['content_not_found'] ?? 'Content file for language not found.',
+            Link::STATUS_ANCHOR_MISSING => $tx['link']['int_error_fragment'] ?? 'Internal link valid, but anchor/fragment not found.',
+            Link::STATUS_EXTERNALFAIL => $tx['link']['ext_error_domain'] ?? 'Could not reach external domain or connection error.',
+            Link::STATUS_FILE_NOT_FOUND => $tx['link']['file_not_found'] ?? 'Download file not found.',
+            default => ($tx['link']['ext_error_page'] ?? 'External page error.')
+                       . '<br>' . "\n" . '<b>' . ($tx['link']['returned_status'] ?? 'Returned Status:') . '</b> ' . $status,
+        };
+
+        $o .= $errorMessage . "\n" . '</li>' . "\n";
         return $o;
     }
 
     /**
-     * Returns the report of a single notice.
+     * Returns the HTML report for a single notice/caveat.
      *
-     * @param Link $link A link.
-     *
-     * @return string HTML
+     * @param Link $link A link object with a non-error, non-200 status.
+     * @return string HTML list item.
      */
-    public function reportNotice(Link $link)
+    public function reportNotice(Link $link): string
     {
-        global $tx;
+        global $tx; 
 
-        $o = '<li>' . "\n" . '<b>' . $tx['link']['link'] . '</b>'
-            . '<a target="_blank" href="' . $link->getURL() . '">' . $link->getText() . '</a>'
+        $urlEsc = htmlspecialchars($link->getURL(), ENT_QUOTES, 'UTF-8');
+        $textEsc = htmlspecialchars($link->getText(), ENT_QUOTES, 'UTF-8');
+
+        $o = '<li>' . "\n"
+            . '<b>' . ($tx['link']['link'] ?? 'Link:') . '</b> '
+            . '<a target="_blank" rel="noopener noreferrer" href="' . $urlEsc . '">' . $textEsc . '</a>'
             . '<br>' . "\n"
-            . '<b>' . $tx['link']['linked_page'] . '</b>'
-            . $link->getURL() . '<br>' . "\n";
-        switch ($link->getStatus()) {
+            . '<b>' . ($tx['link']['linked_page'] ?? 'Source URL:') . '</b> ' . $urlEsc
+            . '<br>' . "\n";
+
+        $status = $link->getStatus();
+        $noticeMessage = '';
+
+        switch ($status) {
             case Link::STATUS_MAILTO:
-                $o .= $tx['link']['email'] . "\n";
+                $noticeMessage = '<b>' . ($tx['link']['hint'] ?? 'Hint:') . '</b> ' . ($tx['link']['email'] ?? 'Mailto link (not automatically checkable).');
                 break;
             case Link::STATUS_TEL:
-                $o .= $tx['link']['tel'] . "\n";
+                $noticeMessage = '<b>' . ($tx['link']['hint'] ?? 'Hint:') . '</b> ' . ($tx['link']['tel'] ?? 'Telephone link (not automatically checkable).');
                 break;
             case Link::STATUS_UNKNOWN:
-                $o .= $tx['link'][Link::STATUS_UNKNOWN] . "\n";
-                break;
+                 $noticeMessage = '<b>' . ($tx['link']['hint'] ?? 'Hint:') . '</b> ' . ($tx['link'][Link::STATUS_UNKNOWN] ?? 'Link uses an unknown protocol.');
+                 break;
             default:
-                if ($link->getStatus() >= 300 && $link->getStatus() < 400) {
-                    $o .= '<b>' . $tx['link']['error'] . '</b>'
-                        . $tx['link']['redirect'] . '<br>' . "\n";
+                
+                if ($status >= 300 && $status < 400) {
+                    $noticeMessage .= '<b>' . ($tx['link']['hint'] ?? 'Hint:') . '</b> '
+                                   . ($tx['link']['redirect'] ?? 'Redirect detected.') . '<br>' . "\n";
+                } else {
+                     $noticeMessage .= '<b>' . ($tx['link']['hint'] ?? 'Hint:') . '</b> '
+                                    . ($tx['link']['other_status'] ?? 'Non-standard status received.') . '<br>' . "\n";
                 }
-                $o .= '<b>' . $tx['link']['returned_status'] . '</b>'
-                    . $link->getStatus() . "\n";
+                $noticeMessage .= '<b>' . ($tx['link']['returned_status'] ?? 'Returned Status:') . '</b> ' . $status;
         }
+
+        $o .= $noticeMessage . "\n" . '</li>' . "\n";
         return $o;
     }
 
     /**
-     * Returns the linkcheck results.
+     * Returns the final HTML report summarizing the link check results.
      *
-     * @param int   $checkedLinks The number of checked links.
-     * @param array $hints        The errors and warnings.
-     *
-     * @return string HTML
+     * @param int $checkedLinks The total number of links gathered.
+     * @param array<int, array{'errors'?: Link[], 'caveats'?: Link[]}> $hints Errors/caveats grouped by page index.
+     * @return string HTML report.
      */
-    public function message($checkedLinks, array $hints)
+    public function message(int $checkedLinks, array $hints): string
     {
-        global $tx, $h, $u;
+        global $tx, $h, $u; 
+        
+        $key = 'checked' . \XH_numberSuffix($checkedLinks); 
+        $checkedText = sprintf($tx['link'][$key] ?? '%d links checked.', $checkedLinks);
+        $o = "\n" . '<p>' . htmlspecialchars($checkedText, ENT_QUOTES, 'UTF-8') . '</p>' . "\n";
 
-        $key = 'checked' . XH_numberSuffix($checkedLinks);
-        $text = sprintf($tx['link'][$key], $checkedLinks);
-        $o = "\n" . '<p>' . $text . '</p>' . "\n";
-        if (count($hints) === 0) {
-            $o .= '<p><b>' . $tx['link']['check_ok'] . '</b></p>' . "\n";
+        if (empty($hints)) {
+            $o .= '<p><b>' . htmlspecialchars($tx['link']['check_ok'] ?? 'All links seem okay!', ENT_QUOTES, 'UTF-8') . '</b></p>' . "\n";
             return $o;
         }
-        $o .= '<p><b>' . $tx['link']['check_errors'] . '</b></p>' . "\n";
-        $o .= '<p>' . $tx['link']['check'] . '</p>' . "\n";
-        foreach ($hints as $page => $problems) {
-            $o .= '<hr>' . "\n\n" . '<h2>' . $tx['link']['page']
-                . '<a href="?' . $u[$page] . '">' . $h[$page] . '</a></h2>' . "\n";
-            if (isset($problems['errors'])) {
-                $o .= '<h3>' . $tx['link']['errors'] . '</h3>' . "\n"
-                    . '<ul>' . "\n";
+
+        $o .= '<p><b>' . htmlspecialchars($tx['link']['check_errors'] ?? 'Link check found issues:', ENT_QUOTES, 'UTF-8') . '</b></p>' . "\n";
+             
+        ksort($hints);
+
+        foreach ($hints as $pageIndex => $problems) {
+            $pageTitle = htmlspecialchars($h[$pageIndex] ?? ('Page Index ' . $pageIndex), ENT_QUOTES, 'UTF-8');
+            $pageUrl = htmlspecialchars('?' . ($u[$pageIndex] ?? ''), ENT_QUOTES, 'UTF-8');
+
+            $o .= '<hr>' . "\n\n"
+                . '<h2>' . ($tx['link']['page'] ?? 'Page:') . ' '
+                . '<a href="' . $pageUrl . '">' . $pageTitle . '</a></h2>' . "\n";
+
+            if (!empty($problems['errors'])) {
+                $o .= '<h3>' . htmlspecialchars($tx['link']['errors'] ?? 'Errors', ENT_QUOTES, 'UTF-8') . '</h3>' . "\n"
+                    . '<ul style="list-style: disc; margin-left: 25px;">' . "\n";
                 foreach ($problems['errors'] as $link) {
                     $o .= $this->reportError($link);
                 }
                 $o .= '</ul>' . "\n" . "\n";
             }
-            if (isset($problems['caveats'])) {
-                $o .= '<h3>' . $tx['link']['hints'] . '</h3>' . "\n"
-                    . '<ul>' . "\n";
+
+            if (!empty($problems['caveats'])) {
+                $o .= '<h3>' . htmlspecialchars($tx['link']['hints'] ?? 'Hints / Caveats', ENT_QUOTES, 'UTF-8') . '</h3>' . "\n"
+                    . '<ul style="list-style: circle; margin-left: 25px;">' . "\n";
                 foreach ($problems['caveats'] as $link) {
                     $o .= $this->reportNotice($link);
                 }
