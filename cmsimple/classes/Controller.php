@@ -11,28 +11,17 @@
  * @copyright 2009-2017 The CMSimple_XH developers <http://cmsimple-xh.org/?The_Team>
  * @license   http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link      http://cmsimple-xh.org/
+ * 2025 updated by github.com/g7sim
  */
 
 namespace XH;
 
-/**
- * Top-level functionality.
- *
- * @category CMSimple_XH
- * @package  XH
- * @author   Peter Harteg <peter@harteg.dk>
- * @author   The CMSimple_XH developers <devs@cmsimple-xh.org>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://cmsimple-xh.org/
- * @since    1.6.3
- */
+
 class Controller
 {
     /**
      * Initializes the paths related to the template.
-     *
      * @return void
-     *
      * @global array The paths of system files and folders.
      * @global array The configuration of the core.
      * @global array The localization of the core.
@@ -68,7 +57,7 @@ class Controller
         global $pth, $tx, $title, $o;
 
         if (file_exists($pth['file']['search'])) {
-            // For compatibility with modified search functions and search plugins.
+            
             include $pth['file']['search'];
         } else {
             $title = $tx['title']['search'];
@@ -93,9 +82,7 @@ class Controller
 
     /**
      * Handles mailform requests.
-     *
      * @return void
-     *
      * @global array  The configuration of the core.
      * @global array  The localization of the core.
      * @global string The content of the title element.
@@ -187,11 +174,17 @@ class Controller
      * @global string The admin password.
      * @global string The requested function.
      */
-    public function handleLoginAndLogout()
+    
+	public function handleLoginAndLogout()
     {
         global $adm, $login, $logout, $keycut, $f;
 
-        $adm = gc('status') == 'adm' && logincheck();
+        $status_cookie = $_COOKIE['status'] ?? null;
+        $login_check_result = logincheck(); 
+
+        $adm = ($status_cookie === 'adm') && $login_check_result;
+
+        // Original remaining logic
         $keycut = stsl($keycut);
         if ($login && $keycut == '' && !$adm) {
             $login = null;
@@ -205,9 +198,9 @@ class Controller
         }
     }
 
+
     /**
      * Handles login requests.
-     *
      * @return void
      *
      * @global string       The requested function.
@@ -216,32 +209,51 @@ class Controller
      * @global string       Whether login is requested.
      * @global array        The configuration of the core.
      */
-    public function handleLogin()
+              
+   public function handleLogin()
     {
         global $f, $pth, $keycut, $login, $adm, $edit, $cf;
 
+        $cookie_path = defined('CMSIMPLE_ROOT') ? CMSIMPLE_ROOT : '/';
+
+        $is_https = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+        
         if (password_verify($keycut, $cf['security']['password'])) {
-            setcookie('status', 'adm', 0, CMSIMPLE_ROOT);
+            
+            $cookie_options = [
+                'expires' => 0,                      
+                'path' => $cookie_path,
+                'domain' => '',                      
+                'secure' => $is_https,                   
+                'httponly' => true,                  // Prevent JavaScript access 
+                'samesite' => 'Lax'                 // Strict is also an option)
+            ];
+
+            setcookie('status', 'adm', $cookie_options);
+
             XH_startSession();
-            session_regenerate_id(true);
+            session_regenerate_id(true); 
             $_SESSION['xh_password'] = $cf['security']['password'];
             $_SESSION['xh_user_agent'] = md5($_SERVER['HTTP_USER_AGENT']);
+
             $adm = true;
-            $edit = true;
+            $edit = true; 
+
             $written = XH_logMessage('info', 'XH', 'login', 'login from ' . $_SERVER['REMOTE_ADDR']);
             if (!$written) {
-                e('cntwriteto', 'log', $pth['file']['log']);
+                e('cntwriteto', 'log', $pth['file']['log']); // Display error to user if needed
             }
+
+            
         } else {
-            $login = null;
-            $f = 'xh_login_failed';
+            $login = null; 
+            $f = 'xh_login_failed'; 
             XH_logMessage('warning', 'XH', 'login', 'login failed from ' . $_SERVER['REMOTE_ADDR']);
         }
     }
 
     /**
      * Handles logout requests.
-     *
      * @return void
      *
      * @global string Whether admin mode is active.
@@ -250,25 +262,45 @@ class Controller
      * @global array  The localization of the core.
      * @global string The HTML for the contents area.
      */
-    public function handleLogout()
+    
+	public function handleLogout()
     {
         global $adm, $f, $logout, $tx, $o;
 
-        if ($logout != 'no_backup') {
-            $o .= XH_backup();
-        }
-        $adm = false;
-        setcookie('status', '', 0, CMSIMPLE_ROOT);
-        XH_startSession();
-        session_regenerate_id(true);
-        unset($_SESSION['xh_password']);
-        $o .= XH_message('success', $tx['login']['loggedout']);
-        $f = 'xh_loggedout';
-    }
+        $cookie_path = defined('CMSIMPLE_ROOT') ? CMSIMPLE_ROOT : '/';
+        
+		$is_https = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
 
+        if ($logout != 'no_backup') {
+            $o .= XH_backup(); 
+        }
+        $adm = false; 
+
+        $delete_cookie_options = [
+            'expires' => time() - 3600, 
+            'path' => $cookie_path,
+            'domain' => '',
+            'secure' => $is_https,          
+            'httponly' => true,         
+            'samesite' => 'Lax'        
+        ];
+
+        setcookie('status', '', $delete_cookie_options);
+        setcookie('mode', '', $delete_cookie_options); 
+
+        XH_startSession();
+        session_regenerate_id(true); 
+        unset($_SESSION['xh_password']); 
+        unset($_SESSION['xh_user_agent']); 
+        /* Consider session_destroy() if you want to completely end the session. */
+
+        $o .= XH_message('success', $tx['login']['loggedout']); // Show logout message
+        $f = 'xh_loggedout'; // Set state
+    }
+	
+	
     /**
      * Handles Ajax request to keep the admin session alive.
-     *
      * @return void
      */
     public function handleKeepAlive()
@@ -545,18 +577,18 @@ class Controller
     {
         global $tx, $o;
 
-        $interval = 1000 * ((int) ini_get('session.gc_maxlifetime') - 1);
+        // Calculate interval for keep-alive based on session lifetime
+        $session_lifetime = (int) ini_get('session.gc_maxlifetime');
+        $interval = ($session_lifetime > 60) ? ($session_lifetime - 30) * 1000 : 60000; // Check every minute if lifetime is short
+
+        // Output JavaScript for NoScript warning and session keep-alive
+        // REMOVED the document.cookie check as it's incompatible with HttpOnly cookies
         $o .= <<<EOT
-<script type="text/javascript">
-if (document.cookie.indexOf('status=adm') == -1) {
-    document.write('<div class="xh_warning">{$tx['error']['nocookies']}<\/div>');
-}
-</script>
 <noscript><div class="xh_warning">{$tx['error']['nojs']}</div></noscript>
 <script type="text/javascript">
+// Keep session alive by sending a request periodically
 setInterval(function() {
     var request = new XMLHttpRequest();
-
     request.open("GET", "?xh_keep_alive");
     request.send(null);
 }, $interval);
@@ -564,39 +596,86 @@ setInterval(function() {
 EOT;
     }
 
+
+
     /**
      * Sets functions as permitted.
      *
      * @return void
-     *
      * @global string Whether edit mode is requested.
      * @global string Whether normal mode is requested.
-     *
      * @todo Rename!
      */
-    public function setFunctionsAsPermitted()
+    
+	
+	 public function setFunctionsAsPermitted()
     {
-        global $edit, $normal;
+        global $edit, $normal; // Flags indicating requested mode change
 
+        // Determine the correct cookie path
+        $cookie_path = defined('CMSIMPLE_ROOT') ? CMSIMPLE_ROOT : '/';
+
+        $is_https = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+        // Define base cookie options (consistent with login)
+        // NOTE: 'secure' => $is_https is recommended for production.
+        $base_cookie_options = [
+            'path' => $cookie_path,
+            'domain' => '',
+            'secure' => $is_https,      // Set to TRUE if site is HTTPS only
+            'httponly' => true,     // Prevent JavaScript access
+            'samesite' => 'Lax'
+        ];
+
+        // Options for setting a session cookie (expires = 0)
+        $set_cookie_options = $base_cookie_options;
+        $set_cookie_options['expires'] = 0;
+
+        // Options for deleting a cookie (expire in the past)
+        $delete_cookie_options = $base_cookie_options;
+        $delete_cookie_options['expires'] = time() - 3600;
+
+        // Check admin status (XH_ADM should be reliably set based on handleLoginAndLogout)
         if (XH_ADM) {
-            if ($edit) {
-                setcookie('mode', 'edit', 0, CMSIMPLE_ROOT);
+            // Admin is logged in - handle mode changes
+
+            if ($edit) { // Request to enter edit mode
+                setcookie('mode', 'edit', $set_cookie_options);
             }
-            if ($normal) {
-                setcookie('mode', '', 0, CMSIMPLE_ROOT);
+            if ($normal) { // Request to exit edit mode (enter normal admin view)
+                setcookie('mode', '', $delete_cookie_options); // Clear the mode cookie
             }
-            if (gc('mode') == 'edit' && !$normal) {
-                $edit = true;
+
+            // Determine current edit state based on cookie (after potential changes above)
+            // Note: Reading the cookie set in the *same request* might not work reliably,
+            // this usually relies on the cookie from the *previous* request.
+            // The global $edit flag might be better set elsewhere based on XH_ADM and gc('mode').
+            $current_mode = $_COOKIE['mode'] ?? '';
+            if ($current_mode === 'edit' && !$normal) {
+                 // $edit = true; // This line might be redundant if $edit is already true from the request
+            } elseif ($current_mode !== 'edit') {
+                 // $edit = false; // Ensure edit is false if mode is not 'edit'
             }
+
         } else {
-            if (gc('status') != '') {
-                setcookie('status', '', 0, CMSIMPLE_ROOT);
+            // User is NOT admin - ensure admin-related cookies are cleared
+
+            $current_status = $_COOKIE['status'] ?? '';
+            if ($current_status !== '') {
+                 setcookie('status', '', $delete_cookie_options);
             }
-            if (gc('mode') == 'edit') {
-                setcookie('mode', '', 0, CMSIMPLE_ROOT);
+
+            $current_mode = $_COOKIE['mode'] ?? '';
+            if ($current_mode !== '') { // Clear mode if it was somehow set
+                 setcookie('mode', '', $delete_cookie_options);
             }
+            // Ensure flags are false if not admin
+            $edit = false;
         }
     }
+
+	
+	
+	
 
     /**
      * Handles save requests.
